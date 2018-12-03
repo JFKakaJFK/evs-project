@@ -1,3 +1,5 @@
-# EVS_GROUP2
+# EVS_GROUP2 Project
 
-The git repository for the project of group 2
+## TODO
+
+[ ] Everything
