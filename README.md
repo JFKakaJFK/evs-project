@@ -39,7 +39,7 @@ See [this](./specifications.pdf).
 
 ### Code Conventions
 
-- [Code Conventions](./code_conventions)
+- [Code Conventions](./code_conventions.pdf)
 
 ### How to use the Git Cli
 
