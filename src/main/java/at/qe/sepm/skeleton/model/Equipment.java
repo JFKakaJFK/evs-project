@@ -3,6 +3,7 @@ package at.qe.sepm.skeleton.model;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +33,8 @@ public class Equipment implements Persistable<Integer> {
     @OneToMany
     private List<EquipmentManual> manuals;
 
-    //TODO: manytomany reservation table
+    @OneToMany
+    private List<EquipmentReservation> reservations;
 
     public String getName() {
         return name;
@@ -88,6 +90,15 @@ public class Equipment implements Persistable<Integer> {
 
     public void setManuals(List<EquipmentManual> manuals) {
         this.manuals = manuals;
+    }
+
+    public boolean isWithinMaxReservationDuration(Date startDate, Date endDate){
+        return (endDate.getTime() - startDate.getTime()) <= maxDurationMilliseconds;
+    }
+
+    public boolean isAvailable(Date startDate, Date endDate){
+        // TODO
+        return false;
     }
 
     @Override

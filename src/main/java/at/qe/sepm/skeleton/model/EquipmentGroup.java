@@ -3,6 +3,7 @@ package at.qe.sepm.skeleton.model;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 
@@ -50,6 +51,30 @@ public class EquipmentGroup implements Persistable<Integer> {
 
     public void setEquipments(Set<Equipment> equipments) {
         this.equipments = equipments;
+    }
+
+    public boolean isWithinMaxReservationDuration(Date startDate, Date endDate){
+        if(equipments == null){
+            return true;
+        }
+        for(Equipment e: equipments){
+            if(!e.isWithinMaxReservationDuration(startDate, endDate)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isAvailable(Date startDate, Date endDate){
+        if(equipments == null){
+            return true;
+        }
+        for(Equipment e: equipments){
+            if(!e.isAvailable(startDate, endDate)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

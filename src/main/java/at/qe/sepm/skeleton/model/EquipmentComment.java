@@ -2,9 +2,8 @@ package at.qe.sepm.skeleton.model;
 
 import org.springframework.data.domain.Persistable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class EquipmentComment implements Persistable<Integer> {
@@ -15,13 +14,26 @@ public class EquipmentComment implements Persistable<Integer> {
     @GeneratedValue
     private int id;
 
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private String message;
+
+    @Column(nullable = false)
+    private User createUser;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+
     @Override
     public Integer getId() {
-        return null;
+        return id;
     }
 
     @Override
     public boolean isNew() {
-        return false;
+        return (null == createDate);
     }
 }

@@ -20,14 +20,18 @@ public class EquipmentGroupService {
     @Autowired
     private EquipmentGroupRepository equipmentGroupRepository;
 
-    //TODO add authorization (admin or user is creator)
+    /* TODO
 
-    /*
-    * TODO
-    *
-    * addEquipmentGroup(Set<Equipment>, name) user = getAuthenticatedUser()
-    * deleteEquipmentGroup(EquipmentGroup)
-    * ...
-    */
+     * EMPLOYEE
+     *
+     * getOwnGroups()
+     * addGroup(<Equipment> >2, name)
+     *
+
+     * ADMIN
+     * removeGroup(Group) OR user = creator
+     *
+     * getAllGroups()
+     */
 
 }
