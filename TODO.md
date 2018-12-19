@@ -1,31 +1,40 @@
 # TODO
 
-## View
+## View @Andi
 
 STUDENTS
-- all equipments(search, multiselect)
-    -> timeframe -> reservation
-- timeframe -> show available equipments -> reservation
-- view equipment availability
+- [ ] View Reservations(delete)
+- [ ] New Reservation
+- [ ] all equipments(search, multiselect) -> timeframe -> reservation
+- [ ] timeframe -> show available equipments -> reservation
+- [ ] view equipment availability
 
 EMPLOYEES
-same with groups
+- [ ] same as students with groups
+- [ ] View Groups(new/delete)
 
 ADMIN
 
-- new user
-- view equipment(new, update, delete)
-- view rented equipment(return)
-- view all groups
-- view all reservations
-- change opening hours
+- [ ] new user
+- [ ] view equipment(new, update, delete)
+- [ ] view rented equipment(return)
+- [ ] view all groups
+- [ ] view all reservations
+- [ ] change opening hours
 
 
-## Application
+## Application @Melanie, @Markus
 
-- equipment state
-- reservationIsValid()
-- email(reservation, return, overdue)
+- [ ] equipment state
+- [ ] reservationIsValid()
+- [ ] email(reservation, return, overdue)
+- [ ] + other methods needed for Views
 
-## Persistence
+## Persistence @Chris @Johannes
+
+- [ ] Users(STUDENT, EMPLOYEE, ADMIN)
+- [ ] Equipment
+- [ ] EquipmentGroup
+- [ ] Reservation
+- [ ] + services needed for Application
 
