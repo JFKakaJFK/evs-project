@@ -15,8 +15,7 @@
 
 ## TODO
 
-- [ ] [Everything](./specifications.pdf)
-- [ ] Specify what everything is and divide work.
+[Tasks](./TODO.md)
 
 ## Requirements
 
