@@ -35,8 +35,16 @@ public class AddUserController {
     private String password = "Passwd1"; // default password for each new user
     private String firstName;
     private String lastName;
+    private String email;
+    private String cId;
     private boolean enabled;
     private boolean addedSuccessfully = false;
+    private Date dob;
+    private Set<UserRole> roles;
+    private boolean admin;
+    private boolean employee;
+    private boolean student;
+    
 
     /**
      * Check if email address is valid
@@ -50,6 +58,21 @@ public class AddUserController {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+    
+    
+    
+    /**
+     * Check if the csav is valid
+     * @param cId that should be validated
+     * @return true if cId is valid else false
+     */
+    
+    public boolean validateCId(String cId){
+    	String regexC = "[csav]\\d\\d\\d\\d$";
+    	Pattern patternC = Pattern.compile(regexC);
+    	Matcher matcherC = patternC.matcher(cId);
+    	return matcherC.matches();
+    }
 
     /**
      * Create new user
@@ -62,15 +85,30 @@ public class AddUserController {
         String msg;
 
         User addedUser = new User();
-
+        
+        /**
+         * According to your needs you can decide whether you want to validate
+         * the email or the c-Id. If there are any issues I will adapt the class accordingly.
+         */
+        
+      
         if(validateEmail(this.email) && this.email != null) {
             addedUser.setUsername(username);
             addedUser.setPassword(passwordEncoder.encode(password));
             addedUser.setFirstName(this.firstName);
             addedUser.setLastName(this.lastName);
+            /**addedUser.setCId(this.cId);*/ //Csav!!!
+            addedUser.setEmail(this.email);
             addedUser.setEnabled(this.enabled);
-            if(userService.getAllUsernames().contains(this.username) || userService.getAllDeletedUsernames().contains(this.username)) {
-                msg = "Please choose another username";
+            //don't know if needed
+            /**
+            if(validateCId(this.cId) == false) {
+            	msg = "Please verify your c-Id";
+            }
+            */
+            if(userService.getAllUsers().contains(this.username)) { 
+            //here one could also specify,that the same condition holds if a username has deleted and someone tries to pick it again
+                msg = "Please choose another username";   
             }else {
                 this.userService.saveUser(addedUser);
                 msg = "User added successfully";
@@ -78,7 +116,7 @@ public class AddUserController {
             }
 
         }else {
-            msg = "The email address is invalid";
+            msg = "The email address is invalid"; //or c-Id
         }
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
@@ -118,6 +156,14 @@ public class AddUserController {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+    
+    public String getCId(){
+    	return cId;
+    }
+    
+    public void setCId(String cId) {
+    	this.cId = cId;
+    }
 
     public Date getDob() {
         return dob;
@@ -126,7 +172,31 @@ public class AddUserController {
     public void setDob(Date dob) {
         this.dob = dob;
     }
+    
+    public boolean isAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+    
+    public boolean isStudent() {
+        return student;
+    }
+
+    public void setStudent(boolean student) {
+        this.student = student;
+    }
+    
+    public boolean isEmployee(){
+    	return employee;
+    }
+    
+    public void setEmployee(boolean employee) {
+    	this.employee = employee;
+    }
+    
     public boolean isEnabled() {
         return enabled;
     }
@@ -135,6 +205,10 @@ public class AddUserController {
         this.enabled = enabled;
     }
     
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
+
     public boolean isAddedSuccessfully() {
         return addedSuccessfully;
     }
@@ -142,6 +216,14 @@ public class AddUserController {
     public void setAddedSuccessfully(boolean addedSuccessfully) {
         this.addedSuccessfully = addedSuccessfully;
     }
+    
+    private void convertRoles() {
+        roles = new HashSet<>();
+        if(student) { roles.add(UserRole.STUDENT); }
+        if(employee) { roles.add(UserRole.EMPLOYEE); }
+        if(admin) { roles.add(UserRole.ADMIN); }
+    }
+
 
     /**
      * Check URL in order to know if user was added successfully.
