@@ -1,5 +1,5 @@
 package at.qe.sepm.skeleton.ui.controllers;
-
+/*
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentState;
 import at.qe.sepm.skeleton.model.EquipmentManual;
@@ -17,27 +17,27 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-
+*/
 /**
  * Controller for add-equipmentReservation functionality.
  */
-
+/*
 @Component
 @Scope("request")
 public class AddEquipmentController {
-	
+
 	private Integer id;
     private String name;
     private String labName;
     private String labLocation;
     private EquipmentState state;
     private Long maxDurationMilliseconds;
-    
+
     private List<EquipmentComment> comments;
     private List<EquipmentManual> manuals;
     private List<EquipmentReservation> reservations;
 
-    
+
     @PreAuthorize("hasAuthority('ADMIN')")
     public void addEquipment() throws IOException {
         String title = "Add Equipment";
@@ -45,10 +45,10 @@ public class AddEquipmentController {
        Equipment equipment = new Equipment();
        /*
         * Kompiliert nicht, weil Methoden von EquipmentService fehlen!
-        * 
+        *
         if(EquipmentService.getAllEquipmentsByName().contains(this.name) || EquipmentService.getAllEquipmentsById().contains(this.id)) {
         	msg = "Equipment already exists";
-        
+
         }else {
         	equipment.setId(this.id);
         	equipment.setName(this.name);
@@ -59,18 +59,19 @@ public class AddEquipmentController {
         	equipment.setComments(this.comments);
         	equipment.setManuals(this.manuals);
         	equipment.setReservations(this.reservations);
-        	
+
         	msg = "Equipment added successfully";
             FacesContext.getCurrentInstance().getExternalContext().redirect("reservations.xhtml?addedSuccessfully");
         }
-		
+
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
         RequestContext.getCurrentInstance().showMessageInDialog(message);
         */
+/*
     }
-    
-    
-    
+
+
+
     public String getName() {
         return name;
     }
@@ -133,3 +134,4 @@ public class AddEquipmentController {
     }
 
 }
+*/

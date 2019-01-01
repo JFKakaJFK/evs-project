@@ -1,10 +1,10 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
-import at.qe.sepm.skeleton.model.EquipmentReservation;
-import at.qe.sepm.skeleton.model.Equipment;
+//import at.qe.sepm.skeleton.model.EquipmentReservation;
+//import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.User;
 //import at.qe.sepm.skeleton.model.EquipmentReservationRole;
-import at.qe.sepm.skeleton.services.EquipmentReservationService;
+//import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.UserService;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DualListModel;
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * Controller for add-equipmentReservation functionality.
  */
 
+/*
 @Component
 @Scope("request")
 public class AddEquipmentReservationController {
@@ -32,8 +33,8 @@ public class AddEquipmentReservationController {
     private String groupName;
     private Date startDate;
     private Date endDate;
-    
-    
+
+
     public void addEquipmentReservation() throws IOException {
         String title = "Add Reservation";
         String msg;
@@ -59,13 +60,13 @@ public class AddEquipmentReservationController {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
-    
+
     public boolean isAvailable() {
     	// TODO
     	return false;
     }
-    
-    
+
+
 	public boolean validateDate() {
 		Date today = new Date();
 		today.getTime();
@@ -77,7 +78,7 @@ public class AddEquipmentReservationController {
 		}
 		return true;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -100,5 +101,6 @@ public class AddEquipmentReservationController {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
-	}	
+	}
 }
+*/
