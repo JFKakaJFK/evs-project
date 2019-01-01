@@ -25,7 +25,7 @@ public class User implements Persistable<String> {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(length = 100)
+    @Column(length = 20)
     private String username;
 
     @ManyToOne(optional = false)
@@ -37,6 +37,9 @@ public class User implements Persistable<String> {
     private User updateUser;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
+    @Column(length = 100)
+
+    private String cNumber;
 
     private String password;
 
@@ -51,6 +54,16 @@ public class User implements Persistable<String> {
     @CollectionTable(name = "User_UserRole")
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
+
+    public String getCNumber()
+    {
+        return this.cNumber;
+    }
+
+    public void setcNumber(String cNumber)
+    {
+        this.cNumber = cNumber;
+    }
 
     public String getUsername() {
         return username;
