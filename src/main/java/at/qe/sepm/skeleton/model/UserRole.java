@@ -8,5 +8,4 @@ public enum UserRole {
     ADMIN,
     STUDENT,
     EMPLOYEE
-
 }
