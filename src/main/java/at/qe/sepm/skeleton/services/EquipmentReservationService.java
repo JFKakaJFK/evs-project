@@ -47,6 +47,7 @@ public class EquipmentReservationService {
      * confirmReturn(Reservation)
      */
 
+    /*
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<EquipmentReservation> getOwnReservations(){
         return equipmentReservationRepository.findAllByUser(getAuthenticatedUser()).stream()
@@ -68,6 +69,7 @@ public class EquipmentReservationService {
             .filter(reservation -> reservation.getGroupName() != null)
             .collect(Collectors.toList());
     }
+    */
 
     @PreAuthorize("hasAuthority('ADMIN') or principal eq #reservation.getUser()")
     public void deleteReservation(EquipmentReservation reservation){

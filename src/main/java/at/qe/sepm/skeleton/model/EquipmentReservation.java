@@ -6,10 +6,11 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * Entity for single equipment Reservations
+ */
 @Entity
 public class EquipmentReservation implements Persistable<Integer> {
-
-    // TODO check time availability in setters
 
     private static final long serialVersionUID = 1L;
 
@@ -20,10 +21,8 @@ public class EquipmentReservation implements Persistable<Integer> {
     @OneToMany
     private Set<Equipment> equipment;
 
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
     private User user;
-
-    private String groupName;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -33,13 +32,11 @@ public class EquipmentReservation implements Persistable<Integer> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDate;
 
     public Set<Equipment> getEquipment() {
         return equipment;
@@ -73,6 +70,22 @@ public class EquipmentReservation implements Persistable<Integer> {
         this.endDate = endDate;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
     @Override
     public Integer getId() {
         return id;
@@ -80,7 +93,6 @@ public class EquipmentReservation implements Persistable<Integer> {
 
     @Override
     public boolean isNew() {
-        //TODO
-        return false;
+        return (null == createDate);
     }
 }

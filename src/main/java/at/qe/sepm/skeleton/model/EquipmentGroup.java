@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-
+/**
+ * Entity for equipment groups.
+ */
 @Entity
 public class EquipmentGroup implements Persistable<Integer> {
     private static final long serialVersionUID = 1L;
@@ -18,11 +20,18 @@ public class EquipmentGroup implements Persistable<Integer> {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
     private User createdBy;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Equipment> equipments;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDate;
 
     @Override
     public Integer getId() {
@@ -35,6 +44,22 @@ public class EquipmentGroup implements Persistable<Integer> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     public User getCreatedBy() {
@@ -79,7 +104,6 @@ public class EquipmentGroup implements Persistable<Integer> {
 
     @Override
     public boolean isNew() {
-        //TODO
-        return false;
+        return (null == createDate);
     }
 }

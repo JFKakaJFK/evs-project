@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Entity representing lab equipments.
+ */
 @Entity
 public class Equipment implements Persistable<Integer> {
 
@@ -22,19 +25,30 @@ public class Equipment implements Persistable<Integer> {
     private String labName;
     @Column(nullable = false)
     private String labLocation;
-    @Column(nullable = false)
+
+    private boolean locked;
+
+    @Transient
     private EquipmentState state;
+
     @Column(nullable = false)
     private Long maxDurationMilliseconds;
 
-    @OneToMany
+    //TODO may need to fetch comments/manuals manually
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<EquipmentComment> comments;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<EquipmentManual> manuals;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<EquipmentReservation> reservations;
+
+    @ManyToOne(optional = false)
+    private User createUser;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
 
     public String getName() {
         return name;
@@ -58,6 +72,14 @@ public class Equipment implements Persistable<Integer> {
 
     public void setLabLocation(String labLocation) {
         this.labLocation = labLocation;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     public EquipmentState getState() {
@@ -92,12 +114,28 @@ public class Equipment implements Persistable<Integer> {
         this.manuals = manuals;
     }
 
+    public User getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(User createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     public boolean isWithinMaxReservationDuration(Date startDate, Date endDate){
         return (endDate.getTime() - startDate.getTime()) <= maxDurationMilliseconds;
     }
 
     public boolean isAvailable(Date startDate, Date endDate){
-        // TODO
+        // TODO check all reservations, if any between  start & end return false
         return false;
     }
 
@@ -130,7 +168,6 @@ public class Equipment implements Persistable<Integer> {
 
     @Override
     public boolean isNew() {
-        // TODO
-        return false;
+        return (null == createDate);
     }
 }
