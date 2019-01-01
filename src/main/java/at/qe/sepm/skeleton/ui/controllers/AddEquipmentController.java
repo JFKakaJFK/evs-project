@@ -1,11 +1,11 @@
 package at.qe.sepm.skeleton.ui.controllers;
-/*
+
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentState;
 import at.qe.sepm.skeleton.model.EquipmentManual;
 import at.qe.sepm.skeleton.model.EquipmentComment;
 import at.qe.sepm.skeleton.services.EquipmentService;
-import at.qe.sepm.skeleton.model.EquipmentReservation;
+//import at.qe.sepm.skeleton.model.EquipmentReservation;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,15 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-*/
+
 /**
  * Controller for add-equipmentReservation functionality.
  */
-/*
+
 @Component
 @Scope("request")
 public class AddEquipmentController {
 
-	private Integer id;
     private String name;
     private String labName;
     private String labLocation;
@@ -35,39 +34,42 @@ public class AddEquipmentController {
 
     private List<EquipmentComment> comments;
     private List<EquipmentManual> manuals;
-    private List<EquipmentReservation> reservations;
+    //private List<EquipmentReservation> reservations;
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
     public void addEquipment() throws IOException {
         String title = "Add Equipment";
         String msg;
-       Equipment equipment = new Equipment();
-       /*
-        * Kompiliert nicht, weil Methoden von EquipmentService fehlen!
-        *
+        Equipment equipment = new Equipment();
+
+        /*
+         * By @Johannes
+         * @Melanie i hab angenommen dass der equipmentname nit eindeutig sein muss,
+         * da nit speizifiziert is ob die uni nit ein equipment oefters vorkommen kann
+         * und daher verwend i nit den equipmentnamen als id
         if(EquipmentService.getAllEquipmentsByName().contains(this.name) || EquipmentService.getAllEquipmentsById().contains(this.id)) {
         	msg = "Equipment already exists";
 
         }else {
-        	equipment.setId(this.id);
+        */
         	equipment.setName(this.name);
-        	equipment.setlabName(this.labName);
-        	equipment.setlabLocation(this.labLocation);
+        	equipment.setLabName(this.labName);
+        	equipment.setLabLocation(this.labLocation);
         	equipment.setState(this.state);
         	equipment.setMaxDurationMilliseconds(this.maxDurationMilliseconds);
         	equipment.setComments(this.comments);
         	equipment.setManuals(this.manuals);
-        	equipment.setReservations(this.reservations);
+        	// TODO Macht das sinn gleich beim erstellen? oder einfach null setzen?
+        	//equipment.setReservations(this.reservations);
 
         	msg = "Equipment added successfully";
             FacesContext.getCurrentInstance().getExternalContext().redirect("reservations.xhtml?addedSuccessfully");
-        }
+        //}
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
         RequestContext.getCurrentInstance().showMessageInDialog(message);
-        */
-/*
+
     }
 
 
@@ -128,10 +130,10 @@ public class AddEquipmentController {
         this.manuals = manuals;
     }
 
-
+    /* siehe oben
     public Integer getId() {
         return id;
     }
-
+    */
 }
-*/
+

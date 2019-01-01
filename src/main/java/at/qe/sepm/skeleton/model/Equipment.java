@@ -41,8 +41,8 @@ public class Equipment implements Persistable<Integer> {
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<EquipmentManual> manuals;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private List<EquipmentReservation> reservations;
+    //@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    //private List<EquipmentReservation> reservations;
 
     @ManyToOne(optional = false)
     private User createUser;
