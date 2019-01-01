@@ -41,13 +41,13 @@ public class UserServiceTest {
                 Assert.assertNull("User \"admin\" has a updateUser defined", user.getUpdateUser());
                 Assert.assertNull("User \"admin\" has a updateDate defined", user.getUpdateDate());
             } else if ("user1".equals(user.getUsername())) {
-                Assert.assertTrue("User \"user1\" does not have role MANAGER", user.getRoles().contains(UserRole.MANAGER));
+                Assert.assertTrue("User \"user1\" does not have role MANAGER", user.getRoles().contains(UserRole.EMPLOYEE));
                 Assert.assertNotNull("User \"user1\" does not have a createUser defined", user.getCreateUser());
                 Assert.assertNotNull("User \"user1\" does not have a createDate defined", user.getCreateDate());
                 Assert.assertNull("User \"user1\" has a updateUser defined", user.getUpdateUser());
                 Assert.assertNull("User \"user1\" has a updateDate defined", user.getUpdateDate());
             } else if ("user2".equals(user.getUsername())) {
-                Assert.assertTrue("User \"user2\" does not have role EMPLOYEE", user.getRoles().contains(UserRole.EMPLOYEE));
+                Assert.assertTrue("User \"user2\" does not have role EMPLOYEE", user.getRoles().contains(UserRole.STUDENT));
                 Assert.assertNotNull("User \"user2\" does not have a createUser defined", user.getCreateUser());
                 Assert.assertNotNull("User \"user2\" does not have a createDate defined", user.getCreateDate());
                 Assert.assertNull("User \"user2\" has a updateUser defined", user.getUpdateUser());
@@ -115,8 +115,7 @@ public class UserServiceTest {
         toBeCreatedUser.setFirstName("New");
         toBeCreatedUser.setLastName("User");
         toBeCreatedUser.setEmail("new-email@whatever.wherever");
-        toBeCreatedUser.setPhone("+12 345 67890");
-        toBeCreatedUser.setRoles(Sets.newSet(UserRole.EMPLOYEE, UserRole.MANAGER));
+        toBeCreatedUser.setRoles(Sets.newSet(UserRole.EMPLOYEE, UserRole.EMPLOYEE));
         userService.saveUser(toBeCreatedUser);
 
         User freshlyCreatedUser = userService.loadUser("newuser");
@@ -126,8 +125,6 @@ public class UserServiceTest {
         Assert.assertEquals("User \"newuser\" does not have a the correct firstName attribute stored being saved", "New", freshlyCreatedUser.getFirstName());
         Assert.assertEquals("User \"newuser\" does not have a the correct lastName attribute stored being saved", "User", freshlyCreatedUser.getLastName());
         Assert.assertEquals("User \"newuser\" does not have a the correct email attribute stored being saved", "new-email@whatever.wherever", freshlyCreatedUser.getEmail());
-        Assert.assertEquals("User \"newuser\" does not have a the correct phone attribute stored being saved", "+12 345 67890", freshlyCreatedUser.getPhone());
-        Assert.assertTrue("User \"newuser\" does not have role MANAGER", freshlyCreatedUser.getRoles().contains(UserRole.MANAGER));
         Assert.assertTrue("User \"newuser\" does not have role EMPLOYEE", freshlyCreatedUser.getRoles().contains(UserRole.EMPLOYEE));
         Assert.assertNotNull("User \"newuser\" does not have a createUser defined after being saved", freshlyCreatedUser.getCreateUser());
         Assert.assertEquals("User \"newuser\" has wrong createUser set", adminUser, freshlyCreatedUser.getCreateUser());

@@ -25,7 +25,7 @@ public class User implements Persistable<String> {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(length = 100)
+    @Column(length = 20)
     private String username;
 
     @ManyToOne(optional = false)
@@ -37,13 +37,15 @@ public class User implements Persistable<String> {
     private User updateUser;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
+    @Column(length = 100)
+
+    private String cNumber;
 
     private String password;
 
     private String firstName;
     private String lastName;
     private String email;
-    private String phone;
 
     boolean enabled;
 
@@ -51,6 +53,16 @@ public class User implements Persistable<String> {
     @CollectionTable(name = "User_UserRole")
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
+
+    public String getcNumber()
+    {
+        return this.cNumber;
+    }
+
+    public void setcNumber(String cNumber)
+    {
+        this.cNumber = cNumber;
+    }
 
     public String getUsername() {
         return username;
@@ -90,14 +102,6 @@ public class User implements Persistable<String> {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public boolean isEnabled() {

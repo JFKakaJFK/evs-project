@@ -7,6 +7,13 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <f:event type="preRenderView" listener="#{addUserController.checkURL}"/>
+
+        <h:form rendered="#{addUserController.addedSuccessfully}">
+            <p:growl id="successGrowl" showDetail="true" sticky="false"/>
+            <f:event type="preRenderComponent" listener="#{growlBean.showMessage('User added successfully!')}"/>
+        </h:form>
+
         <h:form id="userForm">
             <p:dataTable id="usersTable" var="user" value="#{userListController.users}">
                 <p:column headerText="Username">
@@ -17,6 +24,12 @@
                 </p:column>
                 <p:column headerText="Last Name">
                     <h:outputText value="#{user.lastName}"/>
+                </p:column>
+                <p:column headerText="C-Identfier">
+                    <h:outputText value="#{user.cNumber}"/>
+                </p:column>
+                <p:column headerText="Email">
+                    <h:outputText value="#{user.email}"/>
                 </p:column>
                 <p:column headerText="Roles">
                     <h:outputText value="#{user.roles}" />
@@ -35,6 +48,8 @@
                 </p:column>
             </p:dataTable>
 
+            <p:commandButton value="Create New User" action="#{facesContext.externalContext.redirect('create-user.xhtml')}" icon="ui-icon-plusthick"/>
+
             <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
                     <h:panelGrid columns="2">
@@ -49,10 +64,10 @@
                         <p:inputText id="firstName" value="#{userDetailController.user.firstName}"/>
                         <p:outputLabel for="firstName" value="Last Name: " />
                         <p:inputText id="lastName" value="#{userDetailController.user.lastName}"/>
+                        <p:outputLabel for="cNum" value="C-Identifier: " />
+                        <p:inputText id="cNum" value="#{userDetailController.user.cNumber}"/>
                         <p:outputLabel for="email" value="E-Mail: " />
                         <p:inputText id="email" value="#{userDetailController.user.email}"/>
-                        <p:outputLabel for="phone" value="Phone: " />
-                        <p:inputMask id="phone" value="#{userDetailController.user.phone}" mask="+99? 999 9999999"/>
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="2">
