@@ -7,6 +7,13 @@
 - [addUserController](https://git.uibk.ac.at/csat2187/evs-projektarbeit/blob/master/src/main/java/at/qe/sepm/skeleton/ui/controllers/AddUserController.java) anpassen (@Markus @Melanie)
 - [users.xhtml](https://git.uibk.ac.at/csat2187/evs-projektarbeit/blob/master/src/main/webapp/admin/users.xhtml) anpassen und [formular](https://git.uibk.ac.at/csat2187/evs-projektarbeit/blob/master/src/main/webapp/admin/create-user.xhtml) einfügen (@Andi)
 
+### TODO/Notes
+
+- cNumber Getters und Setters muessen so geschrieben werden weil JSF diese sonst nicht erkennt
+- use testing
+- navbar anpassen (brauchen wir die tests)
+- sollen in den views alle ROLES angezeigt werden oder nur die mit am meisten reche?
+
 ## 2. Equipment management & Opening Hours - BIS ENDE FERIEN
 
 - Equipment Entity und Service (@Johannes)

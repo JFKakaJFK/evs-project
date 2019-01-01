@@ -46,7 +46,6 @@ public class User implements Persistable<String> {
     private String firstName;
     private String lastName;
     private String email;
-    private String phone;
 
     boolean enabled;
 
@@ -55,7 +54,7 @@ public class User implements Persistable<String> {
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
 
-    public String getCNumber()
+    public String getcNumber()
     {
         return this.cNumber;
     }
@@ -103,14 +102,6 @@ public class User implements Persistable<String> {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public boolean isEnabled() {
