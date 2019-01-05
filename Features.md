@@ -18,12 +18,17 @@
 
 - Equipment Entity und Service (@Johannes)
 - testEquipments hinzufügen (@Johannes)
-- OpeningHours Entity und Service (@Chris)
-- testÖffnungszeiten hinzufügen (@Chris)
 - EquipmentListController (@Melanie @Markus)
 - addEquipmentController (@Melanie @Markus)
 - view zur Übersicht aller Equipments und equipment hinzufügen **ADMIN** (@Andi)
+
+- OpeningHours Entity und Service (@Chris)
+- testÖffnungszeiten hinzufügen (@Chris)
 - view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
+
+### TODO/Notes
+
+- Bug: beim ändern des eqipments wird die maximale ausleihdauer auf 0 gesetzt wenn man diese nicht verändert
 
 ## 3. Simple Reservations - BIS ENDE FERIEN
 
