@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <f:event type="preRenderView" listener="#{addUserController.checkURL}"/>
+
+        <h:form rendered="#{addEquipmentController.addedSuccessfully}">
+            <p:growl id="successGrowl" showDetail="true" sticky="false"/>
+            <f:event type="preRenderComponent" listener="#{growlBean.showMessage('Equipment added successfully!')}"/>
+        </h:form>
+
+        <h:form id="equipmentForm">
+            <p:dataTable id="equipmentTable" var="equipment" value="#{equipmentListController.equipment}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{equipment.name}"/>
+                </p:column>
+                <p:column headerText="Labor">
+                    <h:outputText value="#{equipment.labName}"/>
+                </p:column>
+                <p:column headerText="Ort im Labor">
+                    <h:outputText value="#{equipment.labLocation}"/>
+                </p:column>
+                <p:column headerText="Maximale Ausleihdauer">
+                    <h:outputText value="#{equipment.maxDurationFormatted}"/>
+                </p:column>
+                <p:column headerText="Gesperrt">
+                    <h:outputText value="#{equipment.locked}"/>
+                </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton update=":equipmentForm:equipmentEditDialog" oncomplete="PF('equipmentEditDialog').show()" icon="ui-icon-note" title="Edit">
+                        <f:setPropertyActionListener value="#{equipment}" target="#{equipmentDetailController.equipment}" />
+                    </p:commandButton>
+                    <p:commandButton action="#{equipmentDetailController.doDeleteEquipment}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable">
+                        <f:setPropertyActionListener value="#{equipment}" target="#{equipmentDetailController.equipment}" />
+                        <p:confirm header="Confirmation" message="Are you sure that you want to delete this equipment? You cannot undo this operation." icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton value="Create New Equipment" action="#{facesContext.externalContext.redirect('create-equipment.xhtml')}" icon="ui-icon-plusthick"/>
+
+            <p:dialog header="Edit Equipment" id="equipmentEditDialog" widgetVar="equipmentEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="equipmentData" rendered="#{not empty equipmentDetailController.equipment}">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="name" value="Name: " />
+                        <p:inputText id="name" value="#{equipmentDetailController.equipment.name}"/>
+                        <p:outputLabel for="labname" value="Labor: " />
+                        <p:inputText id="labname" value="#{equipmentDetailController.equipment.labName}"/>
+                        <p:outputLabel for="lablocation" value="Ort im Labor" />
+                        <p:inputText id="lablocation" value="#{equipmentDetailController.equipment.labLocation}"/>
+                        <p:outputLabel for="duration" value="Maximale Ausleihdauer(DD:HH:MM): " />
+                        <p:inputMask id="duration" value="#{equipmentDetailController.equipment.maxDuration}" mask="99:99:99"/>
+                        <p:outputLabel for="locked" value="Sperren: " />
+                        <p:selectBooleanCheckbox id="locked" value="#{equipmentDetailController.equipment.locked}"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{equipmentDetailController.doSaveEquipment()}" oncomplete="PF('equipmentEditDialog').hide()" update=":equipmentForm:equipmentTable"/>
+                        <p:commandButton value="Reload" action="#{equipmentDetailController.doReloadEquipment()}" update=":equipmentForm:equipmentData"/>
+                        <p:commandButton value="Abort" onclick="PF('equipmentEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

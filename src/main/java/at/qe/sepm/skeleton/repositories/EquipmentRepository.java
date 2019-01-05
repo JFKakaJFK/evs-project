@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface EquipmentRepository extends AbstractRepository<Equipment, Integer> {
     List<Equipment> findByNameContaining(String name);
+
+    Equipment findById(Integer id);
 }

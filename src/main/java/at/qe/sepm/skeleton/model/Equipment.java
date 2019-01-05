@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Entity representing lab equipments.
@@ -49,6 +51,42 @@ public class Equipment implements Persistable<Integer> {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
+
+    public String getMaxDurationFormatted(){
+        return String.format("%dDays, %dHours, %dMinutes",
+            TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds),
+            TimeUnit.MILLISECONDS.toHours(maxDurationMilliseconds) -
+                TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds)),
+            TimeUnit.MILLISECONDS.toMinutes(maxDurationMilliseconds) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(maxDurationMilliseconds))
+        );
+    }
+
+    public String getMaxDuration(){
+        return String.format("%2d:2%d:%2d",
+            TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds),
+            TimeUnit.MILLISECONDS.toHours(maxDurationMilliseconds) -
+                TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds)),
+            TimeUnit.MILLISECONDS.toMinutes(maxDurationMilliseconds) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(maxDurationMilliseconds))
+        );
+    }
+
+    public void setMaxDuration(String duration){
+        Scanner sc = new Scanner(duration).useDelimiter(":");
+        long millis = 0;
+        if(sc.hasNext()){
+            millis += TimeUnit.DAYS.toMillis(sc.nextLong());
+        }
+        if(sc.hasNext()){
+            millis += TimeUnit.HOURS.toMillis(sc.nextLong());
+        }
+        if(sc.hasNext()){
+            millis += TimeUnit.MINUTES.toMillis(sc.nextLong());
+        }
+        this.maxDurationMilliseconds = millis;
+        sc.close();
+    }
 
     public String getName() {
         return name;
