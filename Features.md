@@ -25,6 +25,7 @@
 - OpeningHours Entity und Service (@Chris)
 - testÖffnungszeiten hinzufügen (@Chris)
 - view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
+- view zum Ansehen der equipmentDetails(Kommentare, Manuals) **?ALLe? = STUDENT** und Kommentare/Manuals hinzufügen/entfernen nur für **ADMIN**
 
 ### TODO/Notes
 
