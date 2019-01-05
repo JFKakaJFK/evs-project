@@ -11,11 +11,14 @@
                 <h:panelGrid columns="2">
                     <p:outputLabel for="addName" value="Name: "/>
                     <p:inputText id="addName" value="#{addEquipmentController.name}" required="true" requiredMessage="Please enter a name"/>
-                    <p:outputLabel for="addLabName" value="LabName: "/>
+                    <p:outputLabel for="addLabName" value="Labor: "/>
                     <p:inputText id="addLabName" value="#{addEquipmentController.labName}" required="true" requiredMessage="Please enter a labname"/>
-                    <p:outputLabel for="addLabLocation" value="Lablocation: "/>
+                    <p:outputLabel for="addLabLocation" value="Ort im Labor: "/>
                     <p:inputText id="addLabLocation" value="#{addEquipmentController.labLocation}" required="true" requiredMessage="Please enter a lablocation"/>
-                    <p:spacer width="10px"/>
+                    <p:outputLabel for="duration" value="Maximale Ausleihdauer(DD:HH:MM): " />
+                    <p:inputMask id="duration" value="#{addEquipmentController.maxDuration}" mask="99:99:99"/>
+                    <p:outputLabel for="locked" value="Sperren: " />
+                    <p:selectBooleanCheckbox id="locked" value="#{addEquipmentController.locked}"/>
                 </h:panelGrid>
                 <p:commandButton value="Add Equipment" action="#{addEquipmentController.addEquipment}" update="@form"/>
                 <p:commandButton value="Cancel" action="#{facesContext.externalContext.redirect('equipment-overview.xhtml')}" immediate="true"/>

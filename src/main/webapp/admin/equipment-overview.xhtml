@@ -9,12 +9,10 @@
     <ui:define name ="content">
         <f:event type="preRenderView" listener="#{addUserController.checkURL}"/>
 
-        <!--
-        <h:form rendered="#{addUserController.addedSuccessfully}">
+        <h:form rendered="#{addEquipmentController.addedSuccessfully}">
             <p:growl id="successGrowl" showDetail="true" sticky="false"/>
-            <f:event type="preRenderComponent" listener="#{growlBean.showMessage('User added successfully!')}"/>
+            <f:event type="preRenderComponent" listener="#{growlBean.showMessage('Equipment added successfully!')}"/>
         </h:form>
-        -->
 
         <h:form id="equipmentForm">
             <p:dataTable id="equipmentTable" var="equipment" value="#{equipmentListController.equipment}">
