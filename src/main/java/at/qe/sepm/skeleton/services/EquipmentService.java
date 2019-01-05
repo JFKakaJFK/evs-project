@@ -40,6 +40,11 @@ public class EquipmentService {
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Collection<Equipment> getAllEquipments() {
+        return equipmentRepository.findAll();
+    }
+
     /**
      * Returns a collection of all free eqipments in a timeframe
      *
