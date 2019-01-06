@@ -1,13 +1,9 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
-import at.qe.sepm.skeleton.model.EquipmentState;
-import at.qe.sepm.skeleton.model.EquipmentManual;
-import at.qe.sepm.skeleton.model.EquipmentComment;
 import at.qe.sepm.skeleton.services.EquipmentService;
 //import at.qe.sepm.skeleton.model.EquipmentReservation;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,7 +12,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Controller for add-equipmentReservation functionality.
@@ -48,7 +43,7 @@ public class AddEquipmentController {
         equipment.setLocked(this.locked);
         equipment.setMaxDuration(this.maxDuration);
 
-        this.equipmentService.saveEquipmnet(equipment);
+        this.equipmentService.saveEquipment(equipment);
 
         msg = "Equipment added successfully";
         FacesContext.getCurrentInstance().getExternalContext().redirect("equipment-overview.xhtml?addedSuccessfully");

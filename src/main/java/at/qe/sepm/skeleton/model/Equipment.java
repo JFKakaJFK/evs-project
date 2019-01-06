@@ -1,5 +1,7 @@
 package at.qe.sepm.skeleton.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
@@ -37,10 +39,14 @@ public class Equipment implements Persistable<Integer> {
     private Long maxDurationMilliseconds;
 
     //TODO may need to fetch comments/manuals manually
-    @OneToMany(cascade = CascadeType.REMOVE)
+    //@OneToMany(cascade = CascadeType.REMOVE)//, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<EquipmentComment> comments;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    //@OneToMany(cascade = CascadeType.REMOVE)
+    @Fetch(FetchMode.SELECT)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<EquipmentManual> manuals;
 
     //@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
@@ -51,6 +57,19 @@ public class Equipment implements Persistable<Integer> {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
+
+    public EquipmentState getState(Date start, Date end){
+        if(locked){
+            return EquipmentState.LOCKED;
+        } else if(isAvailable(start, end)){
+            return EquipmentState.AVAILABLE;
+        } else if(true) {
+            // TODO if not available
+            return EquipmentState.BOOKED;
+        } else {
+            return EquipmentState.OVERDUE;
+        }
+    }
 
     public String getMaxDurationFormatted(){
         return String.format("%dDays, %dHours, %dMinutes",
@@ -121,7 +140,7 @@ public class Equipment implements Persistable<Integer> {
     }
 
     public EquipmentState getState() {
-        return state;
+        return state == null ? getState(new Date(), new Date()) : state;
     }
 
     public void setState(EquipmentState state) {
@@ -142,6 +161,18 @@ public class Equipment implements Persistable<Integer> {
 
     public void setComments(List<EquipmentComment> comments) {
         this.comments = comments;
+    }
+
+    public void addComment(EquipmentComment comment){
+        comment.setEquipment(this);
+        comments.add(comment);
+    }
+
+    public void removeComment(EquipmentComment comment){
+        comments.remove(comment);
+        if(comment != null){
+            comment.setEquipment(null);
+        }
     }
 
     public List<EquipmentManual> getManuals() {

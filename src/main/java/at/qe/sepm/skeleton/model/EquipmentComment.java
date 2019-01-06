@@ -1,5 +1,7 @@
 package at.qe.sepm.skeleton.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
@@ -23,11 +25,23 @@ public class EquipmentComment implements Persistable<Integer> {
     @Column(nullable = false)
     private String message;
 
+    @ManyToOne
+    private Equipment equipment;
+
     @ManyToOne(optional = false)
     private User createUser;
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
 
     public String getTitle() {
         return title;
