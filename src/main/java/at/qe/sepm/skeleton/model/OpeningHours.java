@@ -21,13 +21,10 @@ public class OpeningHours implements Persistable<Long> {
     private long id;
 
     private String day;
-    @Temporal(TemporalType.TIME)
+
     private Time startTime;
-    @Temporal(TemporalType.TIME)
     private String endTime;
-    @Temporal(TemporalType.TIME)
     private String startPause;
-    @Temporal(TemporalType.TIME)
     private String endPause;
 
     @ManyToOne(optional = false)
