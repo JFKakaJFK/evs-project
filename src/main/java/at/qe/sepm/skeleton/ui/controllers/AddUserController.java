@@ -68,7 +68,7 @@ public class AddUserController {
      */
 
     public boolean validateCId(String cNumber){
-        String regexC = "[csav]\\d\\d\\d\\d$";
+        String regexC = "(cs)[a-z][a-z]\\d\\d\\d\\d$"; //(cs)*(small-case letter)*(small-caseletter)*(any 5-digit number)
         Pattern patternC = Pattern.compile(regexC);
         Matcher matcherC = patternC.matcher(cNumber);
         return matcherC.matches();
