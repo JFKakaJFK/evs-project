@@ -36,6 +36,17 @@ public class HolidaysService {
     }
 
     /**
+     * Loads a single holiday identified by its name.
+     *
+     * @param name the name to search for
+     * @return the holiday with the given name
+     */
+
+    public Holidays loadHoliday(String name) {
+        return holidaysRepository.findFirstByName(name);
+    }
+
+    /**
      * Saves a holiday. This method will also set {@link Holidays#createDate} for new
      * entities or {@link Holidays#updateDate} for updated entities. The user
      * requesting this operation will also be stored as {@link Holidays#createDate}
@@ -62,7 +73,7 @@ public class HolidaysService {
      * @param day the holiday to delete
      */
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteUser(Holidays day) {
+    public void deleteHoliday(Holidays day) {
         holidaysRepository.delete(day);
         // :TODO: write some audit log stating who and when this user was permanently deleted.
     }
