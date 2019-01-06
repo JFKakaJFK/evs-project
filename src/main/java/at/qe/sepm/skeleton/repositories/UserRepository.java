@@ -13,9 +13,8 @@ import org.springframework.data.repository.query.Param;
  * course "Softwaredevelopment and Project Management" offered by the University
  * of Innsbruck.
  */
-public interface UserRepository extends AbstractRepository<User, Long> {
-
-    User findFirstByUsername(String username);
+public interface UserRepository extends AbstractRepository<User, String> {
+        User findFirstByUsername(String username);
 
     List<User> findByUsernameContaining(String username);
 
@@ -24,5 +23,4 @@ public interface UserRepository extends AbstractRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE :role MEMBER OF u.roles")
     List<User> findByRole(@Param("role") UserRole role);
-
 }

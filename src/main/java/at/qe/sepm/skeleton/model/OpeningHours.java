@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 
+import org.omg.CORBA.DATA_CONVERSION;
 import org.springframework.data.domain.Persistable;
 
 /**
@@ -22,10 +23,14 @@ public class OpeningHours implements Persistable<Long> {
 
     private String day;
 
-    private Time startTime;
-    private String endTime;
-    private String startPause;
-    private String endPause;
+    @Temporal(TemporalType.TIME)
+    private Date startTime;
+    @Temporal(TemporalType.TIME)
+    private Date endTime;
+    @Temporal(TemporalType.TIME)
+    private Date endPause;
+    @Temporal(TemporalType.TIME)
+    private Date startPause;
 
     @ManyToOne(optional = false)
     private User createUser;
@@ -51,35 +56,35 @@ public class OpeningHours implements Persistable<Long> {
         this.day = day;
     }
 
-    public Time getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
-    public String getStartPause() {
+    public Date getStartPause() {
         return startPause;
     }
 
-    public void setStartPause(String startPause) {
+    public void setStartPause(Date startPause) {
         this.startPause = startPause;
     }
 
-    public String getEndPause() {
+    public Date getEndPause() {
         return endPause;
     }
 
-    public void setEndPause(String endPause) {
+    public void setEndPause(Date endPause) {
         this.endPause = endPause;
     }
 
