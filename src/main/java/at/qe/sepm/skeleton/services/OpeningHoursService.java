@@ -5,13 +5,20 @@ import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.OpeningHoursRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
 
+/**
+ * Service for accessing and manipulating openinghours related data.
+ */
+@Component
+@Scope("application")
 public class OpeningHoursService {
     @Autowired
     private UserRepository userRepository;
