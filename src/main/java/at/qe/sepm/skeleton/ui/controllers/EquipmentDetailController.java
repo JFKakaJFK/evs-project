@@ -79,8 +79,10 @@ public class EquipmentDetailController {
     }
 
     public void doDeleteComment(){
-        this.equipmentService.deleteComment(comment);
+        Equipment e = comment.getEquipment();
+        e.removeComment(comment);
         this.comment = null;
+        equipmentService.saveEquipment(e);
     }
 
     public void doReloadManual(){

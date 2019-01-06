@@ -41,12 +41,12 @@ public class Equipment implements Persistable<Integer> {
     //TODO may need to fetch comments/manuals manually
     //@OneToMany(cascade = CascadeType.REMOVE)//, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<EquipmentComment> comments;
 
     //@OneToMany(cascade = CascadeType.REMOVE)
     @Fetch(FetchMode.SELECT)
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<EquipmentManual> manuals;
 
     //@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
@@ -92,7 +92,6 @@ public class Equipment implements Persistable<Integer> {
     }
 
     public void setMaxDuration(String duration){
-        System.out.println(duration);
         Scanner sc = new Scanner(duration).useDelimiter(":");
         long millis = 0;
         if(sc.hasNext()){
@@ -162,6 +161,18 @@ public class Equipment implements Persistable<Integer> {
 
     public void setComments(List<EquipmentComment> comments) {
         this.comments = comments;
+    }
+
+    public void addComment(EquipmentComment comment){
+        comment.setEquipment(this);
+        comments.add(comment);
+    }
+
+    public void removeComment(EquipmentComment comment){
+        comments.remove(comment);
+        if(comment != null){
+            comment.setEquipment(null);
+        }
     }
 
     public List<EquipmentManual> getManuals() {

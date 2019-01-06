@@ -137,7 +137,7 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteComment(EquipmentComment comment){
-       equipmentCommentRepository.delete(comment);
+        equipmentCommentRepository.delete(comment);
     }
 
 
