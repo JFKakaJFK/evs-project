@@ -22,8 +22,8 @@
 - [x] addEquipmentController (@Melanie @Markus)
 - [x] view zur Übersicht aller Equipments und equipment hinzufügen **ADMIN** (@Andi)
 
-- [ ] OpeningHours Entity und Service (@Chris)
-- [ ] testÖffnungszeiten hinzufügen (@Chris)
+- [x] OpeningHours Entity und Service (@Chris)
+- [x] testÖffnungszeiten hinzufügen (@Chris)
 - [ ] view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
 - [ ] view zum Ansehen der equipmentDetails(Kommentare, Manuals) **?ALLe? = STUDENT** und Kommentare/Manuals hinzufügen/entfernen nur für **ADMIN**
 
