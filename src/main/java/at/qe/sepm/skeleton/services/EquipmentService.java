@@ -45,9 +45,19 @@ public class EquipmentService {
         return equipmentRepository.findAll();
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public Equipment loadEquipment(Integer id){
         return equipmentRepository.findById(id);
+    }
+
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public EquipmentComment loadComment(Integer id){
+        return equipmentCommentRepository.findById(id);
+    }
+
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public EquipmentManual loadManual(Integer id){
+        return equipmentManualRepository.findById(id);
     }
 
     /**
@@ -86,7 +96,7 @@ public class EquipmentService {
      * @return the updated Equipment
      */
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Equipment saveEquipmnet(Equipment equipment){
+    public Equipment saveEquipment(Equipment equipment){
         if(equipment.isNew()){
             equipment.setCreateDate(new Date());
             equipment.setCreateUser(getAuthenticatedUser());

@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyAuthority("ADMIN")
                 //Permit access only for some roles
                 .antMatchers("/secured/**")
-                .hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE")
+                .hasAnyAuthority("ADMIN", "EMPLOYEE", "STUDENT")
                 //If user doesn't have permission, forward him to login page
                 .and()
                 .formLogin()
