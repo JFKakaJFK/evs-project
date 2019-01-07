@@ -36,6 +36,10 @@ public class EquipmentReservation implements Persistable<Integer> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
+    public String getEquipmentAsString(){
+        return equipment.toString().substring(1, equipment.toString().length() - 1);
+    }
+
     public Set<Equipment> getEquipment() {
         return equipment;
     }

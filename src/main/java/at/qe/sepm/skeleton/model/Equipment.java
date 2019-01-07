@@ -244,7 +244,7 @@ public class Equipment implements Persistable<Integer> {
 
     @Override
     public String toString() {
-        return "at.qe.sepm.skeleton.model.User[ name =" + name + " ]";
+        return name;
     }
 
     @Override
