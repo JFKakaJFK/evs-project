@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.util.Map;
 
 @Component
@@ -94,7 +95,13 @@ public class EquipmentDetailController {
     }
 
     public void doDeleteManual(){
-        this.equipmentService.deleteManual(manual);
+        Equipment e = manual.getEquipment();
+        e.removeManual(manual);
         this.manual = null;
+        equipmentService.saveEquipment(e);
+    }
+
+    public void redirectById(String url, String id) throws Exception {
+        FacesContext.getCurrentInstance().getExternalContext().redirect(url + "?id=" + id);
     }
 }

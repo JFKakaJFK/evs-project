@@ -46,7 +46,7 @@ public class Equipment implements Persistable<Integer> {
 
     //@OneToMany(cascade = CascadeType.REMOVE)
     @Fetch(FetchMode.SELECT)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<EquipmentManual> manuals;
 
     //@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
@@ -181,6 +181,18 @@ public class Equipment implements Persistable<Integer> {
 
     public void setManuals(List<EquipmentManual> manuals) {
         this.manuals = manuals;
+    }
+
+    public void addManual(EquipmentManual manual){
+        manual.setEquipment(this);
+        manuals.remove(manual);
+    }
+
+    public void removeManual(EquipmentManual manual){
+        manuals.remove(manual);
+        if(manual != null){
+            manual.setEquipment(null);
+        }
     }
 
     public User getCreateUser() {
