@@ -5,14 +5,20 @@ import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.EquipmentReservationRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
+/**
+ * Service for accessing and manipulating equipment related data.
+ */
+@Component
+@Scope("application")
 public class EquipmentReservationService {
 
     @Autowired
@@ -21,18 +27,23 @@ public class EquipmentReservationService {
     @Autowired
     private EquipmentReservationRepository equipmentReservationRepository;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Collection<EquipmentReservation> getAllEquipmentReservations(){
+        return equipmentReservationRepository.findAll();
+    }
+
     /**
      * Saves a manual
      *
-     * @param manual
+     * @param reservation
      * @return
      */
     @PreAuthorize("hasAuthority('ADMIN')")
-    public EquipmentReservation saveManual(EquipmentReservation manual){
-        if(manual.isNew()){
-            manual.setCreateDate(new Date());
+    public EquipmentReservation saveReservation(EquipmentReservation reservation){
+        if(reservation.isNew()){
+            reservation.setCreateDate(new Date());
         }
-        return equipmentReservationRepository.save(manual);
+        return equipmentReservationRepository.save(reservation);
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or principal eq #reservation.getUser()")

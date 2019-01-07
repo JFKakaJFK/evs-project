@@ -1,5 +1,7 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
+import at.qe.sepm.skeleton.model.EquipmentReservation;
+import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import java.util.Collection;
@@ -11,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Scope("view")
 public class ReservationListController {
 	@Autowired
-	private ReservationService reservationService;
-	
-	
-	public Collection<Reservation> getReservations(){
-		return reservationService.getAllReservations();
+	private EquipmentReservationService equipmentReservationService;
+
+
+	public Collection<EquipmentReservation> getReservations(){
+		return equipmentReservationService.getAllEquipmentReservations();
 	}
 }
