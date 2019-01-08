@@ -9,12 +9,12 @@
             <h:form>
                 <p:menubar>
                     <p:submenu label="Reservations" rendered="#{sessionInfoBean.loggedIn}">
-                        <p:menuitem value="My Reservations" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
+                        <p:menuitem value="My Reservations" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
                         <p:menuitem value="Reservations Overview" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
                     </p:submenu>
                     <p:submenu label="Equipment Groups" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}">
-                        <p:menuitem value="My Groups" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
-                        <p:menuitem value="Groups Overview" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                        <p:menuitem value="My Groups" url="/secured/my-equipmentgroups.xhtml" />
+                        <p:menuitem value="Groups Overview" url="/admin/equipmentgroup-overview.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
                     </p:submenu>
                     <p:submenu label="Admin Submenu" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="Manage Users" url="/admin/users.xhtml"/>

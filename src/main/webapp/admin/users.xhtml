@@ -31,8 +31,8 @@
                 <p:column headerText="Email">
                     <h:outputText value="#{user.email}"/>
                 </p:column>
-                <p:column headerText="Roles">
-                    <h:outputText value="#{user.roles}" />
+                <p:column headerText="Role">
+                    <h:outputText value="#{user.highestPermission}" />
                 </p:column>
                 <p:column headerText="Enabled">
                     <h:selectBooleanCheckbox value="#{user.enabled}" disabled="true"/>
