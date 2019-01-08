@@ -1,9 +1,14 @@
 package at.qe.sepm.skeleton.services;
 
+import at.qe.sepm.skeleton.model.EquipmentGroup;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.UserRepository;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +29,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EquipmentGroupService equipmentGroupService;
 
     /**
      * Returns a collection of all users.
@@ -55,7 +63,7 @@ public class UserService {
      * @param user the user to save
      * @return the updated user
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or (principal.username eq #user.username and hasAuthority('EMPLOYEE'))")
     public User saveUser(User user) {
         if (user.isNew()) {
             user.setCreateDate(new Date());
@@ -74,7 +82,16 @@ public class UserService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(User user) {
+        // hotfix: cascade tries to delete groups after deleting user but
+        // constraints keep user from being deleted as long as groups depend on user
+        List<EquipmentGroup> equipmentGroups = new ArrayList<>(user.getEquipmentGroups());
+        for(EquipmentGroup equipmentGroup: equipmentGroups){
+            equipmentGroupService.deleteEquipmentGroup(equipmentGroup);
+        }
+        user.setEquipmentGroups(null);
+
         userRepository.delete(user);
+
         // :TODO: write some audit log stating who and when this user was permanently deleted.
     }
 

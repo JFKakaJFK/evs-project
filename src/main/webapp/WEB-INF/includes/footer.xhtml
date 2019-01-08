@@ -8,7 +8,7 @@
 
             <div style="float: right;">
                 <ui:fragment rendered="#{sessionInfoBean.loggedIn}">
-                    Logged in as #{sessionInfoBean.currentUserName} [#{sessionInfoBean.currentUserRoles}]
+                    Logged in as #{sessionInfoBean.currentUserName} [#{sessionInfoBean.currentUser.highestPermission}]
                 </ui:fragment>
                 <ui:fragment rendered="#{!sessionInfoBean.loggedIn}">
                     Not logged in

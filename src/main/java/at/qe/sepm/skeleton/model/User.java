@@ -1,19 +1,13 @@
 package at.qe.sepm.skeleton.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.domain.Persistable;
 
 /**
@@ -49,6 +43,11 @@ public class User implements Persistable<String> {
 
     boolean enabled;
 
+    @Fetch(FetchMode.SELECT)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<EquipmentGroup> equipmentGroups;
+
+    @Fetch(FetchMode.SELECT)
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "User_UserRole")
     @Enumerated(EnumType.STRING)
@@ -62,6 +61,26 @@ public class User implements Persistable<String> {
     public void setcNumber(String cNumber)
     {
         this.cNumber = cNumber;
+    }
+
+    public void addEquipmentGroup(EquipmentGroup equipmentGroup){
+        equipmentGroup.setUser(this);
+        equipmentGroups.add(equipmentGroup);
+    }
+
+    public void removeEquipmentGroup(EquipmentGroup equipmentGroup){
+        equipmentGroups.remove(equipmentGroup);
+        if(equipmentGroup != null){
+            equipmentGroup.setUser(null);
+        }
+    }
+
+    public List<EquipmentGroup> getEquipmentGroups() {
+        return equipmentGroups;
+    }
+
+    public void setEquipmentGroups(List<EquipmentGroup> equipmentGroups) {
+        this.equipmentGroups = equipmentGroups;
     }
 
     public String getUsername() {
@@ -114,6 +133,16 @@ public class User implements Persistable<String> {
 
     public Set<UserRole> getRoles() {
         return roles;
+    }
+
+    public String getHighestPermission() {
+        if (roles.contains(UserRole.ADMIN)) {
+            return "ADMIN";
+        } else if (roles.contains(UserRole.EMPLOYEE)) {
+            return "EMPLOYEE";
+        } else {
+            return "STUDENT";
+        }
     }
 
     public void setRoles(Set<UserRole> roles) {
@@ -176,7 +205,7 @@ public class User implements Persistable<String> {
 
     @Override
     public String toString() {
-        return "at.qe.sepm.skeleton.model.User[ id=" + username + " ]";
+        return username + " [" + getHighestPermission() + "]";
     }
 
     @Override
