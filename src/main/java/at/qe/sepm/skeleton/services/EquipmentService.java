@@ -1,9 +1,6 @@
 package at.qe.sepm.skeleton.services;
 
-import at.qe.sepm.skeleton.model.Equipment;
-import at.qe.sepm.skeleton.model.EquipmentComment;
-import at.qe.sepm.skeleton.model.EquipmentManual;
-import at.qe.sepm.skeleton.model.User;
+import at.qe.sepm.skeleton.model.*;
 import at.qe.sepm.skeleton.repositories.EquipmentCommentRepository;
 import at.qe.sepm.skeleton.repositories.EquipmentManualRepository;
 import at.qe.sepm.skeleton.repositories.EquipmentRepository;
@@ -58,6 +55,18 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('STUDENT')")
     public EquipmentManual loadManual(Integer id){
         return equipmentManualRepository.findById(id);
+    }
+
+    /**
+     * Returns a collectioin of all Equipments which need to be returned or are overdue
+     */
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Collection<Equipment> getAllBorrowedEquipments(){
+        Collection<Equipment> equipments = equipmentRepository.findAll();
+        Date now = new Date();
+        return equipments.stream()
+            .filter(equipment -> (equipment.getState() == EquipmentState.BOOKED || equipment.getState() == EquipmentState.OVERDUE))
+            .collect(Collectors.toList());
     }
 
     /**

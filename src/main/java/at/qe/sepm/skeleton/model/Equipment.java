@@ -29,6 +29,24 @@ public class Equipment implements Persistable<Integer> {
 
     private boolean locked;
 
+    public boolean isReturned() {
+        return returned = true;
+    }
+
+    public void setReturned(boolean returned) {
+        this.returned = returned;
+    }
+
+    public List<EquipmentGroup> getEquipmentGroups() {
+        return equipmentGroups;
+    }
+
+    public void setEquipmentGroups(List<EquipmentGroup> equipmentGroups) {
+        this.equipmentGroups = equipmentGroups;
+    }
+
+    private boolean returned;
+
     @Transient
     private EquipmentState state;
 
@@ -80,7 +98,7 @@ public class Equipment implements Persistable<Integer> {
             return EquipmentState.LOCKED;
         } else if(isAvailable(start, end)){
             return EquipmentState.AVAILABLE;
-        } else if(true) {
+        } else if(isOverdue()) {
             // TODO if not available
             return EquipmentState.BOOKED;
         } else {
@@ -235,6 +253,11 @@ public class Equipment implements Persistable<Integer> {
     public boolean isAvailable(Date startDate, Date endDate){
         // TODO check all reservations, if any between  start & end return false
         return false;
+    }
+
+    public boolean isOverdue(){
+        // TODO
+        return isAvailable(new Date(), new Date()) && !returned;
     }
 
     @Override
