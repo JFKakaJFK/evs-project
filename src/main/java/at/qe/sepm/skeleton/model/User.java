@@ -205,7 +205,7 @@ public class User implements Persistable<String> {
 
     @Override
     public String toString() {
-        return "at.qe.sepm.skeleton.model.User[ id=" + username + " ]";
+        return username + " [" + getHighestPermission() + "]";
     }
 
     @Override
