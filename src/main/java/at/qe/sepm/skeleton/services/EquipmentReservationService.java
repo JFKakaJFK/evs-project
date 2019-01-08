@@ -33,7 +33,17 @@ public class EquipmentReservationService {
     }
 
     /**
-     * Saves a manual
+     * Returns all Reservations by user
+     *
+     * @param user
+     */
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public Collection<EquipmentReservation> getAllByUser(User user){
+        return equipmentReservationRepository.findAllByUser(user);
+    }
+
+    /**
+     * Saves a reservation
      *
      * @param reservation
      * @return
