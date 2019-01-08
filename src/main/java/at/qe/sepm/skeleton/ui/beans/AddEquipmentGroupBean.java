@@ -53,7 +53,7 @@ public class AddEquipmentGroupBean {
             equipmentGroupService.saveEquipmentGroup(equipmentGroup);
 
             FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Gruppe wurde erfolgreich erstellt.")
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Gruppe " + equipmentGroup.getName() +  " wurde erfolgreich erstellt.")
             );
         } else {
             FacesContext.getCurrentInstance().addMessage(null,

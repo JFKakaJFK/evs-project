@@ -1,6 +1,7 @@
 package at.qe.sepm.skeleton.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
@@ -44,8 +45,9 @@ public class User implements Persistable<String> {
 
     @Fetch(FetchMode.SELECT)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<EquipmentGroup> equipmentGroups;
+    private List<EquipmentGroup> equipmentGroups;
 
+    @Fetch(FetchMode.SELECT)
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "User_UserRole")
     @Enumerated(EnumType.STRING)
@@ -73,11 +75,11 @@ public class User implements Persistable<String> {
         }
     }
 
-    public Set<EquipmentGroup> getEquipmentGroups() {
+    public List<EquipmentGroup> getEquipmentGroups() {
         return equipmentGroups;
     }
 
-    public void setEquipmentGroups(Set<EquipmentGroup> equipmentGroups) {
+    public void setEquipmentGroups(List<EquipmentGroup> equipmentGroups) {
         this.equipmentGroups = equipmentGroups;
     }
 
@@ -131,6 +133,16 @@ public class User implements Persistable<String> {
 
     public Set<UserRole> getRoles() {
         return roles;
+    }
+
+    public String getHighestPermission() {
+        if (roles.contains(UserRole.ADMIN)) {
+            return "ADMIN";
+        } else if (roles.contains(UserRole.EMPLOYEE)) {
+            return "EMPLOYEE";
+        } else {
+            return "STUDENT";
+        }
     }
 
     public void setRoles(Set<UserRole> roles) {

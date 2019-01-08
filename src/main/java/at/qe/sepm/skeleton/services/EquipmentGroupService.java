@@ -12,7 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +29,9 @@ public class EquipmentGroupService {
     private UserRepository userRepository;
 
     @Autowired
+    private EquipmentService equipmentService;
+
+    @Autowired
     private EquipmentGroupRepository equipmentGroupRepository;
 
     /**
@@ -34,9 +40,7 @@ public class EquipmentGroupService {
      */
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public Collection<EquipmentGroup> getOwnGroups(){
-        return equipmentGroupRepository.findAll().stream()
-            .filter(equipmentGroup -> equipmentGroup.getUser() == getAuthenticatedUser())
-            .collect(Collectors.toList());
+        return equipmentGroupRepository.findAllByUser(getAuthenticatedUser());
     }
 
     /**
@@ -58,6 +62,7 @@ public class EquipmentGroupService {
     public EquipmentGroup saveEquipmentGroup(EquipmentGroup equipmentGroup){
         if(equipmentGroup.isNew()){
             equipmentGroup.setUser(getAuthenticatedUser());
+            getAuthenticatedUser().addEquipmentGroup(equipmentGroup);
         }
         return equipmentGroupRepository.save(equipmentGroup);
     }
@@ -67,12 +72,19 @@ public class EquipmentGroupService {
      *
      * @param equipmentGroup
      */
-    @PreAuthorize("hasAuthority('ADMIN') or principal eq #equipmentGroup.user")
+    @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #equipmentGroup.user.username")
     public void deleteEquipmentGroup(EquipmentGroup equipmentGroup){
-        for(Equipment e: equipmentGroup.getEquipments()){
-           e.removeEquipmentGroup(equipmentGroup);
+        List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
+        User u = equipmentGroup.getUser();
+        u.getEquipmentGroups().remove(equipmentGroup);
+        for (Equipment e: equipments) {
+            e.removeEquipmentGroup(equipmentGroup);
+            // equipmentService.saveEquipment(e);
         }
+
         equipmentGroupRepository.delete(equipmentGroup);
+
+        userRepository.save(u);
     }
 
     /**

@@ -33,16 +33,15 @@
                     </p:outputPanel>
                 </f:facet>
                 <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-                <p:column headerText="Name" filterBy="#{equipment.name}" filterMatchMode="contains">
+                <p:column headerText="Name" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
                     <h:outputText value="#{equipment.name}" />
                 </p:column>
-                <p:column headerText="Labor" filterBy="#{equipment.labName}" filterMatchMode="contains">
+                <p:column headerText="Labor" filterBy="#{equipment.labName}" filterStyle="display: none" filterMatchMode="contains">
                     <h:outputText value="#{equipment.labName}" />
                 </p:column>
                 <f:facet name="footer">
-                    <p:commandButton process="checkboxDT" update=":create-equipmentgroup-form:addGroup" icon="pi pi-search" value="Select" oncomplete="PF('groupDialog').show()" />
+                    <p:commandButton process="checkboxDT" update=":create-equipmentgroup-form:addGroup" icon="ui-icon-plusthick" value="Gruppe erstellen" oncomplete="PF('groupDialog').show()" />
                     <p:commandButton value="Zurück" action="#{facesContext.externalContext.redirect('my-equipmentgroups.xhtml')}"/>
-
                 </f:facet>
             </p:dataTable>
 

@@ -30,9 +30,11 @@
                     </p:commandButton>
                 </p:column>
 
-            </p:dataTable>
+                <f:facet name="footer">
+                    <p:commandButton value="Create New Equipment Group" action="#{facesContext.externalContext.redirect('create-equipmentgroup.xhtml')}" icon="ui-icon-plusthick"/>
+                </f:facet>
 
-            <p:commandButton value="Create New Equipment Group" action="#{facesContext.externalContext.redirect('create-equipmentgroup.xhtml')}" icon="ui-icon-plusthick"/>
+            </p:dataTable>
 
             <p:dialog header="Edit Group" id="equipmentGroupEditDialog" widgetVar="equipmentGroupEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
                 <p:outputPanel id="groupData" rendered="#{not empty equipmentGroupDetailController.group}">

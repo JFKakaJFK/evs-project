@@ -5,10 +5,7 @@ import org.hibernate.annotations.FetchMode;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,7 +44,7 @@ public class Equipment implements Persistable<Integer> {
     //@OneToMany(cascade = CascadeType.REMOVE)
     @Fetch(FetchMode.SELECT)
     @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<EquipmentManual> manuals;
+    private List<EquipmentManual> manuals = new ArrayList<>();
 
     //@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     //private List<EquipmentReservation> reservations;
@@ -59,7 +56,7 @@ public class Equipment implements Persistable<Integer> {
     private Date createDate;
 
     @Fetch(FetchMode.SELECT)
-    @ManyToMany(mappedBy = "equipments", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "equipments", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<EquipmentGroup> equipmentGroups;
 
     public void addEquipmentGroup(EquipmentGroup equipmentGroup){
