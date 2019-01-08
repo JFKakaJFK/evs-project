@@ -49,9 +49,37 @@
                         <h:outputText value="#{car.id}" />
                     </p:column>
 
+                    <p:column style="width:32px;text-align: center">
+                        <p:commandButton update=":form:equipmentInfo" oncomplete="PF('equipmentDialog').show()" icon="pi pi-search" title="View">
+                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        </p:commandButton>
+                    </p:column>
+
 
                 </p:dataTable>
             </p:panel>
+
+            <p:dialog header="Equipment Info" widgetVar="equipmentDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="equipmentInfo" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty dtSelectionView.selectedCar}" columnClasses="label,value">
+                        <f:facet name="header">
+                            <p:graphicImage name="demo/images/car/#{dtSelectionView.selectedCar.brand}-big.gif"/>
+                        </f:facet>
+
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{dtSelectionView.selectedCar.id}" />
+
+                        <h:outputText value="Year" />
+                        <h:outputText value="#{dtSelectionView.selectedCar.year}" />
+
+                        <h:outputText value="Color:" />
+                        <h:outputText value="#{dtSelectionView.selectedCar.color}" style="color:#{dtSelectionView.selectedCar.color}"/>
+
+                        <h:outputText value="Price" />
+                        <h:outputText value="$#{dtSelectionView.selectedCar.price}" />
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>
