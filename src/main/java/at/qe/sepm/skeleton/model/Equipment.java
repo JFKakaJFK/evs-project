@@ -45,7 +45,7 @@ public class Equipment implements Persistable<Integer> {
         this.equipmentGroups = equipmentGroups;
     }
 
-    private boolean returned;
+    private boolean returned = true;
 
     @Transient
     private EquipmentState state;
