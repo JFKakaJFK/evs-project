@@ -21,7 +21,6 @@
 - [x] EquipmentListController (@Melanie @Markus)
 - [x] addEquipmentController (@Melanie @Markus)
 - [x] view zur Übersicht aller Equipments und equipment hinzufügen **ADMIN** (@Andi)
-
 - [x] OpeningHours Entity und Service (@Chris)
 - [x] testÖffnungszeiten hinzufügen (@Chris)
 - [ ] view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
@@ -44,12 +43,17 @@
 
 ## 4. EquipmentGroup management - BIS ~ 10.
 
-- [ ] equipmentgroup entity (@Johannes)
-- [ ] testEquipmentGroups (@Johannes)
-- [ ] EquipmentGroupListController (@Melanie @Markus)
-- [ ] AddEquipmentGroupController (@Melanie @Markus)
-- [ ] view zur Einsicht, erstellen & löschen der eigenen EquipmentGroups **EMPLOYEE** (@Andi)
-- [ ] view zur Einsicht und löschung aller EquipmentGroups **ADMIN** (@Andi)
+- [x] equipmentgroup entity (@Johannes)
+- [x] testEquipmentGroups (@Johannes)
+- [x] EquipmentGroupListController (@Melanie @Markus)
+- [x] AddEquipmentGroupController (@Melanie @Markus)
+- [x] view zur Einsicht, erstellen & löschen der eigenen EquipmentGroups **EMPLOYEE** (@Andi)
+- [x] view zur Einsicht und löschung aller EquipmentGroups **ADMIN** (@Andi)
+
+### TODO/Notes
+
+- Hotfix: Kaskadierung beim löschen von equipmentgruppen eventuell besser umsetzen
+- TODO: bei my-equipmentgroups ändern der equipments in der gruppe ermöglichen
 
 ## 5. EquipmentGroup reservations - BIS 15.
 
