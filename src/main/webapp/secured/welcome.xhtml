@@ -12,18 +12,18 @@
             <p:panel header="My Reservations">
                 <h:form id="reservationForm">
                     <p:menuButton value="New Reservation" style="margin-bottom: 10px">
-                        <p:menuitem value="Equipment" action="#{facesContext.externalContext.redirect('create-reservation.xhtml')}" icon="ui-icon-plusthick"/>
-                        <p:menuitem value="Equipment Group" action="#{facesContext.externalContext.redirect('create-reservation.xhtml')}" icon="ui-icon-plusthick"/>
+                        <p:menuitem value="Equipment" url="create-reservation.xhtml" icon="ui-icon-plusthick"/>
+                        <p:menuitem value="Equipment Group" url="create-reservationGroup.xhtml" icon="ui-icon-plusthick"/>
                     </p:menuButton>
 
                     <p:dataTable id="reservationTable" var="reservation" value="#{reservationListController.allUserReservations}">
                         <p:column headerText="Equipment">
                             <h:outputText value="#{reservation.equipment}"/>
                         </p:column>
-                        <p:column headerText="Start Date">
+                        <p:column headerText="Lending date">
                             <h:outputText value="#{reservation.startDate}"/>
                         </p:column>
-                        <p:column headerText="End Date">
+                        <p:column headerText="Return date">
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
                         <p:column style="width:100px;text-align: center">
@@ -43,7 +43,7 @@
             <p:panelGrid style="margin-top: 20px" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                 <f:facet name="header">
                     <p:row>
-                        <p:column colspan="2">Equipments and Groups to return</p:column>
+                        <p:column colspan="2">Equipments and Equipment-Groups to return</p:column>
                     </p:row>
                 </f:facet>
 

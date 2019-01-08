@@ -9,10 +9,48 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
         <h:form>
-            <p:panel>
-                <div style="height:20px">
-                    New Reservation ... #{sessionInfoBean.currentUserName}
+            <p:panel header="New Reservation">
+                <div class="ui-g">
+                    <div class="ui-g-4">
+                        <p:outputLabel for="lendingDatetime" value="Lending date:" />
+                        <p:calendar id="lendingDatetime" value="#{newReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                    </div>
+
+                    <div class="ui-g-4">
+                        <p:outputLabel for="returnDatetime" value="Return date:" />
+                        <p:calendar id="returnDatetime" value="#{newReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                    </div>
+
+                    <div class="ui-g-4">
+                        <p:commandButton value="New reservation" action="#{addUserController.addUser}" update="@form"/>
+                    </div>
                 </div>
+
+
+
+                <p:dataTable id="freeEquipment" var="equipment" selectionMode="multiple" >
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: left;">
+                            <p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" style="width:250px" placeholder="Search for Equipments"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+                    <p:column headerText="Equipment">
+                        <h:outputText value="#{equipment.id}" />
+                    </p:column>
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{car.id}" />
+                    </p:column>
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{car.id}" />
+                    </p:column>
+
+
+                </p:dataTable>
             </p:panel>
         </h:form>
     </ui:define>
