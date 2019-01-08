@@ -78,7 +78,7 @@ public class UserService {
         // :TODO: write some audit log stating who and when this user was permanently deleted.
     }
 
-    private User getAuthenticatedUser() {
+    public User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());
     }
