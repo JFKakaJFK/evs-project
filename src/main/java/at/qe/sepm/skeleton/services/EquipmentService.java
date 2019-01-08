@@ -40,7 +40,7 @@ public class EquipmentService {
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllEquipments() {
         return equipmentRepository.findAll();
     }
@@ -111,6 +111,7 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteEquipment(Equipment equipment){
+        equipment.remove();
         equipmentRepository.delete(equipment);
         logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
     }
@@ -130,6 +131,7 @@ public class EquipmentService {
         return equipmentCommentRepository.save(comment);
     }
 
+    // TODO move deletion method here(from equipmentDetailController)
     /**
      * Deletes a comment
      *
@@ -156,6 +158,7 @@ public class EquipmentService {
         return equipmentManualRepository.save(manual);
     }
 
+    // TODO move deletion method here(from equipmentDetailController)
     /**
      * Deletes a manual
      *
