@@ -58,6 +58,26 @@ public class Equipment implements Persistable<Integer> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
+    @Fetch(FetchMode.SELECT)
+    @ManyToMany(mappedBy = "equipments", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<EquipmentGroup> equipmentGroups;
+
+    public void addEquipmentGroup(EquipmentGroup equipmentGroup){
+        equipmentGroups.add(equipmentGroup);
+        equipmentGroup.getEquipments().add(this);
+    }
+
+    public void removeEquipmentGroup(EquipmentGroup equipmentGroup){
+        equipmentGroups.remove(equipmentGroup);
+        equipmentGroup.getEquipments().remove(this);
+    }
+
+    public void remove(){
+        for (EquipmentGroup e: equipmentGroups) {
+            removeEquipmentGroup(e);
+        }
+    }
+
     public EquipmentState getState(Date start, Date end){
         if(locked){
             return EquipmentState.LOCKED;
@@ -244,7 +264,7 @@ public class Equipment implements Persistable<Integer> {
 
     @Override
     public String toString() {
-        return "at.qe.sepm.skeleton.model.User[ name =" + name + " ]";
+        return name;
     }
 
     @Override

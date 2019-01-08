@@ -1,5 +1,6 @@
 package at.qe.sepm.skeleton.services;
 
+import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentGroup;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.EquipmentGroupRepository;
@@ -39,6 +40,16 @@ public class EquipmentGroupService {
     }
 
     /**
+     * Loads and returns the EquipmentGroup by its Id
+     * @param id
+     * @return
+     */
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    public EquipmentGroup loadEquipmentGroup(Integer id){
+        return equipmentGroupRepository.findOne(id);
+    }
+
+    /**
      * Saves a new Equipmentgroup and sets createDate/updateDate
      * @param equipmentGroup
      * @return
@@ -56,8 +67,11 @@ public class EquipmentGroupService {
      *
      * @param equipmentGroup
      */
-    @PreAuthorize("hasAuthority('ADMIN') or principal eq #equipmentGroup.createdBy")
+    @PreAuthorize("hasAuthority('ADMIN') or principal eq #equipmentGroup.user")
     public void deleteEquipmentGroup(EquipmentGroup equipmentGroup){
+        for(Equipment e: equipmentGroup.getEquipments()){
+           e.removeEquipmentGroup(equipmentGroup);
+        }
         equipmentGroupRepository.delete(equipmentGroup);
     }
 

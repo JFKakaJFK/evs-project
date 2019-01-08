@@ -3,17 +3,10 @@ package at.qe.sepm.skeleton.model;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.domain.Persistable;
 
 /**
@@ -49,6 +42,10 @@ public class User implements Persistable<String> {
 
     boolean enabled;
 
+    @Fetch(FetchMode.SELECT)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<EquipmentGroup> equipmentGroups;
+
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "User_UserRole")
     @Enumerated(EnumType.STRING)
@@ -62,6 +59,26 @@ public class User implements Persistable<String> {
     public void setcNumber(String cNumber)
     {
         this.cNumber = cNumber;
+    }
+
+    public void addEquipmentGroup(EquipmentGroup equipmentGroup){
+        equipmentGroup.setUser(this);
+        equipmentGroups.add(equipmentGroup);
+    }
+
+    public void removeEquipmentGroup(EquipmentGroup equipmentGroup){
+        equipmentGroups.remove(equipmentGroup);
+        if(equipmentGroup != null){
+            equipmentGroup.setUser(null);
+        }
+    }
+
+    public Set<EquipmentGroup> getEquipmentGroups() {
+        return equipmentGroups;
+    }
+
+    public void setEquipmentGroups(Set<EquipmentGroup> equipmentGroups) {
+        this.equipmentGroups = equipmentGroups;
     }
 
     public String getUsername() {

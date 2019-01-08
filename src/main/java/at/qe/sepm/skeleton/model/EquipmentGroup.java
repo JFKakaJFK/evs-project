@@ -4,6 +4,7 @@ import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,8 +24,15 @@ public class EquipmentGroup implements Persistable<Integer> {
     @ManyToOne(optional = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Equipment> equipments;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "EQUIPMENT_EQUIPMENTGROUP", joinColumns = {
+        @JoinColumn(name = "equipment_group_id", referencedColumnName = "id")
+        },
+        inverseJoinColumns = {
+            @JoinColumn(name = "equipment_id", referencedColumnName = "id")
+        }
+    )
+    private Set<Equipment> equipments = new HashSet<>();
 
     @Override
     public Integer getId() {
@@ -78,6 +86,11 @@ public class EquipmentGroup implements Persistable<Integer> {
         }
         return true;
     }
+
+    public String getEquipmentAsString(){
+        return equipments.toString().substring(1, equipments.toString().length() - 1);
+    }
+
 
     @Override
     public boolean isNew() {
