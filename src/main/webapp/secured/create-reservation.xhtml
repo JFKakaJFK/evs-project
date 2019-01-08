@@ -8,7 +8,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
-        <h:form>
+        <h:form id="newReservation">
             <p:panel header="New Reservation">
                 <div class="ui-g">
                     <div class="ui-g-4">
@@ -22,36 +22,46 @@
                     </div>
 
                     <div class="ui-g-4">
-                        <p:commandButton value="New reservation" action="#{addUserController.addUser}" update="@form"/>
+                        <p:commandButton value="New reservation"/>
                     </div>
                 </div>
 
 
 
-                <p:dataTable id="freeEquipment" var="equipment" selectionMode="multiple" >
+                <p:dataTable
+                    widgetVar="equipmentSelect"
+                    id="freeEquipmentTable"
+                    var="equipment"
+                    value="#{newReservationController.allEquipments}"
+                    selection="#{newReservationController.selectedEquipments}"
+                    rowKey="#{equipment.id}"
+                    style="margin-bottom:0"
+                    filteredValue="#{newReservationController.filteredEquipments}"
+                >
+
                     <f:facet name="header">
                         <p:outputPanel style="text-align: left;">
-                            <p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" style="width:250px" placeholder="Search for Equipments"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:250px" placeholder="Search for Equipments"/>
                         </p:outputPanel>
                     </f:facet>
 
                     <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
-                    <p:column headerText="Equipment">
-                        <h:outputText value="#{equipment.id}" />
+                    <p:column headerText="Equipment" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{equipment.name}" />
                     </p:column>
 
-                    <p:column headerText="Id">
-                        <h:outputText value="#{car.id}" />
+                    <p:column headerText="Lab" filterBy="#{equipment.labName}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{equipment.labName}" />
                     </p:column>
 
-                    <p:column headerText="Id">
-                        <h:outputText value="#{car.id}" />
+                    <p:column headerText="Lab Location" filterBy="#{equipment.labLocation}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{equipment.labLocation}" />
                     </p:column>
 
                     <p:column style="width:32px;text-align: center">
-                        <p:commandButton update=":form:equipmentInfo" oncomplete="PF('equipmentDialog').show()" icon="pi pi-search" title="View">
-                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        <p:commandButton  icon="pi pi-search" title="View" update=":newReservation:equipmentDialog" oncomplete="PF('equipmentDialog').show()">
+                            <f:setPropertyActionListener target="#{newReservationController.calendar}" value="#{equipment}" />
                         </p:commandButton>
                     </p:column>
 
@@ -59,25 +69,9 @@
                 </p:dataTable>
             </p:panel>
 
-            <p:dialog header="Equipment Info" widgetVar="equipmentDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog id="equipmentDialog" header="Equipment Info" widgetVar="equipmentDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="equipmentInfo" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty dtSelectionView.selectedCar}" columnClasses="label,value">
-                        <f:facet name="header">
-                            <p:graphicImage name="demo/images/car/#{dtSelectionView.selectedCar.brand}-big.gif"/>
-                        </f:facet>
 
-                        <h:outputText value="Id:" />
-                        <h:outputText value="#{dtSelectionView.selectedCar.id}" />
-
-                        <h:outputText value="Year" />
-                        <h:outputText value="#{dtSelectionView.selectedCar.year}" />
-
-                        <h:outputText value="Color:" />
-                        <h:outputText value="#{dtSelectionView.selectedCar.color}" style="color:#{dtSelectionView.selectedCar.color}"/>
-
-                        <h:outputText value="Price" />
-                        <h:outputText value="$#{dtSelectionView.selectedCar.price}" />
-                    </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
         </h:form>

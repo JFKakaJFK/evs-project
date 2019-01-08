@@ -18,7 +18,7 @@
 
                     <p:dataTable id="reservationTable" var="reservation" value="#{reservationListController.allUserReservations}">
                         <p:column headerText="Equipment">
-                            <h:outputText value="#{reservation.equipment}"/>
+                            <h:outputText value=""/>
                         </p:column>
                         <p:column headerText="Lending date">
                             <h:outputText value="#{reservation.startDate}"/>
@@ -27,10 +27,10 @@
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
                         <p:column style="width:100px;text-align: center">
-                            <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('reservationEditDialog').show()" icon="ui-icon-note" title="Edit">
+                            <p:commandButton  oncomplete="PF('reservationEditDialog').show()" icon="ui-icon-note" title="Edit">
                                 <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.reservation}" />
                             </p:commandButton>
-                            <p:commandButton action="#{reservationDetailConroller.doDeleteReservation}" icon="ui-icon-trash" title="Delete" update=":reservationForm:reservationTable">
+                            <p:commandButton action="#{reservationDetailConroller.doDeleteReservation}" icon="ui-icon-trash" title="Delete">
                                 <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.reservation}" />
                                 <p:confirm header="Confirmation" message="Are you sure that you want to delete this reservation? You cannot undo this operation." icon="ui-icon-alert" />
                             </p:commandButton>
@@ -48,6 +48,7 @@
                 </f:facet>
 
                 <p:row>
+                    <!-- ADMIN: Equipments -->
                     <p:column style="width: 50%" headerText="Equipments">
                         <h:form id="adminReservationForm">
                             <p:dataTable id="adminReservationTable" var="reservation" value="#{reservationListController.allReservationsReturn}">
@@ -56,27 +57,25 @@
                                 </f:facet>
 
                                 <p:column headerText="Equipment">
-                                    <h:outputText value="#{reservation.equipment}"/>
+                                    <h:outputText value="#{reservation.name}"/>
                                 </p:column>
-                                <p:column headerText="Start Date">
-                                    <h:outputText value="#{reservation.startDate}"/>
+                                <p:column headerText="Return Date">
+                                    <h:outputText value=""/>
                                 </p:column>
-                                <p:column headerText="End Date">
-                                    <h:outputText value="#{reservation.endDate}"/>
+                                <p:column headerText="Status">
+                                    <h:outputText value=""/>
                                 </p:column>
                                 <p:column style="width:100px;text-align: center">
-                                    <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('reservationEditDialog').show()" icon="ui-icon-note" title="Edit">
-                                        <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.reservation}" />
-                                    </p:commandButton>
-                                    <p:commandButton action="#{reservationDetailConroller.doDeleteReservation}" icon="ui-icon-trash" title="Delete" update=":reservationForm:reservationTable">
-                                        <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.reservation}" />
-                                        <p:confirm header="Confirmation" message="Are you sure that you want to delete this reservation? You cannot undo this operation." icon="ui-icon-alert" />
+                                    <p:commandButton icon="ui-icon-note" title="Confirm return">
+                                        <f:setPropertyActionListener value="" target="" />
+                                        <p:confirm header="Confirmation" message="Are you sure that you want to confrim the return of this equipment? You cannot undo this operation." icon="ui-icon-alert" />
                                     </p:commandButton>
                                 </p:column>
                             </p:dataTable>
                         </h:form>
                     </p:column>
 
+                    <!-- Gropus -->
                     <p:column style="width: 50%">
                         <h:form id="adminReservationGroupForm">
                             <p:dataTable id="adminReservationGroupTable" var="reservation" value="#{reservationListController.allReservationsReturn}">
@@ -85,21 +84,18 @@
                                 </f:facet>
 
                                 <p:column headerText="Equipment">
-                                    <h:outputText value="#{reservation.equipment}"/>
+                                    <h:outputText value=""/>
                                 </p:column>
-                                <p:column headerText="Start Date">
-                                    <h:outputText value="#{reservation.startDate}"/>
+                                <p:column headerText="Return Date">
+                                    <h:outputText value=""/>
                                 </p:column>
-                                <p:column headerText="End Date">
-                                    <h:outputText value="#{reservation.endDate}"/>
+                                <p:column headerText="Status">
+                                    <h:outputText value=""/>
                                 </p:column>
                                 <p:column style="width:100px;text-align: center">
-                                    <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('reservationEditDialog').show()" icon="ui-icon-note" title="Edit">
-                                        <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.reservation}" />
-                                    </p:commandButton>
-                                    <p:commandButton action="#{reservationDetailConroller.doDeleteReservation}" icon="ui-icon-trash" title="Delete" update=":reservationForm:reservationTable">
-                                        <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.reservation}" />
-                                        <p:confirm header="Confirmation" message="Are you sure that you want to delete this reservation? You cannot undo this operation." icon="ui-icon-alert" />
+                                    <p:commandButton icon="ui-icon-note" title="Confirm return">
+                                        <f:setPropertyActionListener value="" target="" />
+                                        <p:confirm header="Confirmation" message="Are you sure that you want to confrim the return of this equipment? You cannot undo this operation." icon="ui-icon-alert" />
                                     </p:commandButton>
                                 </p:column>
                             </p:dataTable>
