@@ -1,8 +1,11 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
+import at.qe.sepm.skeleton.model.EquipmentReservation;
+import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import org.primefaces.PrimeFaces;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.LazyScheduleModel;
@@ -14,9 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Component
 @Scope("view")
@@ -24,8 +25,9 @@ public class NewReservationController implements Serializable {
     private Date lendingDate;
     private Date returnDate;
 
-    private Collection<Equipment> selectedEquipments;
-    private Collection<Equipment> filteredEquipments;
+    private List<Equipment> selectedEquipments;
+    private List<Equipment> filteredEquipments;
+    private Collection<Equipment> defaultEquipments;
 
     private ScheduleModel scheduleModel;
 
@@ -34,10 +36,22 @@ public class NewReservationController implements Serializable {
     @Autowired
     private EquipmentService equipmentService;
 
+    @Autowired
+    private EquipmentReservationService equipmentReservationService;
+
     @PostConstruct
     public void Init()
     {
         scheduleModel = new DefaultScheduleModel();
+        defaultEquipments = equipmentService.getAllEquipments();
+    }
+
+    public Collection<Equipment> getDefaultEquipments() {
+        return defaultEquipments;
+    }
+
+    public void setDefaultEquipments(Collection<Equipment> defaultEquipments) {
+        this.defaultEquipments = defaultEquipments;
     }
 
     public Date getLendingDate() {
@@ -61,19 +75,19 @@ public class NewReservationController implements Serializable {
         return equipmentService.getAllEquipments();
     }
 
-    public Collection<Equipment> getSelectedEquipments() {
+    public List<Equipment> getSelectedEquipments() {
         return selectedEquipments;
     }
 
-    public void setSelectedEquipments(Collection<Equipment> selectedEquipments) {
+    public void setSelectedEquipments(List<Equipment> selectedEquipments) {
         this.selectedEquipments = selectedEquipments;
     }
 
-    public Collection<Equipment> getFilteredEquipments() {
+    public List<Equipment> getFilteredEquipments() {
         return filteredEquipments;
     }
 
-    public void setFilteredEquipments(Collection<Equipment> filteredEquipments) {
+    public void setFilteredEquipments(List<Equipment> filteredEquipments) {
         this.filteredEquipments = filteredEquipments;
     }
 
@@ -102,8 +116,37 @@ public class NewReservationController implements Serializable {
         detailEquipment = equipmentService.loadEquipment(equipmentID);
 
         //update calender infos
-        scheduleModel.addEvent(new DefaultScheduleEvent("Test", lendingDate, returnDate));
+        Collection<EquipmentReservation> equipmentReservations = equipmentReservationService.getAllEquipmentReservationsContaining(detailEquipment);
+        for(EquipmentReservation equipmentReservation : equipmentReservations)
+        {
+            String duration = equipmentReservation.getStartDate().toString() + " - " + equipmentReservation.getEndDate().toString();
+            scheduleModel.addEvent(new DefaultScheduleEvent(duration, equipmentReservation.getStartDate(), equipmentReservation.getEndDate()));
+        }
 
         return null;
+    }
+
+    public void dateChanged(SelectEvent event)
+    {
+        List<Equipment> test = getSelectedEquipments();
+        System.out.println(test.size());
+        if(this.lendingDate != null && this.returnDate != null)
+        {
+            if(returnDate.after(lendingDate) || lendingDate.equals(returnDate))
+            {
+                Collection<Equipment> freeEquipments = equipmentService.getAllFreeEquipments(lendingDate, returnDate);
+
+                if(filteredEquipments == null)
+                {
+                    this.defaultEquipments = freeEquipments;
+                }
+
+                else
+                {
+                    filteredEquipments.removeAll(freeEquipments);
+                    defaultEquipments = filteredEquipments;
+                }
+            }
+        }
     }
 }

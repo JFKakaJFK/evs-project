@@ -13,12 +13,16 @@
                 <div class="ui-g">
                     <div class="ui-g-4">
                         <p:outputLabel for="lendingDatetime" value="Lending date:" />
-                        <p:calendar id="lendingDatetime" value="#{newReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                        <p:calendar id="lendingDatetime" value="#{newReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" >
+                            <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update=":newReservation:freeEquipmentTable" />
+                        </p:calendar>
                     </div>
 
                     <div class="ui-g-4">
                         <p:outputLabel for="returnDatetime" value="Return date:" />
-                        <p:calendar id="returnDatetime" value="#{newReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                        <p:calendar id="returnDatetime" value="#{newReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" >
+                            <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update=":newReservation:freeEquipmentTable" />
+                        </p:calendar>
                     </div>
 
                     <div class="ui-g-4">
@@ -32,7 +36,7 @@
                     widgetVar="equipmentSelect"
                     id="freeEquipmentTable"
                     var="equipment"
-                    value="#{newReservationController.allEquipments}"
+                    value="#{newReservationController.defaultEquipments}"
                     selection="#{newReservationController.selectedEquipments}"
                     rowKey="#{equipment.id}"
                     style="margin-bottom:0"
@@ -78,7 +82,13 @@
 
             <p:dialog id="equipmentDialog" header="Equipment '#{newReservationController.detailEquipment.name}' Schedule" widgetVar="equipmentDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="equipmentInfo" style="text-align:center;width: 600px;height: 500px">
-                    <p:schedule value="#{newReservationController.scheduleModel}" timeZone="GMT+1" />
+                    <style type="text/css">
+                        .fc-time {
+                            display:none;
+                        }
+                    </style>
+
+                    <p:schedule id="reservationCalendar" value="#{newReservationController.scheduleModel}" timeZone="GMT+1" />
                 </p:outputPanel>
             </p:dialog>
         </h:form>
