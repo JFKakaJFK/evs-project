@@ -29,6 +29,15 @@ public class AddEquipmentGroupBean {
     private String name;
     private Equipment equipment;
     private List<Equipment> equipments = new ArrayList<>();
+    private List<Equipment> filteredEquipments;
+
+    public List<Equipment> getFilteredEquipments() {
+        return filteredEquipments;
+    }
+
+    public void setFilteredEquipments(List<Equipment> filteredEquipments) {
+        this.filteredEquipments = filteredEquipments;
+    }
 
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
