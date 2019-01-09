@@ -18,7 +18,14 @@ public class EquipmentGroupReservation implements Persistable<Integer>, Reservat
     @GeneratedValue
     private int id;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "EQUIPMENT_RESERVATION", joinColumns = {
+        @JoinColumn(name = "reservation_id", referencedColumnName = "id")
+    },
+        inverseJoinColumns = {
+            @JoinColumn(name = "equipment_id", referencedColumnName = "id")
+        }
+    )
     private Set<Equipment> equipment;
 
     @ManyToOne(optional = false)

@@ -77,6 +77,22 @@ public class Equipment implements Persistable<Integer> {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "equipments", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<EquipmentGroup> equipmentGroups;
 
+
+    // TODO Cascading on delete
+    @Fetch(FetchMode.SELECT)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "reservations", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    List<Reservation> reservations = new ArrayList<>();
+
+    public void addReservation(Reservation reservation){
+        reservations.add(reservation);
+        reservation.getEquipment().add(this);
+    }
+
+    public void removeReservation(Reservation reservation){
+        reservations.remove(reservation);
+        reservation.getEquipment().remove(this);
+    }
+
     public void addEquipmentGroup(EquipmentGroup equipmentGroup){
         equipmentGroups.add(equipmentGroup);
         equipmentGroup.getEquipments().add(this);
@@ -91,18 +107,21 @@ public class Equipment implements Persistable<Integer> {
         for (EquipmentGroup e: equipmentGroups) {
             removeEquipmentGroup(e);
         }
+        for (Reservation r: reservations){
+            removeReservation(r);
+        }
     }
 
     public EquipmentState getState(Date start, Date end){
         if(locked){
             return EquipmentState.LOCKED;
-        } else if(isAvailable(start, end)){
-            return EquipmentState.AVAILABLE;
         } else if(isOverdue()) {
             // TODO if not available
-            return EquipmentState.BOOKED;
-        } else {
             return EquipmentState.OVERDUE;
+        } else if(isAvailable(start, end)) {
+            return EquipmentState.AVAILABLE;
+        } else {
+            return EquipmentState.BOOKED;
         }
     }
 
@@ -250,9 +269,27 @@ public class Equipment implements Persistable<Integer> {
         return (endDate.getTime() - startDate.getTime()) <= maxDurationMilliseconds;
     }
 
+    /**
+     * Returns whether a equipment is available in a timeframe
+     *
+     * Assumes that the endDate > Startdate for any given reservation
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     public boolean isAvailable(Date startDate, Date endDate){
-        // TODO check all reservations, if any between  start & end return false
-        return false;
+        if(!returned){
+            return false;
+        }
+        // TODO check all reservations(also groups), if any between  start & end return false
+        for(Reservation reservation: this.reservations){
+            if(reservation.getEquipment().contains(this)){
+                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < reservation.getStartDate().getTime())){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public boolean isOverdue(){
