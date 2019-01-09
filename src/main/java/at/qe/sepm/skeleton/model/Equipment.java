@@ -29,22 +29,6 @@ public class Equipment implements Persistable<Integer> {
 
     private boolean locked;
 
-    public boolean isReturned() {
-        return returned = true;
-    }
-
-    public void setReturned(boolean returned) {
-        this.returned = returned;
-    }
-
-    public List<EquipmentGroup> getEquipmentGroups() {
-        return equipmentGroups;
-    }
-
-    public void setEquipmentGroups(List<EquipmentGroup> equipmentGroups) {
-        this.equipmentGroups = equipmentGroups;
-    }
-
     private boolean returned = true;
 
     @Transient
@@ -53,22 +37,17 @@ public class Equipment implements Persistable<Integer> {
     @Column(nullable = false)
     private Long maxDurationMilliseconds;
 
-    //TODO may need to fetch comments/manuals manually
-    //@OneToMany(cascade = CascadeType.REMOVE)//, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<EquipmentComment> comments;
 
-    //@OneToMany(cascade = CascadeType.REMOVE)
     @Fetch(FetchMode.SELECT)
     @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<EquipmentManual> manuals = new ArrayList<>();
 
-    //@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    //private List<EquipmentReservation> reservations;
-
     @ManyToOne(optional = false)
     private User createUser;
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -77,46 +56,20 @@ public class Equipment implements Persistable<Integer> {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "equipments", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<EquipmentGroup> equipmentGroups;
 
-
-    // TODO Cascading on delete
     @Fetch(FetchMode.SELECT)
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "reservations", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    List<Reservation> reservations = new ArrayList<>();
+    @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<EquipmentReservation> reservations = new ArrayList<>();
 
-    public void addReservation(Reservation reservation){
-        reservations.add(reservation);
-        reservation.getEquipment().add(this);
-    }
-
-    public void removeReservation(Reservation reservation){
-        reservations.remove(reservation);
-        reservation.getEquipment().remove(this);
-    }
-
-    public void addEquipmentGroup(EquipmentGroup equipmentGroup){
-        equipmentGroups.add(equipmentGroup);
-        equipmentGroup.getEquipments().add(this);
-    }
-
-    public void removeEquipmentGroup(EquipmentGroup equipmentGroup){
-        equipmentGroups.remove(equipmentGroup);
-        equipmentGroup.getEquipments().remove(this);
-    }
-
-    public void remove(){
-        for (EquipmentGroup e: equipmentGroups) {
-            removeEquipmentGroup(e);
-        }
-        for (Reservation r: reservations){
-            removeReservation(r);
-        }
-    }
-
+    /**
+     * Returns an EquipmentState depending on the start and end Date
+     * @param start
+     * @param end
+     * @return
+     */
     public EquipmentState getState(Date start, Date end){
         if(locked){
             return EquipmentState.LOCKED;
         } else if(isOverdue()) {
-            // TODO if not available
             return EquipmentState.OVERDUE;
         } else if(isAvailable(start, end)) {
             return EquipmentState.AVAILABLE;
@@ -124,6 +77,151 @@ public class Equipment implements Persistable<Integer> {
             return EquipmentState.BOOKED;
         }
     }
+
+    /**
+     * returns wheter the the time frame from start to end is within the maximal reservation duration
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public boolean isWithinMaxReservationDuration(Date startDate, Date endDate){
+        return (endDate.getTime() - startDate.getTime()) <= maxDurationMilliseconds;
+    }
+
+    /**
+     * Returns whether a equipment is available in a timeframe
+     *
+     * Assumes that the endDate > Startdate for any given reservation
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public boolean isAvailable(Date startDate, Date endDate){
+        if(!returned){
+            return false;
+        }
+        // check all reservations, if any between  start & end return false
+        for(EquipmentReservation reservation: this.reservations){
+            if(reservation.getEquipment() == this){
+                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < reservation.getStartDate().getTime())){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if the equipment is overdue(should be available but is not yet returned)
+     *
+     * @return
+     */
+    public boolean isOverdue(){
+        // TODO handle case where equipment is not returned and next reservation already should have it
+        return !returned && isAvailable(new Date(), new Date());
+    }
+
+    /* ManyToMany cascading methods */
+
+    /**
+     * Safely add an EquipmentGroup
+     *
+     * @param equipmentGroup
+     */
+    public void addEquipmentGroup(EquipmentGroup equipmentGroup){
+        equipmentGroups.add(equipmentGroup);
+        equipmentGroup.getEquipments().add(this);
+    }
+
+    /**
+     * Safely remove an EquipmentGroup
+     *
+     * @param equipmentGroup
+     */
+    public void removeEquipmentGroup(EquipmentGroup equipmentGroup){
+        equipmentGroups.remove(equipmentGroup);
+        equipmentGroup.getEquipments().remove(this);
+    }
+
+    /**
+     * Call this method to safely delete the Equipment
+     */
+    public void remove(){
+        for (EquipmentGroup e: equipmentGroups) {
+            removeEquipmentGroup(e);
+        }
+    }
+
+    /* ManyToOne cascading methods */
+
+    /**
+     * Safely add an EquipmentComment
+     *
+     * @param comment
+     */
+    public void addComment(EquipmentComment comment){
+        comment.setEquipment(this);
+        comments.add(comment);
+    }
+
+    /**
+     * Safely remove an EquipmentComment
+     *
+     * @param comment
+     */
+    public void removeComment(EquipmentComment comment){
+        comments.remove(comment);
+        if(comment != null){
+            comment.setEquipment(null);
+        }
+    }
+
+    /**
+     * Safely add an EquipmentManual
+     *
+     * @param manual
+     */
+    public void addManual(EquipmentManual manual){
+        manual.setEquipment(this);
+        manuals.add(manual);
+    }
+
+    /**
+     * Safely remove an EquipmentManual
+     *
+     * @param manual
+     */
+    public void removeManual(EquipmentManual manual){
+        manuals.remove(manual);
+        if(manual != null){
+            manual.setEquipment(null);
+        }
+    }
+
+    /**
+     * Safely add an EquipmentReservation
+     *
+     * @param reservation
+     */
+    public void addReservation(EquipmentReservation reservation){
+        reservation.setEquipment(this);
+        reservations.add(reservation);
+    }
+
+    /**
+     * Safely remove an EquipmentReservation
+     *
+     * @param reservation
+     */
+    public void removeReservation(EquipmentReservation reservation){
+        reservations.remove(reservation);
+        if(reservation != null){
+            reservation.setEquipment(null);
+        }
+    }
+
+    /* Getters & Setters */
 
     public String getMaxDurationFormatted(){
         return String.format("%dDays, %dHours, %dMinutes",
@@ -160,6 +258,7 @@ public class Equipment implements Persistable<Integer> {
         this.maxDurationMilliseconds = millis;
         sc.close();
     }
+
 
     public String getName() {
         return name;
@@ -217,36 +316,12 @@ public class Equipment implements Persistable<Integer> {
         this.comments = comments;
     }
 
-    public void addComment(EquipmentComment comment){
-        comment.setEquipment(this);
-        comments.add(comment);
-    }
-
-    public void removeComment(EquipmentComment comment){
-        comments.remove(comment);
-        if(comment != null){
-            comment.setEquipment(null);
-        }
-    }
-
     public List<EquipmentManual> getManuals() {
         return manuals;
     }
 
     public void setManuals(List<EquipmentManual> manuals) {
         this.manuals = manuals;
-    }
-
-    public void addManual(EquipmentManual manual){
-        manual.setEquipment(this);
-        manuals.remove(manual);
-    }
-
-    public void removeManual(EquipmentManual manual){
-        manuals.remove(manual);
-        if(manual != null){
-            manual.setEquipment(null);
-        }
     }
 
     public User getCreateUser() {
@@ -265,36 +340,20 @@ public class Equipment implements Persistable<Integer> {
         this.createDate = createDate;
     }
 
-    public boolean isWithinMaxReservationDuration(Date startDate, Date endDate){
-        return (endDate.getTime() - startDate.getTime()) <= maxDurationMilliseconds;
+    public boolean isReturned() {
+        return returned = true;
     }
 
-    /**
-     * Returns whether a equipment is available in a timeframe
-     *
-     * Assumes that the endDate > Startdate for any given reservation
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    public boolean isAvailable(Date startDate, Date endDate){
-        if(!returned){
-            return false;
-        }
-        // TODO check all reservations(also groups), if any between  start & end return false
-        for(Reservation reservation: this.reservations){
-            if(reservation.getEquipment().contains(this)){
-                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < reservation.getStartDate().getTime())){
-                    return false;
-                }
-            }
-        }
-        return true;
+    public void setReturned(boolean returned) {
+        this.returned = returned;
     }
 
-    public boolean isOverdue(){
-        // TODO
-        return isAvailable(new Date(), new Date()) && !returned;
+    public List<EquipmentGroup> getEquipmentGroups() {
+        return equipmentGroups;
+    }
+
+    public void setEquipmentGroups(List<EquipmentGroup> equipmentGroups) {
+        this.equipmentGroups = equipmentGroups;
     }
 
     @Override

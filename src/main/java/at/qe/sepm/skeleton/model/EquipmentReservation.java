@@ -10,7 +10,7 @@ import java.util.Set;
  * Entity for single equipment Reservations
  */
 @Entity
-public class EquipmentReservation implements Persistable<Integer>, Reservation {
+public class EquipmentReservation implements Persistable<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,17 +18,8 @@ public class EquipmentReservation implements Persistable<Integer>, Reservation {
     @GeneratedValue
     private int id;
 
-    private String name;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "EQUIPMENT_RESERVATION", joinColumns = {
-        @JoinColumn(name = "reservation_id", referencedColumnName = "id")
-    },
-        inverseJoinColumns = {
-            @JoinColumn(name = "equipment_id", referencedColumnName = "id")
-        }
-    )
-    private Set<Equipment> equipment;
+    @ManyToOne
+    private Equipment equipment;
 
     @ManyToOne(optional = false)
     private User user;
@@ -45,15 +36,22 @@ public class EquipmentReservation implements Persistable<Integer>, Reservation {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
+    /*  TODO should there be a STATE ENUM? As in ACTIVE, COMPLETED, PENDING?
+        would make determining equipment state easier and what purpose do completed reservations have?
+    */
+
+
+    // TODO remove since reservation.getEquipment.getName has the same functionality
+    @Deprecated
     public String getEquipmentAsString(){
-        return equipment.toString().substring(1, equipment.toString().length() - 1);
+        return equipment.toString();
     }
 
-    public Set<Equipment> getEquipment() {
+    public Equipment getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(Set<Equipment> equipment) {
+    public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
 
@@ -97,11 +95,6 @@ public class EquipmentReservation implements Persistable<Integer>, Reservation {
     @Override
     public boolean isNew() {
         return (null == createDate);
-    }
-
-    @Override
-    public ReservationType getType() {
-        return ReservationType.SIMPLE;
     }
 }
 
