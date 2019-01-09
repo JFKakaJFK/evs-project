@@ -128,6 +128,7 @@ public class EquipmentService {
             comment.setCreateDate(new Date());
             comment.setCreateUser(getAuthenticatedUser());
         }
+        comment.getEquipment().addComment(comment);
         return equipmentCommentRepository.save(comment);
     }
 
@@ -139,7 +140,9 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteComment(EquipmentComment comment){
-        equipmentCommentRepository.delete(comment);
+        Equipment e = comment.getEquipment();
+        e.removeComment(comment);
+        equipmentRepository.save(e);
     }
 
 
@@ -166,7 +169,9 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteManual(EquipmentManual manual){
-        equipmentManualRepository.delete(manual);
+        Equipment e = manual.getEquipment();
+        e.removeManual(manual);
+        equipmentRepository.save(e);
     }
 
 
