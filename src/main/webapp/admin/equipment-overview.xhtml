@@ -98,7 +98,7 @@
 
             </p:dataTable>
 
-            <p:commandButton value="Create New Equipment" action="#{facesContext.externalContext.redirect('create-equipment.xhtml')}" icon="ui-icon-plusthick"/>
+            <p:commandButton value="Neues Gerät erstellen" action="#{facesContext.externalContext.redirect('create-equipment.xhtml')}" icon="ui-icon-plusthick"/>
 
             <p:dialog header="Edit Equipment" id="equipmentEditDialog" widgetVar="equipmentEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
                 <p:outputPanel id="equipmentData" rendered="#{not empty equipmentDetailController.equipment}">

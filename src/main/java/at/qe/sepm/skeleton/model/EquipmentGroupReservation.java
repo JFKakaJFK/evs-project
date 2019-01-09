@@ -10,15 +10,13 @@ import java.util.Set;
  * Entity for single equipment Reservations
  */
 @Entity
-public class EquipmentReservation implements Persistable<Integer>, Reservation {
+public class EquipmentGroupReservation implements Persistable<Integer>, Reservation {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
     private int id;
-
-    private String name;
 
     @OneToMany
     private Set<Equipment> equipment;
@@ -94,7 +92,7 @@ public class EquipmentReservation implements Persistable<Integer>, Reservation {
 
     @Override
     public ReservationType getType() {
-        return ReservationType.SIMPLE;
+        return ReservationType.GROUP;
     }
 }
 
