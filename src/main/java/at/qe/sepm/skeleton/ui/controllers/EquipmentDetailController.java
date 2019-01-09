@@ -23,6 +23,16 @@ public class EquipmentDetailController {
     private EquipmentComment comment;
     private EquipmentManual manual;
 
+    public Integer getExpandedRowElementId() {
+        return expandedRowElementId;
+    }
+
+    public void setExpandedRowElementId(Integer expandedRowElementId) {
+        this.expandedRowElementId = expandedRowElementId;
+    }
+
+    private Integer expandedRowElementId = 1;
+
     // TODO
     @Deprecated
     public void loadEquipmentByURL(){

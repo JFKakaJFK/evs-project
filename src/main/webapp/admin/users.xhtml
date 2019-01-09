@@ -46,9 +46,11 @@
                         <p:confirm header="Confirmation" message="Are you sure that you want to delete this user? You cannot undo this operation." icon="ui-icon-alert" />
                     </p:commandButton>
                 </p:column>
-            </p:dataTable>
 
-            <p:commandButton value="Create New User" action="#{facesContext.externalContext.redirect('create-user.xhtml')}" icon="ui-icon-plusthick"/>
+                <f:facet name="footer">
+                    <p:commandButton value="Neuen Benutzer hinzufügen" action="#{facesContext.externalContext.redirect('create-user.xhtml')}" icon="ui-icon-plusthick"/>
+                </f:facet>
+            </p:dataTable>
 
             <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
