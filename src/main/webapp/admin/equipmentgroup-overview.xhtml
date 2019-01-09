@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+
+        <h:form id="equipmentGroupForm">
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:dataTable id="equipmentGroupTable" var="group" value="#{equipmentGroupListController.allEquipmentGroups}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{group.name}"/>
+                </p:column>
+                <p:column headerText="Geräte">
+                    <h:outputText value="#{group.equipmentAsString}"/>
+                </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit">
+                        <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
+                    </p:commandButton>
+                    <p:commandButton action="#{equipmentGroupDetailController.doDeleteGroup}" icon="ui-icon-trash" title="Delete" update=":equipmentGroupForm:equipmentGroupTable">
+                        <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
+                        <p:confirm header="Confirmation" message="Are you sure that you want to delete this Group? You cannot undo this operation." icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+        </h:form>
+
+        <p:dialog header="Edit Group" id="equipmentGroupEditDialog" widgetVar="equipmentGroupEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
+            <h:form id="editForm">
+                <p:outputPanel id="groupData" rendered="#{not empty equipmentGroupDetailController.group}">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="name" value="Gruppenname: " />
+                        <p:inputText id="name" value="#{equipmentGroupDetailController.group.name}"/>
+                    </h:panelGrid>
+
+                    <p:dataTable id="checkboxDT"
+                                 widgetVar="equipmentSelect"
+                                 var="equipment"
+                                 value="#{equipmentListController.equipment}"
+                                 selection="#{equipmentGroupDetailController.selectedEquipments}"
+                                 rowKey="#{equipment.id}"
+                                 style="margin-bottom:0"
+                                 filteredValue="#{equipmentGroupDetailController.filteredEquipments}">
+                        <f:facet name="header">
+                            <h:outputText value="Bitte Geräte für Gruppe auswählen" />
+                            <p:outputPanel>
+                                <h:outputText value="Suche: " />
+                                <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:150px"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column headerText="Name" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
+                            <h:outputText value="#{equipment.name}" />
+                        </p:column>
+                        <p:column headerText="Labor" filterBy="#{equipment.labName}" filterStyle="display: none" filterMatchMode="contains">
+                            <h:outputText value="#{equipment.labName}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{equipmentGroupDetailController.doSaveGroup}" oncomplete="PF('equipmentGroupEditDialog').hide()" update=":equipmentGroupForm"/>
+                        <p:commandButton value="Reload" action="#{equipmentGroupDetailController.doReloadGroup}" update=":editForm"/>
+                        <p:commandButton value="Abort" oncomplete="PF('equipmentGroupEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+</ui:composition>
+

@@ -5,8 +5,8 @@
 STUDENTS
 - [ ] View Reservations(delete)
 - [ ] New Reservation
-- [ ] all equipments(search, multiselect) -> timeframe -> reservation
-- [ ] timeframe -> show available equipments -> reservation
+- [ ] all selectedEquipments(search, multiselect) -> timeframe -> reservation
+- [ ] timeframe -> show available selectedEquipments -> reservation
 - [ ] view equipment availability
 
 EMPLOYEES
@@ -15,8 +15,8 @@ EMPLOYEES
 
 ADMIN
 
-- [ ] new user
-- [ ] view equipment(new, update, delete)
+- [x] new user
+- [x] view equipment(new, update, delete)
 - [ ] view rented equipment(return)
 - [ ] view all groups
 - [ ] view all reservations
@@ -32,8 +32,8 @@ ADMIN
 
 ## Persistence @Chris @Johannes
 
-- [ ] Users(STUDENT, EMPLOYEE, ADMIN)
-- [ ] Equipment
+- [x] Users(STUDENT, EMPLOYEE, ADMIN)
+- [x] Equipment
 - [ ] EquipmentGroup
 - [ ] Reservation
 - [ ] + services needed for Application
