@@ -15,6 +15,9 @@
         <location>/error/access_denied.xhtml</location>
     </error-page>
 
+    <error-page>
+        <location>/error/default.xhtml</location>
+    </error-page>
 
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>

@@ -84,11 +84,23 @@ public class UserService {
     public void deleteUser(User user) {
         // hotfix: cascade tries to delete groups after deleting user but
         // constraints keep user from being deleted as long as groups depend on user
+        System.out.println(user.getEquipmentGroups());
+
+        try{
         List<EquipmentGroup> equipmentGroups = new ArrayList<>(user.getEquipmentGroups());
         for(EquipmentGroup equipmentGroup: equipmentGroups){
             equipmentGroupService.deleteEquipmentGroup(equipmentGroup);
+            user.getEquipmentGroups().remove(equipmentGroup);
         }
+        System.out.println(user.getEquipmentGroups());
+        } catch (Exception e){
+            // TODO yes this is terrible
+            deleteUser(user);
+        }
+
         user.setEquipmentGroups(null);
+
+        System.out.println(user.getEquipmentGroups());
 
         userRepository.delete(user);
 
