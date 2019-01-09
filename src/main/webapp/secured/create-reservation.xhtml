@@ -76,9 +76,9 @@
                 </p:dataTable>
             </p:panel>
 
-            <p:dialog id="equipmentDialog" header="Equipment Info" widgetVar="equipmentDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog id="equipmentDialog" header="Equipment '#{newReservationController.detailEquipment.name}' Schedule" widgetVar="equipmentDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="equipmentInfo" style="text-align:center;width: 600px;height: 500px">
-                    <p:schedule value="#{newReservationController.scheduleModel}" />
+                    <p:schedule value="#{newReservationController.scheduleModel}" timeZone="GMT+1" />
                 </p:outputPanel>
             </p:dialog>
         </h:form>
