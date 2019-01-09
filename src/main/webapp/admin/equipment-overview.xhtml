@@ -7,12 +7,15 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <!--
+        TODO deprechated, replace growl with messages
         <f:event type="preRenderView" listener="#{addUserController.checkURL}"/>
 
         <h:form rendered="#{addEquipmentController.addedSuccessfully}">
             <p:growl id="successGrowl" showDetail="true" sticky="false"/>
             <f:event type="preRenderComponent" listener="#{growlBean.showMessage('Equipment added successfully!')}"/>
         </h:form>
+        -->
 
         <h:form id="equipmentForm">
             <p:dataTable id="equipmentTable" var="equipment" value="#{equipmentListController.equipment}">
