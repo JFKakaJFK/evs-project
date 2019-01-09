@@ -1,7 +1,6 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.EquipmentReservation;
-import at.qe.sepm.skeleton.model.ReservationType;
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
@@ -21,19 +20,20 @@ import java.util.*;
 @Component
 @Scope("request")
 public class AddEquipmentReservationController {
-	
+
+    @Autowired
 	private EquipmentReservationService equipmentReservationService;
-	
+
     private int id;
     private String name;
-    private Set<Equipment> equipment;
+    private Equipment equipment;
     private User user;
     private Date startDate;
     private Date endDate;
     private Date createDate;
 
-    
-    
+
+
     public void addEquipmentReservation() throws IOException {
         String title = "Add Reservation";
         String msg;
@@ -57,7 +57,7 @@ public class AddEquipmentReservationController {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
-    
+
     public boolean isAvailable() {
     	Collection<EquipmentReservation> allEquipmentReservations = new ArrayList<EquipmentReservation>();
     	allEquipmentReservations = equipmentReservationService.getAllEquipmentReservations();
@@ -68,12 +68,12 @@ public class AddEquipmentReservationController {
     	}
     	return true;
     }
-    
+
     /**
      * check if enddate is after startdate and after current date
      * @return true if dates are valid
      */
-    
+
 	public boolean validateDate() {
 		Date today = new Date();
 		today.getTime();
@@ -85,17 +85,17 @@ public class AddEquipmentReservationController {
 		}
 		return true;
 	}
-    
-    
+
+
     public String getEquipmentAsString(){
         return equipment.toString().substring(1, equipment.toString().length() - 1);
     }
 
-    public Set<Equipment> getEquipment() {
+    public Equipment getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(Set<Equipment> equipment) {
+    public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
 
@@ -134,7 +134,7 @@ public class AddEquipmentReservationController {
     public Integer getId() {
         return id;
     }
-    
+
     public void setId(Integer id) {
     	this.id = id;
     }
