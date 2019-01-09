@@ -2,8 +2,10 @@ package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
+import at.qe.sepm.skeleton.model.OpeningHours;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.EquipmentService;
+import at.qe.sepm.skeleton.services.OpeningHoursService;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
@@ -38,6 +40,9 @@ public class NewReservationController implements Serializable {
 
     @Autowired
     private EquipmentReservationService equipmentReservationService;
+
+    @Autowired
+    private OpeningHoursService openingHoursService;
 
     @PostConstruct
     public void Init()
@@ -152,6 +157,12 @@ public class NewReservationController implements Serializable {
             }
         }
     }
+
+    public Collection<OpeningHours> getOpeningHours()
+    {
+        return this.openingHoursService.getAllOpeningHours();
+    }
+
 
     public void resetInputs()
     {
