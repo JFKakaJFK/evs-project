@@ -1,5 +1,6 @@
 package at.qe.sepm.skeleton.services;
 
+import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.EquipmentReservationRepository;
@@ -26,6 +27,17 @@ public class EquipmentReservationService {
 
     @Autowired
     private EquipmentReservationRepository equipmentReservationRepository;
+
+    /**
+     * Returns all reservations containing a specific equipment
+     * 
+     * @param equipment
+     * @return
+     */
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Collection<EquipmentReservation> getAllEquipmentReservationsContaining(Equipment equipment){
+        return equipmentReservationRepository.findDistinctByEquipment(equipment);
+    }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     public Collection<EquipmentReservation> getAllEquipmentReservations(){
