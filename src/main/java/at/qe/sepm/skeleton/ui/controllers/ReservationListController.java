@@ -1,8 +1,10 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
+import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
+import at.qe.sepm.skeleton.services.EquipmentService;
 import at.qe.sepm.skeleton.services.UserService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,9 @@ public class ReservationListController {
 	private EquipmentReservationService equipmentReservationService;
 
 	@Autowired
+    private EquipmentService equipmentService;
+
+	@Autowired
     private UserService userService;
 
 
@@ -34,8 +39,8 @@ public class ReservationListController {
         return equipmentReservationService.getAllByUser(authUser);
     }
 
-    public Collection<EquipmentReservation> getAllReservationsReturn()
+    public Collection<Equipment> getAllReservationsReturn()
     {
-        return equipmentReservationService.getAllEquipmentReservations();
+        return equipmentService.getAllBorrowedEquipments();
     }
 }
