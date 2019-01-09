@@ -36,10 +36,8 @@ public class EquipmentReservation implements Persistable<Integer> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
-    /*  TODO should there be a STATE ENUM? As in ACTIVE, COMPLETED, PENDING?
-        would make determining equipment state easier and what purpose do completed reservations have?
-    */
-
+    @Column(nullable = false)
+    private boolean completed = false;
 
     // TODO remove since reservation.getEquipment.getName has the same functionality
     @Deprecated
@@ -85,6 +83,14 @@ public class EquipmentReservation implements Persistable<Integer> {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     @Override

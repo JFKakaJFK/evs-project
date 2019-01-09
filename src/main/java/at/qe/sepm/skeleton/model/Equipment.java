@@ -102,8 +102,9 @@ public class Equipment implements Persistable<Integer> {
             return false;
         }
         // check all reservations, if any between  start & end return false
+        // TODO maybe check if it was returned? not relevant for distant reservations though
         for(EquipmentReservation reservation: this.reservations){
-            if(reservation.getEquipment() == this){
+            if(reservation.getEquipment().getId().equals(this.getId())){
                 if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < reservation.getStartDate().getTime())){
                     return false;
                 }
@@ -119,6 +120,14 @@ public class Equipment implements Persistable<Integer> {
      */
     public boolean isOverdue(){
         // TODO handle case where equipment is not returned and next reservation already should have it
+        for(EquipmentReservation reservation: reservations){
+            if(reservation.getEquipment().getId().equals(this.getId())){
+                if(!reservation.isCompleted() && reservation.getEndDate().getTime() < new Date().getTime()){
+                    return true;
+                }
+            }
+        }
+        // TODO return false(if no past reservation isn't complete, the equipment must be available)
         return !returned && isAvailable(new Date(), new Date());
     }
 
@@ -293,7 +302,7 @@ public class Equipment implements Persistable<Integer> {
     }
 
     public EquipmentState getState() {
-        return state == null ? getState(new Date(), new Date()) : state;
+        return getState(new Date(), new Date());
     }
 
     public void setState(EquipmentState state) {

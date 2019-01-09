@@ -63,7 +63,6 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('ADMIN')")
     public Collection<Equipment> getAllBorrowedEquipments(){
         Collection<Equipment> equipments = equipmentRepository.findAll();
-        Date now = new Date();
         return equipments.stream()
             .filter(equipment -> (equipment.getState() == EquipmentState.BOOKED || equipment.getState() == EquipmentState.OVERDUE))
             .collect(Collectors.toList());
@@ -79,7 +78,7 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllFreeEquipments(Date startDate, Date endDate){
         return equipmentRepository.findAll().stream()
-            .filter(equipment -> equipment.getState() == EquipmentState.AVAILABLE)
+            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE)
             .collect(Collectors.toList());
     }
 
