@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -118,7 +119,7 @@ public class NewReservationController implements Serializable {
         Collection<EquipmentReservation> equipmentReservations = equipmentReservationService.getAllEquipmentReservationsContaining(detailEquipment);
         for(EquipmentReservation equipmentReservation : equipmentReservations)
         {
-            String duration = equipmentReservation.getStartDate().toString() + " - " + equipmentReservation.getEndDate().toString();
+            String duration = getTimeFromDate(equipmentReservation.getStartDate()) + " - " + getTimeFromDate(equipmentReservation.getEndDate());
             scheduleModel.addEvent(new DefaultScheduleEvent(duration, equipmentReservation.getStartDate(), equipmentReservation.getEndDate()));
         }
 
@@ -140,8 +141,13 @@ public class NewReservationController implements Serializable {
 
                 else
                 {
-                    filteredEquipments.removeAll(freeEquipments);
-                    defaultEquipments = filteredEquipments;
+                    List<Equipment> toRemove = new ArrayList<>();
+                    toRemove.addAll(filteredEquipments);
+
+                    toRemove.removeAll(freeEquipments);
+                    filteredEquipments.removeAll(toRemove);
+                    defaultEquipments.clear();
+                    defaultEquipments.addAll(filteredEquipments);
                 }
             }
         }
@@ -155,5 +161,11 @@ public class NewReservationController implements Serializable {
 
         PrimeFaces.current().executeScript("PF('equipmentSelect').clearFilters()");
         PrimeFaces.current().resetInputs("newReservation:newReservationPanel");
+    }
+
+    public String getTimeFromDate(Date date)
+    {
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
+        return localDateFormat.format(date);
     }
 }
