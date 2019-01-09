@@ -16,9 +16,13 @@
                         <p:menuitem value="Equipment Group" url="create-reservationGroup.xhtml" icon="ui-icon-plusthick"/>
                     </p:menuButton>
 
-                    <p:dataTable id="reservationTable" var="reservation" value="#{reservationListController.allUserReservations}">
+                    <p:dataTable
+                        id="reservationTable"
+                        var="reservation"
+                        value="#{reservationListController.allUserReservations}"
+                    >
                         <p:column headerText="Equipment">
-                            <h:outputText value=""/>
+                            <h:outputText value="#{reservation.equipmentAsString}"/>
                         </p:column>
                         <p:column headerText="Lending date">
                             <h:outputText value="#{reservation.startDate}"/>
@@ -39,71 +43,38 @@
                 </h:form>
             </p:panel>
 
-            <!-- FOR Admin users: so they can see which equipments and equipmentsgroups are to return -->
-            <p:panelGrid style="margin-top: 20px" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
-                <f:facet name="header">
-                    <p:row>
-                        <p:column colspan="2">Equipments and Equipment-Groups to return</p:column>
-                    </p:row>
-                </f:facet>
+            <!-- Equipments to return -->
+            <p:panel id="adminReservationsPanel" header="Equipments to return" style="margin-top: 20px" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                <p:dataTable
+                    widgetVar="reservationSelect"
+                    id="reservationEquipmentTable"
+                    var="reservation"
+                    value="#{reservationListController.allReservationsReturn}"
+                    selection="#{reservationListController.selectedReservations}"
+                    rowKey="#{reservation.id}"
+                    style="margin-bottom:0"
+                >
+                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
-                <p:row>
-                    <!-- ADMIN: Equipments -->
-                    <p:column style="width: 50%" headerText="Equipments">
-                        <h:form id="adminReservationForm">
-                            <p:dataTable id="adminReservationTable" var="reservation" value="#{reservationListController.allReservationsReturn}">
-                                <f:facet name="header">
-                                    Equipments
-                                </f:facet>
-
-                                <p:column headerText="Equipment">
-                                    <h:outputText value="#{reservation.name}"/>
-                                </p:column>
-                                <p:column headerText="Return Date">
-                                    <h:outputText value=""/>
-                                </p:column>
-                                <p:column headerText="Status">
-                                    <h:outputText value=""/>
-                                </p:column>
-                                <p:column style="width:100px;text-align: center">
-                                    <p:commandButton icon="ui-icon-note" title="Confirm return">
-                                        <f:setPropertyActionListener value="" target="" />
-                                        <p:confirm header="Confirmation" message="Are you sure that you want to confrim the return of this equipment? You cannot undo this operation." icon="ui-icon-alert" />
-                                    </p:commandButton>
-                                </p:column>
-                            </p:dataTable>
-                        </h:form>
+                    <p:column headerText="Equipment">
+                        <h:outputText value="#{reservation.equipmentAsString}" />
                     </p:column>
 
-                    <!-- Gropus -->
-                    <p:column style="width: 50%">
-                        <h:form id="adminReservationGroupForm">
-                            <p:dataTable id="adminReservationGroupTable" var="reservation" value="#{reservationListController.allReservationsReturn}">
-                                <f:facet name="header">
-                                    Equipment Groups
-                                </f:facet>
-
-                                <p:column headerText="Equipment">
-                                    <h:outputText value=""/>
-                                </p:column>
-                                <p:column headerText="Return Date">
-                                    <h:outputText value=""/>
-                                </p:column>
-                                <p:column headerText="Status">
-                                    <h:outputText value=""/>
-                                </p:column>
-                                <p:column style="width:100px;text-align: center">
-                                    <p:commandButton icon="ui-icon-note" title="Confirm return">
-                                        <f:setPropertyActionListener value="" target="" />
-                                        <p:confirm header="Confirmation" message="Are you sure that you want to confrim the return of this equipment? You cannot undo this operation." icon="ui-icon-alert" />
-                                    </p:commandButton>
-                                </p:column>
-                            </p:dataTable>
-                        </h:form>
+                    <p:column headerText="Return Date">
+                        <h:outputText value="#{reservation.endDate}" />
                     </p:column>
-                </p:row>
 
-            </p:panelGrid>
+                    <p:column headerText="Status">
+                        <h:outputText value="OK" />
+                    </p:column>
+
+                    <p:column style="width:32px;text-align: center">
+
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:panel>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -27,8 +29,19 @@ public class ReservationListController {
 	@Autowired
     private UserService userService;
 
+	//
+    private List<EquipmentReservation> selectedReservations;
 
-	public Collection<EquipmentReservation> getReservations(){
+
+    public List<EquipmentReservation> getSelectedReservations() {
+        return selectedReservations;
+    }
+
+    public void setSelectedReservations(List<EquipmentReservation> selectedReservations) {
+        this.selectedReservations = selectedReservations;
+    }
+
+    public Collection<EquipmentReservation> getReservations(){
 		return equipmentReservationService.getAllEquipmentReservations();
 	}
 
@@ -41,6 +54,6 @@ public class ReservationListController {
 
     public Collection<Equipment> getAllReservationsReturn()
     {
-        return equipmentService.getAllBorrowedEquipments();
+        return equipmentReservationService.getAllBorrowedEquipments();
     }
 }
