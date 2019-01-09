@@ -53,7 +53,10 @@
                             </p:outputPanel>
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
-                                <p:commandButton value="Create new reservation"/>
+                                <p:commandButton
+                                    value="Create new reservation"
+                                    action="#{newReservationController.addEquipmentReservation}"
+                                />
                             </p:outputPanel>
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">

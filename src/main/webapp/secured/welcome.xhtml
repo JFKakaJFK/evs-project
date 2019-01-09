@@ -8,7 +8,14 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <f:event type="preRenderView" listener="#{newReservationController.checkURL}"/>
+
         <h:form>
+            <h:form rendered="#{newReservationController.addedSuccessfully}">
+                <p:growl id="successGrowl" showDetail="true" sticky="false"/>
+                <f:event type="preRenderComponent" listener="#{growlBean.showMessage('Reservation(s) added successfully!')}"/>
+            </h:form>
+
             <p:panel header="My Reservations">
                 <h:form id="reservationForm">
                     <p:menuButton value="New Reservation" style="margin-bottom: 10px">
@@ -57,11 +64,11 @@
                     <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
                     <p:column headerText="Equipment">
-                        <h:outputText value="#{reservation.equipmentAsString}" />
+                        <h:outputText value="#{reservation.name}" />
                     </p:column>
 
                     <p:column headerText="Return Date">
-                        <h:outputText value="#{reservation.endDate}" />
+                        <h:outputText value="end date" />
                     </p:column>
 
                     <p:column headerText="Status">

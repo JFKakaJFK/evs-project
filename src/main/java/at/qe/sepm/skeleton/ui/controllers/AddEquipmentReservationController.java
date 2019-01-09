@@ -1,7 +1,6 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.EquipmentReservation;
-import at.qe.sepm.skeleton.model.ReservationType;
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
@@ -26,7 +25,7 @@ public class AddEquipmentReservationController {
 	
     private int id;
     private String name;
-    private Set<Equipment> equipment;
+    private Equipment equipment;
     private User user;
     private Date startDate;
     private Date endDate;
@@ -91,11 +90,11 @@ public class AddEquipmentReservationController {
         return equipment.toString().substring(1, equipment.toString().length() - 1);
     }
 
-    public Set<Equipment> getEquipment() {
+    public Equipment getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(Set<Equipment> equipment) {
+    public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
 
