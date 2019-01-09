@@ -28,6 +28,9 @@ public class EquipmentReservationService {
     @Autowired
     private EquipmentReservationRepository equipmentReservationRepository;
 
+    @Autowired
+    private EquipmentService equipmentService;
+
     /**
      * Returns all reservations containing a specific equipment
      *
@@ -36,9 +39,14 @@ public class EquipmentReservationService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public Collection<EquipmentReservation> getAllEquipmentReservationsContaining(Equipment equipment){
-        return equipmentReservationRepository.findDistinctByEquipment(equipment);
+        return equipmentReservationRepository.findAllByEquipment(equipment);
     }
 
+    /**
+     * Returns all reservations
+     *
+     * @return
+     */
     @PreAuthorize("hasAuthority('ADMIN')")
     public Collection<EquipmentReservation> getAllEquipmentReservations(){
         return equipmentReservationRepository.findAll();
@@ -65,15 +73,32 @@ public class EquipmentReservationService {
         if(reservation.isNew()){
             reservation.setCreateDate(new Date());
         }
-        return equipmentReservationRepository.save(reservation);
+        Equipment e = reservation.getEquipment();
+        e.addReservation(reservation);
+        equipmentService.saveEquipment(e);
+        return reservation;
     }
 
+    /**
+     * Deletes a reservation if the start Date is in the Future
+     *
+     * @param reservation
+     */
     @PreAuthorize("hasAuthority('ADMIN') or principal eq #reservation.getUser()")
     public void deleteReservation(EquipmentReservation reservation){
-        equipmentReservationRepository.delete(reservation);
+        if(reservation.getStartDate().compareTo(new Date()) >= 1){
+            Equipment e = reservation.getEquipment();
+            e.removeReservation(reservation);
+            equipmentService.saveEquipment(e);
+        }
         // TODO log reservation deletet by whom
     }
 
+    /**
+     * Returns the currently authenticated User
+     *
+     * @return
+     */
     private User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());
