@@ -26,7 +26,10 @@
                     </div>
 
                     <div class="ui-g-4">
-                        <p:commandButton value="Clear all" update="newReservationPanel" process="@this" action="#{newReservationController.resetInputs}" />
+                        <p:commandButton
+                            value="Show Opening Hours"
+                            onclick="PF('openingDialog').show();"
+                        />
                     </div>
                 </div>
 
@@ -50,13 +53,21 @@
                             </p:outputPanel>
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
-                                <p:commandButton value="Create new reservation"/>
+                                <p:commandButton
+                                    value="Create new reservation"
+                                    action="#{newReservationController.addEquipmentReservation}"
+                                />
+                            </p:outputPanel>
+
+                            <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
+                                <p:commandButton
+                                    value="Clear all"
+                                    update=":newReservation:newReservationPanel"
+                                    process="@this"
+                                    action="#{newReservationController.resetInputs}" />
                             </p:outputPanel>
                             <div style="clear: both"></div>
                         </div>
-
-
-
                     </f:facet>
 
                     <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
@@ -85,11 +96,10 @@
 
                         </p:commandButton>
                     </p:column>
-
-
                 </p:dataTable>
             </p:panel>
 
+            <!-- DIALOG: calendar -->
             <p:dialog id="equipmentDialog" header="Equipment '#{newReservationController.detailEquipment.name}' Schedule" widgetVar="equipmentDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="equipmentInfo" style="text-align:center;width: 750px;height: 600px">
                     <style type="text/css">
@@ -99,6 +109,29 @@
                     </style>
 
                     <p:schedule id="reservationCalendar" value="#{newReservationController.scheduleModel}" timeZone="GMT+1" />
+                </p:outputPanel>
+            </p:dialog>
+
+            <!-- DIALOG Opening Hours -->
+            <p:dialog id="openingDialog" header="Opening Hours" widgetVar="openingDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="openingPanel" style="text-align:center;width: 750px;">
+                    <p:dataTable
+                        value="#{newReservationController.openingHours}"
+                        var="opening"
+                    >
+                        <p:column headerText="Weekday">
+                            <h:outputText value="#{opening.day}" />
+                        </p:column>
+
+                        <p:column headerText="Open">
+                            <h:outputText value="#{opening.startTime} - #{opening.endTime}" />
+                        </p:column>
+
+                        <p:column headerText="Pause">
+                            <h:outputText value="#{opening.startPause} - #{opening.endPause}" />
+                        </p:column>
+
+                    </p:dataTable>
                 </p:outputPanel>
             </p:dialog>
         </h:form>

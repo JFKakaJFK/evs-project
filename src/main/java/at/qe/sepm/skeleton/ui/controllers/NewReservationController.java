@@ -2,8 +2,12 @@ package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
+import at.qe.sepm.skeleton.model.OpeningHours;
+import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.EquipmentService;
+import at.qe.sepm.skeleton.services.OpeningHoursService;
+import at.qe.sepm.skeleton.services.UserService;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,12 +27,15 @@ import java.util.*;
 @Component
 @Scope("view")
 public class NewReservationController implements Serializable {
+    private boolean addedSuccessfully;
+
     private Date lendingDate;
     private Date returnDate;
 
     private List<Equipment> selectedEquipments;
     private List<Equipment> filteredEquipments;
     private Collection<Equipment> defaultEquipments;
+
 
     private ScheduleModel scheduleModel;
 
@@ -39,11 +47,26 @@ public class NewReservationController implements Serializable {
     @Autowired
     private EquipmentReservationService equipmentReservationService;
 
+    @Autowired
+    private OpeningHoursService openingHoursService;
+
+    @Autowired
+    private UserService userService;
+
     @PostConstruct
     public void Init()
     {
         scheduleModel = new DefaultScheduleModel();
         defaultEquipments = equipmentService.getAllEquipments();
+        addedSuccessfully = false;
+    }
+
+    public boolean isAddedSuccessfully() {
+        return addedSuccessfully;
+    }
+
+    public void setAddedSuccessfully(boolean addedSuccessfully) {
+        this.addedSuccessfully = addedSuccessfully;
     }
 
     public Collection<Equipment> getDefaultEquipments() {
@@ -153,6 +176,12 @@ public class NewReservationController implements Serializable {
         }
     }
 
+    public Collection<OpeningHours> getOpeningHours()
+    {
+        return this.openingHoursService.getAllOpeningHours();
+    }
+
+
     public void resetInputs()
     {
         this.defaultEquipments = equipmentService.getAllEquipments();
@@ -167,5 +196,95 @@ public class NewReservationController implements Serializable {
     {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
         return localDateFormat.format(date);
+    }
+
+    /*
+        Code von Melanie :)
+     */
+
+    public void addEquipmentReservation() throws IOException
+    {
+        //ToDo: check if selected time is in openinghours
+        //Todo: error and success information
+        //check if equipments are avialbe and validate Date
+        if(equipmentsAvailabe() && validateDate())
+        {
+            String msg;
+            for(Equipment newEquipment : this.selectedEquipments)
+            {
+                EquipmentReservation equipmentReservation = new EquipmentReservation();
+                equipmentReservation.setStartDate(this.lendingDate);
+                equipmentReservation.setEndDate(this.returnDate);
+                equipmentReservation.setEquipment(newEquipment);
+                equipmentReservation.setUser(userService.getAuthenticatedUser());
+
+                this.equipmentReservationService.saveReservation(equipmentReservation);
+
+                msg = "Reservation(s) added successfully";
+                FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
+            }
+        }
+    }
+
+    public boolean isAvailable() {
+        Collection<EquipmentReservation> allEquipmentReservations = new ArrayList<EquipmentReservation>();
+        allEquipmentReservations = equipmentReservationService.getAllEquipmentReservations();
+        for(EquipmentReservation er : allEquipmentReservations) {
+            if (!((this.getLendingDate().after(er.getEndDate())) || (this.getReturnDate().before(er.getStartDate())))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * check if enddate is after startdate and after current date
+     * @return true if dates are valid
+     */
+    public boolean validateDate() {
+        Date today = new Date();
+        today.getTime();
+        if(today.after(this.returnDate) && today.after(this.lendingDate)) {
+            return false;
+        }
+        if(returnDate.before(lendingDate)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * checks if selected equipments are avialable
+     */
+    public boolean equipmentsAvailabe()
+    {
+        if(selectedEquipments == null || lendingDate == null || returnDate == null)
+            return false;
+
+        //check if equipments are avialbe
+        List<Equipment> freeEquipments = (List<Equipment>) equipmentService.getAllFreeEquipments(lendingDate, returnDate);
+
+        for(Equipment equipment : this.selectedEquipments)
+        {
+            if(!freeEquipments.contains(equipment))
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check URL in order to know if reservations was added successfully.
+     * In that case a growl success message will be displayed.
+     */
+
+    public void checkURL() {
+        Iterator<String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterNames();
+        if(params.hasNext()) {
+            String parameter = params.next();
+            if(parameter.equals("addedSuccessfully")) {
+                this.addedSuccessfully = true;
+            }
+        }
     }
 }
