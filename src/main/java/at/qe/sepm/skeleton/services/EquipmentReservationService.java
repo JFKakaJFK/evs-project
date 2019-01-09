@@ -2,6 +2,7 @@ package at.qe.sepm.skeleton.services;
 
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
+import at.qe.sepm.skeleton.model.EquipmentState;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.EquipmentReservationRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 /**
  * Service for accessing and manipulating equipment related data.
@@ -30,6 +32,14 @@ public class EquipmentReservationService {
 
     @Autowired
     private EquipmentService equipmentService;
+
+    /**
+     * Returns a collectioin of all Equipments which need to be returned or are overdue
+     */
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Collection<Equipment> getAllBorrowedEquipments(){
+        return equipmentService.getAllBorrowedEquipments();
+    }
 
     /**
      * Returns all reservations containing a specific equipment
