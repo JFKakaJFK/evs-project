@@ -1,6 +1,6 @@
 # Features
 
-## 1. User management - BIS 2019 √
+## 1. User management - FERTIG
 
 - [x] User entity und Service anpassen (@Chris)
 - [x] PasswordEncoder einfügen und testUser anpassen (@Chris)
@@ -9,19 +9,19 @@
 
 ### TODO/Notes
 
-- cNumber Getters und Setters müssen so geschrieben werden weil JSF diese sonst nicht erkennt
-- use testing
-- navbar anpassen (brauchen wir die tests?)
-- sollen in den views alle ROLES angezeigt werden oder nur die mit am meisten rechte?
+- NOTE: cNumber Getters und Setters müssen so geschrieben werden weil JSF diese sonst nicht erkennt
+- [ ] use testing
+- [x] navbar anpassen (brauchen wir die tests?)
+- [x] sollen in den views alle ROLES angezeigt werden oder nur die mit am meisten rechte?
+- [ ] TODD: zb sicheres passwort generieren und per mail schicken
 
-## 2. Equipment management & Opening Hours - BIS ENDE FERIEN
+## 2. Equipment management & Opening Hours - FAST FERTIG
 
 - [x] Equipment Entity und Service (@Johannes)
 - [x] testEquipments hinzufügen (@Johannes)
 - [x] EquipmentListController (@Melanie @Markus)
 - [x] addEquipmentController (@Melanie @Markus)
 - [x] view zur Übersicht aller Equipments und equipment hinzufügen **ADMIN** (@Andi)
-
 - [x] OpeningHours Entity und Service (@Chris)
 - [x] testÖffnungszeiten hinzufügen (@Chris)
 - [ ] view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
@@ -29,37 +29,47 @@
 
 ### TODO/Notes
 
-- Bug: beim ändern des eqipments wird die maximale ausleihdauer auf 0 gesetzt wenn man diese nicht verändert
+- [ ] Bug: beim ändern des eqipments wird die maximale ausleihdauer auf 0 gesetzt wenn man diese nicht verändert
+- [ ] TODO: erstellen von kommentaren
+- [ ] TODO: up/download von manuals
+- [ ] TODO: öffnungszeiten views
 
-## 3. Simple Reservations - BIS ENDE FERIEN
+## 3. Alle Reservations - IN ENTWICKLUNG
 
-- [ ] Reservation Entity (@Johannes)
+- [x] Reservation Entity (@Johannes)
 - [ ] testReservationen (@Johannes)
 - [ ] ReservationListController (@Melanie @Markus)
 - [ ] addReservationController (@Melanie @Markus)
 - [ ] Bestätigungsmails (@Melanie @Markus)
-- [ ] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Andi)
-- [ ] view zur Einsicht(und löschen) aller reservierungen **ADMIN** (@Andi)
-- [ ] view zur Einsicht aller ausgeliehenen und überfälligen Equipments(und Rückgabebestätigungen) **ADMIN** (@Andi)
-
-## 4. EquipmentGroup management - BIS ~ 10.
-
-- [ ] equipmentgroup entity (@Johannes)
-- [ ] testEquipmentGroups (@Johannes)
-- [ ] EquipmentGroupListController (@Melanie @Markus)
-- [ ] AddEquipmentGroupController (@Melanie @Markus)
-- [ ] view zur Einsicht, erstellen & löschen der eigenen EquipmentGroups **EMPLOYEE** (@Andi)
-- [ ] view zur Einsicht und löschung aller EquipmentGroups **ADMIN** (@Andi)
-
-## 5. EquipmentGroup reservations - BIS 15.
-
 - [ ] AddEquipmentGroupReservationController (@Melanie @Markus)
 - [ ] EquipmentGroupListController (@Melanie @Markus)
-- [ ] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Andi)
-- [ ] view zur Einsicht aller EquipmentGroupReservierungen(und löschen) **ADMIN** (@Andi)
-- [ ] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Andi)
+- [ ] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Andi @Chris)
+- [ ] view zur Einsicht aller EquipmentGroupReservierungen(und löschen) **ADMIN** (@Andi @Chris)
+- [ ] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Andi @Chris)
+- [ ] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Andi @Chris)
+- [ ] view zur Einsicht(und löschen) aller reservierungen **ADMIN** (@Andi @Chris)
+- [ ] view zur Einsicht aller ausgeliehenen und überfälligen Equipments(und Rückgabebestätigungen) **ADMIN** (@Andi @Chris)
+
+### TODO/Notes
+
+- [ ] TODO: Kaskadierung beim löschen in alle Richtungen
+
+## 4. EquipmentGroup management - FERTIG
+
+- [x] equipmentgroup entity (@Johannes)
+- [x] testEquipmentGroups (@Johannes)
+- [x] EquipmentGroupListController (@Melanie @Markus)
+- [x] AddEquipmentGroupController (@Melanie @Markus)
+- [x] view zur Einsicht, erstellen & löschen der eigenen EquipmentGroups **EMPLOYEE** (@Andi)
+- [x] view zur Einsicht und löschung aller EquipmentGroups **ADMIN** (@Andi)
+
+### TODO/Notes
+
+- Hotfix: Kaskadierung beim löschen von equipmentgruppen eventuell besser umsetzen
 
 ## 6. Testing & Bugfixes
 
+- [ ] kontrolle ob alle features laut spezifikation existieren
 - [ ] test entities für alles und dokumentation
 - [ ] vagrantfile updaten
+- [ ] unit tests

@@ -5,8 +5,8 @@
 STUDENTS
 - [ ] View Reservations(delete)
 - [ ] New Reservation
-- [ ] all equipments(search, multiselect) -> timeframe -> reservation
-- [ ] timeframe -> show available equipments -> reservation
+- [ ] all selectedEquipments(search, multiselect) -> timeframe -> reservation
+- [ ] timeframe -> show available selectedEquipments -> reservation
 - [ ] view equipment availability
 
 EMPLOYEES

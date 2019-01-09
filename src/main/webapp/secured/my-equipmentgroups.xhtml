@@ -21,7 +21,7 @@
                     <h:outputText value="#{group.equipmentAsString}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":equipmentGroupForm:equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit">
+                    <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit">
                         <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
                     </p:commandButton>
                     <p:commandButton action="#{equipmentGroupDetailController.doDeleteGroup}" icon="ui-icon-trash" title="Delete" update=":equipmentGroupForm:equipmentGroupTable">
@@ -31,25 +31,11 @@
                 </p:column>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Create New Equipment Group" action="#{facesContext.externalContext.redirect('create-equipmentgroup.xhtml')}" icon="ui-icon-plusthick"/>
+                    <p:commandButton update=":addEquipmentGroupDialog" oncomplete="PF('addEquipmentGroupDialog').show()" icon="ui-icon-plusthick" title="Add" value="Neue Gruppe erstellen" />
                 </f:facet>
 
-            </p:dataTable>
 
-            <p:dialog header="Edit Group" id="equipmentGroupEditDialog" widgetVar="equipmentGroupEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
-                <p:outputPanel id="groupData" rendered="#{not empty equipmentGroupDetailController.group}">
-                    <h:panelGrid columns="2">
-                        <p:outputLabel for="name" value="Name: " />
-                        <p:inputText id="name" value="#{equipmentGroupDetailController.group.name}"/>
-                        <!-- TODO -->
-                    </h:panelGrid>
-                    <h:panelGrid columns="3">
-                        <p:commandButton value="Save" action="#{equipmentGroupDetailController.doSaveGroup}" oncomplete="PF('equipmentGroupEditDialog').hide()" update=":equipmentGroupForm:equipmentGroupTable"/>
-                        <p:commandButton value="Reload" action="#{equipmentGroupDetailController.doReloadGroup}" update=":equipmentGroupForm:groupData"/>
-                        <p:commandButton value="Abort" oncomplete="PF('equipmentGroupEditDialog').hide()"/>
-                    </h:panelGrid>
-                </p:outputPanel>
-            </p:dialog>
+            </p:dataTable>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -57,5 +43,89 @@
             </p:confirmDialog>
 
         </h:form>
+
+        <p:dialog header="Edit Group" id="equipmentGroupEditDialog" widgetVar="equipmentGroupEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
+            <h:form id="editForm">
+                <p:outputPanel id="groupData" rendered="#{not empty equipmentGroupDetailController.group}">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="name" value="Gruppenname: " />
+                        <p:inputText id="name" value="#{equipmentGroupDetailController.group.name}"/>
+                    </h:panelGrid>
+
+                    <p:dataTable id="checkboxDT"
+                                 widgetVar="equipmentSelect"
+                                 var="equipment"
+                                 value="#{equipmentListController.equipment}"
+                                 selection="#{equipmentGroupDetailController.selectedEquipments}"
+                                 rowKey="#{equipment.id}"
+                                 style="margin-bottom:0"
+                                 filteredValue="#{equipmentGroupDetailController.filteredEquipments}">
+                        <f:facet name="header">
+                            <h:outputText value="Bitte Geräte für Gruppe auswählen" />
+                            <p:outputPanel>
+                                <h:outputText value="Suche: " />
+                                <!-- a filter needs to have its id set to globalFilter, its bad to have the same id twice but it seems to work fine -->
+                                <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:150px"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column headerText="Name" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
+                            <h:outputText value="#{equipment.name}" />
+                        </p:column>
+                        <p:column headerText="Labor" filterBy="#{equipment.labName}" filterStyle="display: none" filterMatchMode="contains">
+                            <h:outputText value="#{equipment.labName}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{equipmentGroupDetailController.doSaveGroup}" oncomplete="PF('equipmentGroupEditDialog').hide()" update=":equipmentGroupForm"/>
+                        <p:commandButton value="Reload" action="#{equipmentGroupDetailController.doReloadGroup}" update=":editForm"/>
+                        <p:commandButton value="Abort" oncomplete="PF('equipmentGroupEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Neue Gruppe erstellen" id="addEquipmentGroupDialog" widgetVar="addEquipmentGroupDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
+            <h:form id="addForm">
+                <p:outputPanel id="newgroupData">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="groupname" value="Gruppenname: " />
+                        <p:inputText id="groupname" value="#{addEquipmentGroupBean.name}" required="true"/>
+                    </h:panelGrid>
+
+                    <p:dataTable id="addCheckboxDT"
+                                 widgetVar="equipmentSelect"
+                                 var="equipment"
+                                 value="#{equipmentListController.equipment}"
+                                 selection="#{addEquipmentGroupBean.equipments}"
+                                 rowKey="#{equipment.id}"
+                                 style="margin-bottom:0"
+                                 filteredValue="#{addEquipmentGroupBean.filteredEquipments}">
+                        <f:facet name="header">
+                            <h:outputText value="Bitte Geräte für Gruppe auswählen" />
+                            <p:outputPanel>
+                                <h:outputText value="Suche: " />
+                                <!-- a filter needs to have its id set to globalFilter, its bad to have the same id twice but it seems to work fine -->
+                                <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:150px"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column headerText="Name" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
+                            <h:outputText value="#{equipment.name}" />
+                        </p:column>
+                        <p:column headerText="Labor" filterBy="#{equipment.labName}" filterStyle="display: none" filterMatchMode="contains">
+                            <h:outputText value="#{equipment.labName}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{addEquipmentGroupBean.addEquipmentGroup}" oncomplete="PF('addEquipmentGroupDialog').hide()" update=":equipmentGroupForm"/>
+                        <p:commandButton value="Zurück" oncomplete="PF('addEquipmentGroupDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
     </ui:define>
 </ui:composition>
