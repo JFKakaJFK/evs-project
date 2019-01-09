@@ -1,9 +1,6 @@
 package at.qe.sepm.skeleton.model;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import javax.persistence.*;
 
 import org.hibernate.annotations.Fetch;
@@ -52,6 +49,38 @@ public class User implements Persistable<String> {
     @CollectionTable(name = "User_UserRole")
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
+
+    public String getRights(){
+        if(roles.contains(UserRole.ADMIN)){
+            return "ADMIN";
+        } else if (roles.contains(UserRole.EMPLOYEE)){
+            return "EMPLOYEE";
+        } else {
+            return "STUDENT";
+        }
+    }
+
+    public void setRights(String rights){
+        this.setRoles(determineRoles(rights));
+    }
+
+    /**
+     * Returns a Set of UserRoles depending on the selected input
+     *
+     * @return
+     */
+    public Set<UserRole> determineRoles(String role){
+        Set<UserRole> roles = new HashSet<>();
+        switch (role){
+            case "ADMIN":
+                roles.add(UserRole.ADMIN);
+            case "EMPLOYEE":
+                roles.add(UserRole.EMPLOYEE);
+            default:
+                roles.add(UserRole.STUDENT);
+        }
+        return roles;
+    }
 
     public String getcNumber()
     {
@@ -135,16 +164,6 @@ public class User implements Persistable<String> {
         return roles;
     }
 
-    public String getHighestPermission() {
-        if (roles.contains(UserRole.ADMIN)) {
-            return "ADMIN";
-        } else if (roles.contains(UserRole.EMPLOYEE)) {
-            return "EMPLOYEE";
-        } else {
-            return "STUDENT";
-        }
-    }
-
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
@@ -205,7 +224,7 @@ public class User implements Persistable<String> {
 
     @Override
     public String toString() {
-        return username + " [" + getHighestPermission() + "]";
+        return username + " [" + getRights() + "]";
     }
 
     @Override
