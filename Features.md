@@ -30,7 +30,8 @@
 ### TODO/Notes
 
 - [ ] Bug: beim ändern des eqipments wird die maximale ausleihdauer auf 0 gesetzt wenn man diese nicht verändert
-- [ ] TODO: erstellen von kommentaren
+- [x] TODO: erstellen von kommentaren
+- [ ] Bug: beim verändern der anleitungen/kommentare wird die tabelle wieder eingeklappt/es sind anfangs immer alle expansions ausgeklappt[so thread](https://stackoverflow.com/questions/43598420/how-to-keep-primefaces-rowexpansion-open-in-an-update-of-the-table)
 - [ ] TODO: up/download von manuals
 - [ ] TODO: öffnungszeiten views
 
