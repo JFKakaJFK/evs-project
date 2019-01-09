@@ -60,8 +60,15 @@
                     </p:column>
 
                     <p:column style="width:32px;text-align: center">
-                        <p:commandButton  icon="pi pi-search" title="View" update=":newReservation:equipmentDialog" oncomplete="PF('equipmentDialog').show()">
-                            <f:setPropertyActionListener target="#{newReservationController.calendar}" value="#{equipment}" />
+                        <p:commandButton
+                            icon="pi pi-search"
+                            title="View"
+                            update=":newReservation:equipmentDialog"
+                            oncomplete="PF('equipmentDialog').show()"
+                            action="#{newReservationController.calendarAction}"
+                        >
+                            <f:param name="detailEquipment" value="#{equipment.id}" />
+
                         </p:commandButton>
                     </p:column>
 
@@ -70,8 +77,8 @@
             </p:panel>
 
             <p:dialog id="equipmentDialog" header="Equipment Info" widgetVar="equipmentDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="equipmentInfo" style="text-align:center;">
-
+                <p:outputPanel id="equipmentInfo" style="text-align:center;width: 600px;height: 500px">
+                    <p:schedule value="#{newReservationController.scheduleModel}" />
                 </p:outputPanel>
             </p:dialog>
         </h:form>

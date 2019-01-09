@@ -2,13 +2,19 @@ package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.services.EquipmentService;
+import org.primefaces.PrimeFaces;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -23,10 +29,15 @@ public class NewReservationController implements Serializable {
 
     private ScheduleModel scheduleModel;
 
+    private Equipment detailEquipment;
+
     @Autowired
     private EquipmentService equipmentService;
 
-    public NewReservationController() {
+    @PostConstruct
+    public void Init()
+    {
+        scheduleModel = new DefaultScheduleModel();
     }
 
     public Date getLendingDate() {
@@ -66,8 +77,33 @@ public class NewReservationController implements Serializable {
         this.filteredEquipments = filteredEquipments;
     }
 
-    public void Calendar(Equipment equipment)
+    public ScheduleModel getScheduleModel()
     {
-        equipmentService.getAllEquipments();
+        return this.scheduleModel;
+    }
+
+    public Equipment getDetailEquipment() {
+        return detailEquipment;
+    }
+
+    public void setDetailEquipment(Equipment detailEquipment) {
+        this.detailEquipment = detailEquipment;
+    }
+
+    public void setScheduleModel(ScheduleModel scheduleModel) {
+        this.scheduleModel = scheduleModel;
+    }
+
+    public String calendarAction()
+    {
+        scheduleModel.clear();
+
+        int equipmentID = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("detailEquipment"));
+        detailEquipment = equipmentService.loadEquipment(equipmentID);
+
+        //update calender infos
+        scheduleModel.addEvent(new DefaultScheduleEvent("Test", lendingDate, returnDate));
+
+        return null;
     }
 }
