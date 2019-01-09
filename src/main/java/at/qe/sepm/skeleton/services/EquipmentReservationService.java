@@ -30,7 +30,7 @@ public class EquipmentReservationService {
 
     /**
      * Returns all reservations containing a specific equipment
-     * 
+     *
      * @param equipment
      * @return
      */
