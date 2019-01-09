@@ -8,7 +8,6 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -128,8 +127,6 @@ public class NewReservationController implements Serializable {
 
     public void dateChanged(SelectEvent event)
     {
-        List<Equipment> test = getSelectedEquipments();
-        System.out.println(test.size());
         if(this.lendingDate != null && this.returnDate != null)
         {
             if(returnDate.after(lendingDate) || lendingDate.equals(returnDate))
@@ -148,5 +145,15 @@ public class NewReservationController implements Serializable {
                 }
             }
         }
+    }
+
+    public void resetInputs()
+    {
+        this.defaultEquipments = equipmentService.getAllEquipments();
+        this.lendingDate = null;
+        this.returnDate = null;
+
+        PrimeFaces.current().executeScript("PF('equipmentSelect').clearFilters()");
+        PrimeFaces.current().resetInputs("newReservation:newReservationPanel");
     }
 }
