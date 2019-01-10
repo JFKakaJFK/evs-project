@@ -36,9 +36,8 @@ public class EquipmentReservationService {
     /**
      * Retuns all Reservations where the equipment state is BOOKED
      */
-    //TODO auth?
     @PreAuthorize("hasAuthority('STUDENT')")
-    public Collection<EquipmentReservation> getAllBorrowedEquipmentReservations(){
+    public Collection<EquipmentReservation> getAllBorrowedEquipments(){
         Collection<Equipment> borrowed = equipmentService.getAllBorrowedEquipments();
         return equipmentReservationRepository.findAll().stream()
             .filter(reservation -> borrowed.contains(reservation.getEquipment()))
@@ -53,14 +52,6 @@ public class EquipmentReservationService {
     @PreAuthorize("hasAuthority('STUDENT')")
     public EquipmentReservation loadRerservation(Integer id){
         return equipmentReservationRepository.findOne(id);
-    }
-
-    /**
-     * Returns a collectioin of all Equipments which need to be returned or are overdue
-     */
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Collection<Equipment> getAllBorrowedEquipments(){
-        return equipmentService.getAllBorrowedEquipments();
     }
 
     /**
