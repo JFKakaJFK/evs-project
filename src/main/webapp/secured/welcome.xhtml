@@ -38,11 +38,11 @@
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
                         <p:column style="width:100px;text-align: center">
-                            <p:commandButton  oncomplete="PF('reservationEditDialog').show()" icon="ui-icon-note" title="Edit">
+                            <p:commandButton  icon="ui-icon-note" title="Manual">
                                 <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.reservation}" />
                             </p:commandButton>
-                            <p:commandButton action="#{reservationDetailConroller.doDeleteReservation}" icon="ui-icon-trash" title="Delete" rendered="true">
-                                <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.equipmentReservation}" />
+                            <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="ui-icon-trash" title="Delete" rendered="#{reservation.deletable}" update="reservationTable">
+                                <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailConroller.reservation}" />
                                 <p:confirm header="Confirmation" message="Are you sure that you want to delete this reservation? You cannot undo this operation." icon="ui-icon-alert" />
                             </p:commandButton>
                         </p:column>
