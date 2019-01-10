@@ -233,10 +233,9 @@ public class NewReservationController implements Serializable {
                 equipmentReservation.setUser(userService.getAuthenticatedUser());
 
                 this.equipmentReservationService.saveReservation(equipmentReservation);
-
-                msg = "Reservation(s) added successfully";
-                FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
             }
+            msg = "Reservation(s) added successfully";
+            FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
         }
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
