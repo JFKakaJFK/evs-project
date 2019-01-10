@@ -6,16 +6,77 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <style>
+            @import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway');
+
+            body {
+                margin: 0 !important;
+            }
+
+            #header, #footer {
+                display: none;
+            }
+
+            #content {
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: url('https://images.unsplash.com/photo-1503515091255-ab8063a1796d?ixlib=rb-1.2.1');
+                background-size: cover;
+            }
+
+            #content #login_form {
+                display: inline-block;
+                background: white;
+                box-sizing: border-box;
+                padding: 40px;
+                border-radius: 10px;
+            }
+
+            .ui-outputlabel, input[type="text"], button[type="submit"] {
+                font-family: 'Open Sans', 'sans-serif';
+            }
+
+            h2 {
+                font-family: Raleway, 'sans-serif';
+            }
+
+            input[type="text"]#username, input[type="password"]#password {
+                border: 0;
+                box-shadow: inset 0 0 5px hsla(0, 0%, 0%, .25);
+                outline: none;
+                background-color: #ccc !important;
+                width: 150px;
+                padding: 10px;
+                margin-left: 20px;
+            }
+
+            button[type="submit"] {
+                border: 0 !important;
+                box-shadow: none;
+                box-sizing: border-box;
+                width: 150px;
+                padding: 10px;
+                background: #3A95E8;
+                color: #fff;
+                font-size: 16px;
+                font-weight: lighter;
+            }
+        </style>
+
         <form id="login_form" action="#{request.contextPath}/login" method="post">
+            <h2>Log In</h2>
             <h:panelGrid columns="2">
-                <p:outputLabel for="username" value="Username:"/>
+                <p:outputLabel for="username" value="Benutzername:"/>
                 <p:inputText id="username" type="text" required="true"/>
 
-                <p:outputLabel for="password" value="Password:"/>
+                <p:outputLabel for="password" value="Passwort:"/>
                 <p:inputText id="password" type="password" required="true"/>
 
                 <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                    <span class="ui-button-text">Login</span>
+                    <span class="ui-button-text">Einloggen</span>
                 </button>
             </h:panelGrid>
         </form>
