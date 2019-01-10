@@ -84,6 +84,10 @@
                         <h:outputText value="#{equipment.labLocation}" />
                     </p:column>
 
+                    <p:column headerText="Max. duration" filterBy="#{equipment.maxDurationMilliseconds}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{equipment.maxDurationFormatted}" />
+                    </p:column>
+
                     <p:column style="width:32px;text-align: center">
                         <p:commandButton
                             icon="pi pi-search"

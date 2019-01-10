@@ -154,6 +154,7 @@ public class NewReservationController implements Serializable {
         if(this.lendingDate != null && this.returnDate != null)
         {
             //ToDo: check if selcted time + weekday is in openinghours
+            //ToDo: check max duration
 
             if(returnDate.after(lendingDate) || lendingDate.equals(returnDate))
             {
@@ -183,7 +184,9 @@ public class NewReservationController implements Serializable {
         return this.openingHoursService.getAllOpeningHours();
     }
 
-
+    /**
+     * Resets all Inputs in View
+     */
     public void resetInputs()
     {
         this.defaultEquipments = equipmentService.getAllEquipments();
@@ -207,7 +210,9 @@ public class NewReservationController implements Serializable {
     public void addEquipmentReservation() throws IOException
     {
         //ToDo: check if selected time is in openinghours
-        //Todo: error and success information
+        //ToDo: error and success information
+        //ToDo: check max duration for each equipment
+
         //check if equipments are avialbe and validate Date
         if(equipmentsAvailabe() && validateDate())
         {
