@@ -33,12 +33,11 @@
 - [x] TODO: erstellen von kommentaren
 - [ ] Bug: beim verändern der anleitungen/kommentare wird die tabelle wieder eingeklappt/es sind anfangs immer alle expansions ausgeklappt[so thread](https://stackoverflow.com/questions/43598420/how-to-keep-primefaces-rowexpansion-open-in-an-update-of-the-table)
 - [ ] TODO: up/download von manuals
-- [ ] TODO: öffnungszeiten views
 
 ## 3. Alle Reservations - IN ENTWICKLUNG
 
 - [x] Reservation Entity (@Johannes)
-- [ ] testReservationen (@Johannes)
+- [x] testReservationen (@Johannes)
 - [ ] ReservationListController (@Melanie @Markus)
 - [ ] addReservationController (@Melanie @Markus)
 - [ ] Bestätigungsmails (@Melanie @Markus)
@@ -70,6 +69,8 @@
 
 ## 6. Testing & Bugfixes
 
+- [ ] ui sprache ist deutsch, alles was noch englisch ist anpassen
+- [ ] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen.
 - [ ] kontrolle ob alle features laut spezifikation existieren
 - [ ] test entities für alles und dokumentation
 - [ ] vagrantfile updaten
