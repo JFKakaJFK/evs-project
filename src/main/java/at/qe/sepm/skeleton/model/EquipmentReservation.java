@@ -39,6 +39,15 @@ public class EquipmentReservation implements Persistable<Integer> {
     @Column(nullable = false)
     private boolean completed = false;
 
+    /**
+     * A reservation is deletable if it hasn't begun yet
+     *
+     * @return
+     */
+    public boolean isDeletable(){
+        return new Date().getTime() < this.getStartDate().getTime() || completed;
+    }
+
     // TODO remove since reservation.getEquipment.getName has the same functionality
     @Deprecated
     public String getEquipmentAsString(){
