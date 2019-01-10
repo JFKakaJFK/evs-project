@@ -154,12 +154,15 @@ public class NewReservationController implements Serializable {
     {
         if(this.lendingDate != null && this.returnDate != null)
         {
-            //ToDo: check if selcted time + weekday is in openinghours
             //ToDo: check max duration
 
             if(returnDate.after(lendingDate) || lendingDate.equals(returnDate))
             {
-                Collection<Equipment> freeEquipments = equipmentService.getAllFreeEquipments(lendingDate, returnDate);
+                Collection<Equipment> freeEquipments = null;
+                if(withinOpeningHours())
+                {
+                    freeEquipments = equipmentService.getAllFreeEquipments(lendingDate, returnDate);
+                }
 
                 if(filteredEquipments == null)
                 {
@@ -208,7 +211,6 @@ public class NewReservationController implements Serializable {
         Code von Melanie :)
      */
     public void addEquipmentReservation() throws IOException {
-        //ToDo: check if selected time is in openinghours 
         //Todo: error and success information
     	//ToDo: check max duration for each equipment
         //check if equipments are avialbe and validate Date
