@@ -1,7 +1,9 @@
 package at.qe.sepm.skeleton.services;
 
+import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentGroup;
 import at.qe.sepm.skeleton.model.User;
+import at.qe.sepm.skeleton.repositories.EquipmentGroupRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 
 import java.util.ArrayList;
@@ -82,14 +84,10 @@ public class UserService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(User user) {
-        // hotfix: cascade tries to delete groups after deleting user but
-        // constraints keep user from being deleted as long as groups depend on user
         List<EquipmentGroup> equipmentGroups = new ArrayList<>(user.getEquipmentGroups());
         for(EquipmentGroup equipmentGroup: equipmentGroups){
-            equipmentGroupService.deleteEquipmentGroup(equipmentGroup);
+            equipmentGroupService.deleteAllEquipmentsFromGroup(equipmentGroup);
         }
-        user.setEquipmentGroups(null);
-
         userRepository.delete(user);
 
         // :TODO: write some audit log stating who and when this user was permanently deleted.
