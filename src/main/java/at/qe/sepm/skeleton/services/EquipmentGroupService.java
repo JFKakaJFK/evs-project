@@ -74,17 +74,29 @@ public class EquipmentGroupService {
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #equipmentGroup.user.username")
     public void deleteEquipmentGroup(EquipmentGroup equipmentGroup){
-        List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
+        // Detactch Many to Many Relationship
+        deleteAllEquipmentsFromGroup(equipmentGroup);
         User u = equipmentGroup.getUser();
-        u.getEquipmentGroups().remove(equipmentGroup);
+        // Delete group
+        u.removeEquipmentGroup(equipmentGroup);
+        // Persist
+        userRepository.save(u);
+
+        // TODO log deletion
+    }
+
+    /**
+     * Deletes all Equipments from an Equipment Group
+     */
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteAllEquipmentsFromGroup(EquipmentGroup equipmentGroup){
+        List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
+        // Detach ManyToMany(Equipment)
         for (Equipment e: equipments) {
             e.removeEquipmentGroup(equipmentGroup);
-            // equipmentService.saveEquipment(e);
         }
-
-        equipmentGroupRepository.delete(equipmentGroup);
-
-        userRepository.save(u);
+        // Remove Group
+        equipmentGroupRepository.save(equipmentGroup);
     }
 
     /**
