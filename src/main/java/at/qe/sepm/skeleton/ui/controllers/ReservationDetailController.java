@@ -21,21 +21,22 @@ public class ReservationDetailController {
      * Attribute to cache the currently displayed reservation
      */
     private EquipmentReservation equipmentReservation;
+    private Integer reservationId;
 
-    public EquipmentReservation getEquipmentReservation() {
-        return equipmentReservation;
+    public Integer getReservationId() {
+        return reservationId;
     }
 
-    public void setEquipmentReservation(EquipmentReservation equipmentReservation) {
-        this.equipmentReservation = equipmentReservation;
-        doDeleteReservation();
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
+        doReloadReservation();
     }
 
     /**
      * Action to force a reload of the currently displayed reservation.
      */
     public void doReloadReservation() {
-        this.equipmentReservation = this.equipmentReservationService.loadRerservation(this.equipmentReservation.getId());
+        this.equipmentReservation = this.equipmentReservationService.loadRerservation(this.reservationId);
     }
 
     /**
