@@ -10,7 +10,6 @@
 ### TODO/Notes
 
 - NOTE: cNumber Getters und Setters müssen so geschrieben werden weil JSF diese sonst nicht erkennt
-- [ ] use testing
 - [x] navbar anpassen (brauchen wir die tests?)
 - [x] sollen in den views alle ROLES angezeigt werden oder nur die mit am meisten rechte?
 - [ ] TODD: zb sicheres passwort generieren und per mail schicken
@@ -65,7 +64,7 @@
 
 ### TODO/Notes
 
-- Hotfix: Kaskadierung beim löschen von equipmentgruppen eventuell besser umsetzen
+- [x] TODO: Kaskadierung beim löschen von equipmentgruppen eventuell besser umsetzen
 
 ## 6. Testing & Bugfixes
 
