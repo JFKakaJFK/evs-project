@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import org.primefaces.context.RequestContext;
+import javax.faces.application.FacesMessage;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -36,7 +38,7 @@ public class NewReservationController implements Serializable {
     private List<Equipment> selectedEquipments;
     private List<Equipment> filteredEquipments;
     private Collection<Equipment> defaultEquipments;
-
+    private String msg;
 
     private ScheduleModel scheduleModel;
 
@@ -207,14 +209,15 @@ public class NewReservationController implements Serializable {
     /*
         Code von Melanie :)
      */
-    public void addEquipmentReservation() throws IOException {
-        //ToDo: check if selected time is in openinghours 
-        //Todo: error and success information
-    	//ToDo: check max duration for each equipment
+        public void addEquipmentReservation() throws IOException
+    {
+        //ToDo: check if selected time is in openinghours  ✔
+        //Todo: error and success information  ✔
+    	//ToDo: check max duration for each equipment  ✔
         //check if equipments are avialbe and validate Date
-        if(equipmentsAvailabe() && validateDate() && withinOpeningHours())
+    	 String title = "Add Reservation";
+        if(equipmentsAvailabe() && validateDate() && isWithinOpeningHours())
         {
-
             for(Equipment newEquipment : this.selectedEquipments)
             {
                 EquipmentReservation equipmentReservation = new EquipmentReservation();
@@ -224,13 +227,24 @@ public class NewReservationController implements Serializable {
                 equipmentReservation.setUser(userService.getAuthenticatedUser());
 
                 this.equipmentReservationService.saveReservation(equipmentReservation);
+
+                msg = "Reservation(s) added successfully";
+                FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
             }
-            String msg;
-            msg = "Reservation(s) added successfully";
-            FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
         }
+        
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
+        RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
 
+    public boolean isWithinOpeningHours() {
+    	if(openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate)) {
+    		return true;
+    	}
+    	msg = "Reservation not during Opening Hours!";
+    	return false;
+    }
+    
     /**
      * check if the equipment is available
      * @return
@@ -242,9 +256,11 @@ public class NewReservationController implements Serializable {
 			for (EquipmentReservation er : allEquipmentReservations) {
 				if (!((this.getLendingDate().after(er.getEndDate()))
 						|| (this.getReturnDate().before(er.getStartDate())))) {
-					return false;
+					msg = "Equipment is not available";
+			        return false;
 				}
 				if(!(er.getEquipment().isWithinMaxReservationDuration(this.getLendingDate(), this.getReturnDate()))) {
+					msg = "Duration too long";
 					return false;
 				}
 			}
@@ -252,14 +268,6 @@ public class NewReservationController implements Serializable {
 		}
 		return true;
 	}
-
-    /**
-     * Check if selected time is in opening Hours
-     * @return true if valid
-     */
-    public boolean withinOpeningHours() {
-    	return this.openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate);
-    }
     
     /**
      * check if enddate is after startdate and after current date
@@ -268,15 +276,14 @@ public class NewReservationController implements Serializable {
     public boolean validateDate() {
         Date today = new Date();
         today.getTime();
-        if(today.after(this.returnDate) && today.after(this.lendingDate)) {
-            return false;
-        }
-        if(returnDate.before(lendingDate)) {
+        if((today.after(this.returnDate) && today.after(this.lendingDate)) || (returnDate.before(lendingDate))) {
+        	msg = "Dates are not valid!";
             return false;
         }
 
         return true;
     }
+
 
     /**
      * checks if selected equipments are avialable
