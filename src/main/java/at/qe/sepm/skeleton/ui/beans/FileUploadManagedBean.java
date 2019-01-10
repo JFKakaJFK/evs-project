@@ -1,32 +1,43 @@
 package at.qe.sepm.skeleton.ui.beans;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
-
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialResponseWriter;
+import javax.servlet.http.Part;
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class FileUploadManagedBean {
-    UploadedFile file;
 
-    public UploadedFile getFile() {
-        return file;
+    private Part uploadedFile;
+    private String folder = "//resources//";
+
+    public Part getUploadedFile() {
+        return uploadedFile;
     }
 
-    public void setFile(UploadedFile file) {
-        this.file = file;
+    public void setUploadedFile(Part uploadedFile) {
+        this.uploadedFile = uploadedFile;
     }
 
-    public void fileUploadListener(FileUploadEvent e){
-        // Get uploaded file from the FileUploadEvent
-        this.file = e.getFile();
-        // Print out the information of the file
-        System.out.println("Uploaded File Name Is :: "+file.getFileName()+" :: Uploaded File Size :: "+file.getSize());
+
+    public void saveFile(){
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", uploadedFile.getSubmittedFileName()));
+
+        try (InputStream input = uploadedFile.getInputStream()) {
+            String fileName = uploadedFile.getSubmittedFileName();
+            Files.copy(input, new File(folder, fileName).toPath());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public String getTest(){
-        return "Hello";
-    }
 }
+

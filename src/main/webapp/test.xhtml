@@ -7,11 +7,14 @@
     <title>Journaldev Tutorial</title>
 </h:head>
 <h:body>
-    <h:form enctype="multipart/form-data" style="width:500px">
-        <h:outputText>#{fileUploadManagedBean.test}</h:outputText>
-        <p:fileUpload value="#{fileUploadManagedBean.file}" mode="advanced" multiple="true" auto="true"
-                      fileUploadListener="#{fileUploadManagedBean.fileUploadListener}"
-                        update="@this"/>
+    <h:form enctype="multipart/form-data"  prependId="false">
+        <p:messages id="messages" showDetail="true" closable="true">
+            <p:autoUpdate />
+        </p:messages>
+
+        <h:outputText value="File: "></h:outputText>
+        <h:inputFile value="#{fileUploadManagedBean.uploadedFile}"  />
+        <h:commandButton value="Save" type="submit" action="#{fileUploadManagedBean.saveFile}" style="color: red;"></h:commandButton>
     </h:form>
 </h:body>
 </html>
