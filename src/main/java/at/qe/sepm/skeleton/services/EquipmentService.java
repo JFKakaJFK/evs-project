@@ -68,6 +68,21 @@ public class EquipmentService {
             .collect(Collectors.toList());
     }
 
+
+    /**
+     * returns a collection of all equipments whose maximal reservation duration is within a timeframe
+     *
+     * @param startDate of timeframe
+     * @param endDate of timeframe
+     * @return
+     */
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public Collection<Equipment> getAllWithinMaxDuration(Date startDate, Date endDate){
+        return equipmentRepository.findAll().stream()
+            .filter(equipment -> equipment.isWithinMaxReservationDuration(startDate, endDate))
+            .collect(Collectors.toList());
+    }
+
     /**
      * Returns a collection of all free eqipments in a timeframe
      *
