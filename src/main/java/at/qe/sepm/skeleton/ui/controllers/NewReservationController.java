@@ -153,6 +153,8 @@ public class NewReservationController implements Serializable {
     {
         if(this.lendingDate != null && this.returnDate != null)
         {
+            //ToDo: check if selcted time + weekday is in openinghours
+
             if(returnDate.after(lendingDate) || lendingDate.equals(returnDate))
             {
                 Collection<Equipment> freeEquipments = equipmentService.getAllFreeEquipments(lendingDate, returnDate);
