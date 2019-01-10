@@ -20,30 +20,29 @@ public class ReservationDetailController {
     /**
      * Attribute to cache the currently displayed reservation
      */
-    private EquipmentReservation reservation;
+    private EquipmentReservation equipmentReservation;
 
     public EquipmentReservation getEquipmentReservation() {
-        return reservation;
+        return equipmentReservation;
     }
 
     public void setEquipmentReservation(EquipmentReservation equipmentReservation) {
-        this.reservation = equipmentReservation;
+        this.equipmentReservation = equipmentReservation;
         doDeleteReservation();
     }
 
     /**
-     * Action to force a reload of the currently displayed user.
+     * Action to force a reload of the currently displayed reservation.
      */
     public void doReloadReservation() {
-        //TODO reload reservation from db
-        //this.equipmentReservation = this.equipmentReservationService.reloadReservation(this.equipmentReservation.getId());
+        this.equipmentReservation = this.equipmentReservationService.loadRerservation(this.equipmentReservation.getId());
     }
 
     /**
      * Action to delete the currently displayed reservation.
      */
     public void doDeleteReservation() {
-        this.equipmentReservationService.deleteReservation(reservation);
-        reservation = null;
+        this.equipmentReservationService.deleteReservation(equipmentReservation);
+        equipmentReservation = null;
     }
 }
