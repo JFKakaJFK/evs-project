@@ -34,6 +34,16 @@ public class EquipmentReservationService {
     private EquipmentService equipmentService;
 
     /**
+     * Loads a reservation by its id
+     *
+     * @param id
+     */
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public EquipmentReservation loadRerservation(Integer id){
+        return equipmentReservationRepository.findOne(id);
+    }
+
+    /**
      * Returns a collectioin of all Equipments which need to be returned or are overdue
      */
     @PreAuthorize("hasAuthority('ADMIN')")
