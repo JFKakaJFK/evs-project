@@ -11,6 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -71,6 +75,80 @@ public class OpeningHoursService {
         }
 
         return openingHoursRepository.save(openingHour);
+    }
+
+    public boolean isWithinOpeningHours(Date date) {
+        OpeningHours openingHours = null;
+        try
+        {
+            DateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+            String time = simpleDateFormat.format(date);
+            date = simpleDateFormat.parse(time);
+
+            openingHours = this.loadOpeningHour(getWeekDay(date));
+        }
+
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        if(openingHours == null)
+            return false;
+
+        else
+        {
+            if(openingHours.getStartPause() == null || openingHours.getEndPause() == null)
+            {
+                if(date.after(openingHours.getStartTime()) && date.before(openingHours.getEndTime()))
+                {
+                    return true;
+                }
+                //check just startTime and endTime
+            }
+
+            else
+            {
+                //check sartTime, endTime + startPause, endPause
+                if((date.after(openingHours.getStartTime()) && date.before(openingHours.getStartPause()))
+                        ||
+                    (date.after(openingHours.getEndPause()) && date.before(openingHours.getEndTime()))
+                )
+                {
+                    return true;
+                }
+
+            }
+        }
+
+        return false;
+    }
+
+    public String getWeekDay(Date date)
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+        switch (dayOfWeek)
+        {
+            case Calendar.MONDAY:
+                return "Montag";
+            case Calendar.TUESDAY:
+                return "Dienstag";
+            case Calendar.WEDNESDAY:
+                return "Mittwoch";
+            case Calendar.THURSDAY:
+                return "Donnerstag";
+            case Calendar.FRIDAY:
+                return "Freitag";
+            case Calendar.SATURDAY:
+                return "Samstag";
+            case Calendar.SUNDAY:
+                return "Sonntag";
+        }
+        return null;
     }
 
     /**

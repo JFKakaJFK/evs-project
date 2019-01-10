@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -206,9 +207,7 @@ public class NewReservationController implements Serializable {
     /*
         Code von Melanie :)
      */
-
-    public void addEquipmentReservation() throws IOException
-    {
+    public void addEquipmentReservation() throws IOException {
         //ToDo: check if selected time is in openinghours 
         //Todo: error and success information
     	//ToDo: check max duration for each equipment
@@ -225,8 +224,6 @@ public class NewReservationController implements Serializable {
                 equipmentReservation.setUser(userService.getAuthenticatedUser());
 
                 this.equipmentReservationService.saveReservation(equipmentReservation);
-
-
             }
             String msg;
             msg = "Reservation(s) added successfully";
@@ -261,33 +258,7 @@ public class NewReservationController implements Serializable {
      * @return true if valid
      */
     public boolean withinOpeningHours() {
-    	String lendingWeekDay = getWeekDay(this.lendingDate);
-    	String returnWeekDay = getWeekDay(this.returnDate);
-    	
-    	OpeningHours lendingDay = openingHoursService.loadOpeningHour(lendingWeekDay);
-    	OpeningHours returnDay = openingHoursService.loadOpeningHour(returnWeekDay);
-    	if(lendingDate.before(lendingDay.getEndTime()) && lendingDate.after(lendingDay.getStartTime()) && returnDate.before(returnDay.getEndTime()) && returnDate.after(returnDay.getStartTime())) {
-    		return true;
-    	}
-    	return false;
-    }
-
-    public String getWeekDay(Date date) {
-    	Calendar c = Calendar.getInstance();
-    	c.setTime(date);
-    	int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-    	String day;
-    	switch (dayOfWeek) {
-    	case 1: day = "Montag"; return day;
-    	case 2: day = "Dienstag"; return day;
-    	case 3: day = "Mittwoch"; return day;
-    	case 4: day = "Donnerstag"; return day;
-    	case 5: day = "Freitag"; return day;
-    	case 6: day = "Samstag"; return day;
-    	case 7: day = "Sonntag"; return day;
-    	default: return null;
-    	}
-    	
+    	return this.openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate);
     }
     
     /**
