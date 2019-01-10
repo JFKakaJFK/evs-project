@@ -45,7 +45,7 @@ public class EquipmentReservation implements Persistable<Integer> {
      * @return
      */
     public boolean isDeletable(){
-        return new Date().getTime() > this.getStartDate().getTime();
+        return new Date().getTime() < this.getStartDate().getTime() || completed;
     }
 
     // TODO remove since reservation.getEquipment.getName has the same functionality

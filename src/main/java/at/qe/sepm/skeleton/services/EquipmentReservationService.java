@@ -96,7 +96,7 @@ public class EquipmentReservationService {
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal eq #reservation.getUser()")
     public void deleteReservation(EquipmentReservation reservation){
-        if(reservation.getStartDate().compareTo(new Date()) >= 1){
+        if(reservation.isDeletable()){
             Equipment e = reservation.getEquipment();
             e.removeReservation(reservation);
             equipmentService.saveEquipment(e);
