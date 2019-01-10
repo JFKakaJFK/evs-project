@@ -209,12 +209,11 @@ public class NewReservationController implements Serializable {
 
     public void addEquipmentReservation() throws IOException
     {
-        //ToDo: check if selected time is in openinghours
-        //ToDo: error and success information
-        //ToDo: check max duration for each equipment
-
+        //ToDo: check if selected time is in openinghours 
+        //Todo: error and success information
+    	//ToDo: check max duration for each equipment
         //check if equipments are avialbe and validate Date
-        if(equipmentsAvailabe() && validateDate())
+        if(equipmentsAvailabe() && validateDate() && withinOpeningHours())
         {
             String msg;
             for(Equipment newEquipment : this.selectedEquipments)
@@ -233,17 +232,62 @@ public class NewReservationController implements Serializable {
         }
     }
 
-    public boolean isAvailable() {
-        Collection<EquipmentReservation> allEquipmentReservations = new ArrayList<EquipmentReservation>();
-        allEquipmentReservations = equipmentReservationService.getAllEquipmentReservations();
-        for(EquipmentReservation er : allEquipmentReservations) {
-            if (!((this.getLendingDate().after(er.getEndDate())) || (this.getReturnDate().before(er.getStartDate())))) {
-                return false;
-            }
-        }
-        return true;
+    /**
+     * check if the equipment is available
+     * @return
+     */
+	public boolean isAvailable() {
+		Collection<EquipmentReservation> allEquipmentReservations = new ArrayList<EquipmentReservation>();
+		for (Equipment equipment : selectedEquipments) {
+			allEquipmentReservations = equipmentReservationService.getAllEquipmentReservationsContaining(equipment);
+			for (EquipmentReservation er : allEquipmentReservations) {
+				if (!((this.getLendingDate().after(er.getEndDate()))
+						|| (this.getReturnDate().before(er.getStartDate())))) {
+					return false;
+				}
+				if(!(er.getEquipment().isWithinMaxReservationDuration(this.getLendingDate(), this.getReturnDate()))) {
+					return false;
+				}
+			}
+
+		}
+		return true;
+	}
+
+    /**
+     * Check if selected time is in opening Hours
+     * @return true if valid
+     */
+    public boolean withinOpeningHours() {
+    	String lendingWeekDay = getWeekDay(this.lendingDate);
+    	String returnWeekDay = getWeekDay(this.returnDate);
+    	
+    	OpeningHours lendingDay = openingHoursService.loadOpeningHour(lendingWeekDay);
+    	OpeningHours returnDay = openingHoursService.loadOpeningHour(returnWeekDay);
+    	if(lendingDate.before(lendingDay.getEndTime()) && lendingDate.after(lendingDay.getStartTime()) && returnDate.before(returnDay.getEndTime()) && returnDate.after(returnDay.getStartTime())) {
+    		return true;
+    	}
+    	return false;
     }
 
+    public String getWeekDay(Date date) {
+    	Calendar c = Calendar.getInstance();
+    	c.setTime(date);
+    	int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+    	String day;
+    	switch (dayOfWeek) {
+    	case 1: day = "Montag"; return day;
+    	case 2: day = "Dienstag"; return day;
+    	case 3: day = "Mittwoch"; return day;
+    	case 4: day = "Donnerstag"; return day;
+    	case 5: day = "Freitag"; return day;
+    	case 6: day = "Samstag"; return day;
+    	case 7: day = "Sonntag"; return day;
+    	default: return null;
+    	}
+    	
+    }
+    
     /**
      * check if enddate is after startdate and after current date
      * @return true if dates are valid
@@ -257,6 +301,7 @@ public class NewReservationController implements Serializable {
         if(returnDate.before(lendingDate)) {
             return false;
         }
+
         return true;
     }
 
