@@ -218,6 +218,9 @@ public class NewReservationController implements Serializable {
     	//ToDo: check max duration for each equipment
         //check if equipments are avialbe and validate Date
     	 String title = "Add Reservation";
+    	 if(this.selectedEquipments.size() == 0)
+    	     msg = "Please select at least one equipment";
+
         if(equipmentsAvailabe() && validateDate() && isWithinOpeningHours())
         {
 
