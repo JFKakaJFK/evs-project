@@ -13,6 +13,7 @@
 - [x] navbar anpassen (brauchen wir die tests?)
 - [x] sollen in den views alle ROLES angezeigt werden oder nur die mit am meisten rechte?
 - [ ] TODD: zb sicheres passwort generieren und per mail schicken
+- [ ] BUG: user overview sortieren geht erst nachdem man in der suchleiste etwas gesucht hat(umstellung der List<> auf filteredUsers)
 
 ## 2. Equipment management & Opening Hours - FAST FERTIG
 
