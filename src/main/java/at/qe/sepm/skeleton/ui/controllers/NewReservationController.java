@@ -216,7 +216,7 @@ public class NewReservationController implements Serializable {
         //check if equipments are avialbe and validate Date
         if(equipmentsAvailabe() && validateDate())
         {
-            String msg;
+
             for(Equipment newEquipment : this.selectedEquipments)
             {
                 EquipmentReservation equipmentReservation = new EquipmentReservation();
@@ -227,9 +227,11 @@ public class NewReservationController implements Serializable {
 
                 this.equipmentReservationService.saveReservation(equipmentReservation);
 
-                msg = "Reservation(s) added successfully";
-                FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
+
             }
+            String msg;
+            msg = "Reservation(s) added successfully";
+            FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
         }
     }
 
