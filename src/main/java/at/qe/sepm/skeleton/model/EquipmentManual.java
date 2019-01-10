@@ -31,7 +31,6 @@ public class EquipmentManual implements Persistable<Integer> {
     @Column(nullable = false)
     private String filename;
 
-    // TODO Filetype
     @Column(nullable = false)
     private String type;
 

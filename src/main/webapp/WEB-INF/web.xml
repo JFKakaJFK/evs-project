@@ -27,7 +27,7 @@
 
     <context-param>
         <param-name>primefaces.UPLOADER</param-name>
-        <param-value>auto</param-value>
+        <param-value>commons</param-value>
     </context-param>
 
     <servlet-mapping>
