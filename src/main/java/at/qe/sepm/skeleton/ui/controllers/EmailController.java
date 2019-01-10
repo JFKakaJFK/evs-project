@@ -2,6 +2,7 @@ package at.qe.sepm.skeleton.ui.controllers;
 import at.qe.sepm.skeleton.model.User;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,7 @@ import java.util.Properties;
 
 public class EmailController {
 	
+	@Autowired
 	User user;
 	
 	@RequestMapping(value = "/sendemail")
