@@ -52,7 +52,7 @@ public class ReservationListController {
         return equipmentReservationService.getAllByUser(authUser);
     }
 
-    public Collection<Equipment> getAllReservationsReturn()
+    public Collection<EquipmentReservation> getAllReservationsReturn()
     {
         return equipmentReservationService.getAllBorrowedEquipments();
     }

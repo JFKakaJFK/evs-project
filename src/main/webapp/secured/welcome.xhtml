@@ -62,15 +62,15 @@
                     <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
                     <p:column headerText="Equipment">
-                        <h:outputText value="#{reservation.name}" />
+                        <h:outputText value="#{reservation.equipmentAsString}" />
                     </p:column>
 
                     <p:column headerText="Return Date">
-                        <h:outputText value="end date" />
+                        <h:outputText value="#{reservation.endDate}"/>
                     </p:column>
 
                     <p:column headerText="Status">
-                        <h:outputText value="OK" />
+                        <h:outputText value="#{reservation.equipment.state}" />
                     </p:column>
 
                     <p:column style="width:32px;text-align: center">
