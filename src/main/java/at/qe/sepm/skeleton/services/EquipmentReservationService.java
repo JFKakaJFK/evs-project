@@ -34,6 +34,18 @@ public class EquipmentReservationService {
     private EquipmentService equipmentService;
 
     /**
+     * Retuns all Reservations where the equipment state is BOOKED
+     */
+    //TODO auth?
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public Collection<EquipmentReservation> getAllBorrowedEquipmentReservations(){
+        Collection<Equipment> borrowed = equipmentService.getAllBorrowedEquipments();
+        return equipmentReservationRepository.findAll().stream()
+            .filter(reservation -> borrowed.contains(reservation.getEquipment()))
+            .collect(Collectors.toList());
+    }
+
+    /**
      * Loads a reservation by its id
      *
      * @param id
