@@ -8,12 +8,15 @@
 </h:head>
 <h:body>
 
+
     <h:form>
+        <h:outputText value="#{fileUploadView.test}" />
         <p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced"
                       update="messages" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
 
         <h:outputText value="#{fileUploadView.test}" />
         <p:growl id="messages" showDetail="true" />
     </h:form>
+
 </h:body>
 </html>

@@ -38,5 +38,6 @@ public class FileUploadView {
         System.out.println("tesadt");
         FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+
     }
 }
