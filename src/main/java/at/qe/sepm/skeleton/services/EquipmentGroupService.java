@@ -2,6 +2,7 @@ package at.qe.sepm.skeleton.services;
 
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentGroup;
+import at.qe.sepm.skeleton.model.EquipmentState;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.EquipmentGroupRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
@@ -12,10 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +39,21 @@ public class EquipmentGroupService {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public Collection<EquipmentGroup> getOwnGroups(){
         return equipmentGroupRepository.findAllByUser(getAuthenticatedUser());
+    }
+
+    /**
+     * Returns all own groups where the state of alle equipment in the group is AVAILABLE
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    public Collection<EquipmentGroup> getOwnGroupsFree(Date start, Date end){
+        return equipmentGroupRepository.findAllByUser(getAuthenticatedUser()).stream()
+            .filter(equipmentGroup -> equipmentGroup.getEquipments().stream()
+                .allMatch(equipment -> equipment.getState(start, end) == EquipmentState.AVAILABLE)
+            ).collect(Collectors.toList());
     }
 
     /**
