@@ -6,64 +6,13 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
-        <style type="text/css">
-
-            #header, #footer {
-                display: none;
-            }
-
-            #content {
-                width: 100%;
-                height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: url('https://images.unsplash.com/photo-1503515091255-ab8063a1796d?ixlib=rb-1.2.1');
-                background-size: cover;
-            }
-
-            #content #login_form {
-                display: inline-block;
-                background: white;
-                box-sizing: border-box;
-                padding: 40px;
-                border-radius: 10px;
-                box-shadow: 4px 4px 16px hsla(0, 0%, 0%, .3), 4px 4px 32px hsla(0, 0%, 0%, .25);
-            }
-
-            .ui-outputlabel, input[type="text"], button[type="submit"] {
-                font-family: 'Open Sans', 'sans-serif';
-            }
-
-            h2 {
-                font-family: Raleway, 'sans-serif';
-            }
-
-            input[type="text"]#username, input[type="password"]#password {
-                border: 0;
-                box-shadow: none;
-                outline: none;
-                background-color: hsla(0, 0%, 80%, .25) !important;
-                width: 150px;
-                padding: 10px;
-                margin-left: 20px;
-            }
-
-            button[type="submit"] {
-                margin: 30px auto 0;
-                border: 0 !important;
-                box-shadow: none;
-                box-sizing: border-box;
-                width: 150px;
-                padding: 10px;
-                background: #3A95E8;
-                color: #fff;
-                font-size: 16px;
-                font-weight: lighter;
-            }
-        </style>
+        <f:event type="preRenderView" listener="#{loginBean.checkURL}"/>
+        <h:outputStylesheet name="css/login.css" />
 
         <form id="login_form" action="#{request.contextPath}/login" method="post">
+            <p:messages id="messages" showDetail="true" closable="true" severity="error">
+                <p:autoUpdate />
+            </p:messages>
             <h2>Log In</h2>
             <h:panelGrid columns="2">
                 <p:outputLabel for="username" value="Benutzername:"/>

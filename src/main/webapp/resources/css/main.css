@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway');
+
+:root {
+    --color-1: #3A95E8;
+}
+/* ovveride chrome autocomplete color TODO doesn't work */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #e4e4e4 inset;
+}
+
+:focus {
+    background-color: rgba(0,0,0,0);
+}
+
+*{
+    font-family: 'Open Sans', sans-serif;
+    outline: none;
+}
+
+body {
+    margin: 0;
+}
+
+#content {
+    box-sizing: border-box;
+    padding: 20px;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+#footer div {
+    box-sizing: border-box;
+    padding-right: 20px;
+}

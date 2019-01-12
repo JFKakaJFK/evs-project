@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.exceptionHandling().accessDeniedPage("/error/denied.xhtml");
 
-        http.sessionManagement().invalidSessionUrl("/error/invalid_session.xhtml");
+        http.sessionManagement().invalidSessionUrl("/login.xhtml?expired"); // "/error/invalid_session.xhtml");
 
     }
 
