@@ -2,6 +2,7 @@
 
 :root {
     --color-1: #3A95E8;
+    --color-2: hsla(0, 0%, 80%, .25);
 }
 /* ovveride chrome autocomplete color TODO doesn't work */
 input:-webkit-autofill {
@@ -21,14 +22,23 @@ body {
     margin: 0;
 }
 
+#page {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
 #content {
     box-sizing: border-box;
     padding: 20px;
     max-width: 90%;
     margin: 0 auto;
+    flex: 1;
 }
 
 #footer div {
     box-sizing: border-box;
-    padding-right: 20px;
+    padding: 25px;
+    text-align: right;
+    background: var(--color-2);
 }
