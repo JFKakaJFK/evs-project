@@ -23,6 +23,16 @@ public class EquipmentDetailController {
     private EquipmentComment comment;
     private EquipmentManual manual;
 
+    public Integer getExpandedRowElementId() {
+        return expandedRowElementId;
+    }
+
+    public void setExpandedRowElementId(Integer expandedRowElementId) {
+        this.expandedRowElementId = expandedRowElementId;
+    }
+
+    private Integer expandedRowElementId = 1;
+
     // TODO
     @Deprecated
     public void loadEquipmentByURL(){
@@ -80,10 +90,8 @@ public class EquipmentDetailController {
     }
 
     public void doDeleteComment(){
-        Equipment e = comment.getEquipment();
-        e.removeComment(comment);
-        this.comment = null;
-        equipmentService.saveEquipment(e);
+        equipmentService.deleteComment(comment);
+        comment = null;
     }
 
     public void doReloadManual(){
@@ -95,12 +103,11 @@ public class EquipmentDetailController {
     }
 
     public void doDeleteManual(){
-        Equipment e = manual.getEquipment();
-        e.removeManual(manual);
-        this.manual = null;
-        equipmentService.saveEquipment(e);
+        equipmentService.deleteManual(manual);
+        manual = null;
     }
 
+    @Deprecated
     public void redirectById(String url, String id) throws Exception {
         FacesContext.getCurrentInstance().getExternalContext().redirect(url + "?id=" + id);
     }

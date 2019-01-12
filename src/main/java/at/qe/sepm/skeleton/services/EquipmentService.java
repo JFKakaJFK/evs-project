@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -37,6 +38,9 @@ public class EquipmentService {
 
     @Autowired
     private EquipmentManualRepository equipmentManualRepository;
+
+    @Autowired
+    private StorageService storageService;
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
 
@@ -111,9 +115,17 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteEquipment(Equipment equipment){
-        equipment.remove();
-        equipmentRepository.delete(equipment);
-        logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
+        try {
+            for (EquipmentManual manual : equipment.getManuals()) {
+                storageService.deleteFile(manual.getFilename());
+            }
+        } catch (IOException e){
+            logger.warn("FAILED to delete manual on delete equipment action");
+        } finally {
+            equipment.remove();
+            equipmentRepository.delete(equipment);
+            logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
+        }
     }
 
     /**
@@ -128,6 +140,7 @@ public class EquipmentService {
             comment.setCreateDate(new Date());
             comment.setCreateUser(getAuthenticatedUser());
         }
+        comment.getEquipment().addComment(comment);
         return equipmentCommentRepository.save(comment);
     }
 
@@ -139,7 +152,9 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteComment(EquipmentComment comment){
-        equipmentCommentRepository.delete(comment);
+        Equipment e = comment.getEquipment();
+        e.removeComment(comment);
+        equipmentRepository.save(e);
     }
 
 
@@ -155,6 +170,7 @@ public class EquipmentService {
             manual.setCreateDate(new Date());
             manual.setCreateUser(getAuthenticatedUser());
         }
+        manual.getEquipment().addManual(manual);
         return equipmentManualRepository.save(manual);
     }
 
@@ -166,7 +182,14 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteManual(EquipmentManual manual){
-        equipmentManualRepository.delete(manual);
+        try{
+            storageService.deleteFile(manual.getFilename());
+        } catch (IOException e){
+            // TODO
+        }
+        Equipment e = manual.getEquipment();
+        e.removeManual(manual);
+        equipmentRepository.save(e);
     }
 
 
