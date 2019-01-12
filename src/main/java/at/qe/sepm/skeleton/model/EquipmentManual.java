@@ -1,16 +1,16 @@
 package at.qe.sepm.skeleton.model;
 
+import at.qe.sepm.skeleton.services.StorageService;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Persistable;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.persistence.*;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Path;
 import java.util.Date;
 
 /**
@@ -32,14 +32,13 @@ public class EquipmentManual implements Persistable<Integer> {
     private String filename;
 
     @Column(nullable = false)
+    private String originalFileName;
+
+    @Column(nullable = false)
     private String type;
 
     @Column
     private String desc;
-
-    @Lob
-    @Column
-    private byte[] file;
 
     @ManyToOne(optional = false)
     private User createUser;
@@ -51,11 +50,20 @@ public class EquipmentManual implements Persistable<Integer> {
     @ManyToOne
     private Equipment equipment;
 
-    public StreamedContent getDownload() throws Exception {
-        StreamedContent download = new DefaultStreamedContent();
-        InputStream is = new ByteArrayInputStream(file);
-        download = new DefaultStreamedContent(is, type, filename);
-        return download;
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDesc() {
@@ -72,22 +80,6 @@ public class EquipmentManual implements Persistable<Integer> {
 
     public void setFilename(String filename) {
         this.filename = filename;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public byte[] getFile() {
-        return file;
-    }
-
-    public void setFile(byte[] file) {
-        this.file = file;
     }
 
     public Equipment getEquipment() {

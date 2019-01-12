@@ -52,8 +52,10 @@
                                     <h:outputText value="#{manual.desc}"/>
 
                                     <f:facet name="actions">
-                                        <p:commandButton value="Download" ajax="false" icon="pi pi-arrow-down">
-                                            <p:fileDownload value="#{manual.download}" />
+
+                                        <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" actionListener="#{fileDownloadBean.download(manual)}">
+                                            <!-- PRIMEFACES VERSION -->
+                                            <!-- <p:fileDownload value="#{fileDownloadBean.file}" /> -->
                                         </p:commandButton>
                                         <p:commandButton action="#{equipmentDetailController.doDeleteManual}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                                             <f:setPropertyActionListener value="#{manual}" target="#{equipmentDetailController.manual}" />
@@ -195,7 +197,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="Neues Bedienungsanleitung" id="addManualDialog" widgetVar="addManualDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
+        <p:dialog header="Neue Bedienungsanleitung" id="addManualDialog" widgetVar="addManualDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
             <h:form id="addManualForm" enctype="multipart/form-data">
                 <p:growl id="growls" showDetail="true" />
                 <p:outputPanel id="newManualData">
@@ -214,8 +216,10 @@
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="2">
-                        <p:commandButton value="Speichern" action="#{addManualBean.addManual}" oncomplete="PF('addManualDialog').hide()" update=":equipmentForm:equipmentTable"/>
-                        <p:commandButton value="Abbrechen" oncomplete="PF('addManualDialog').hide()"/>
+                        <p:commandButton value="Speichern" action="#{addManualBean.addManual}"
+                                         oncomplete="PF('addManualDialog').hide()"
+                                         update=":equipmentForm:equipmentTable" />
+                        <p:commandButton value="Abbrechen" action="#{addManualBean.abort}" oncomplete="PF('addManualDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>
