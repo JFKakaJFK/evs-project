@@ -25,14 +25,14 @@
 - [x] OpeningHours Entity und Service (@Chris)
 - [x] testÖffnungszeiten hinzufügen (@Chris)
 - [ ] view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
-- [ ] view zum Ansehen der equipmentDetails(Kommentare, Manuals) **?ALLe? = STUDENT** und Kommentare/Manuals hinzufügen/entfernen nur für **ADMIN**
+- [x] view zum Ansehen der equipmentDetails(Kommentare, Manuals) **?ALLe? = STUDENT** und Kommentare/Manuals hinzufügen/entfernen nur für **ADMIN**
 
 ### TODO/Notes
 
 - [ ] Bug: beim ändern des eqipments wird die maximale ausleihdauer auf 0 gesetzt wenn man diese nicht verändert
 - [x] TODO: erstellen von kommentaren
-- [ ] Bug: beim verändern der anleitungen/kommentare wird die tabelle wieder eingeklappt/es sind anfangs immer alle expansions ausgeklappt[so thread](https://stackoverflow.com/questions/43598420/how-to-keep-primefaces-rowexpansion-open-in-an-update-of-the-table)
-- [ ] TODO: up/download von manuals
+- [ ] Bug: beim erstellen der anleitungen/kommentare wird die tabelle wieder eingeklappt/es sind anfangs immer alle expansions ausgeklappt[so thread](https://stackoverflow.com/questions/43598420/how-to-keep-primefaces-rowexpansion-open-in-an-update-of-the-table)
+- [x] TODO: up/download von manuals
 
 ## 3. Alle Reservations - IN ENTWICKLUNG
 
@@ -52,7 +52,7 @@
 
 ### TODO/Notes
 
-- [ ] TODO: Kaskadierung beim löschen in alle Richtungen
+- [x] TODO: Kaskadierung beim löschen in alle Richtungen (sollte passen)
 
 ## 4. EquipmentGroup management - FERTIG
 
