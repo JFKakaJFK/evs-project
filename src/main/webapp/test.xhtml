@@ -10,9 +10,8 @@
 
 
     <h:form>
-        <h:outputText value="#{fileUploadView.test}" />
         <p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced"
-                      update="messages" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                      update="messages" auto="true" sizeLimit="100000000" />
 
         <h:outputText value="#{fileUploadView.test}" />
         <p:growl id="messages" showDetail="true" />

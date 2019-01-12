@@ -25,15 +25,16 @@
         <param-value>true</param-value>
     </context-param>
 
-    <context-param>
-        <param-name>primefaces.UPLOADER</param-name>
-        <param-value>commons</param-value>
-    </context-param>
-
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+
+    <!-- upload stuff -->
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>commons</param-value>
+    </context-param>
 
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
@@ -45,6 +46,12 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
+
+    <!-- theme -->
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>bootstrap</param-value>
+    </context-param>
 
     <welcome-file-list>
         <welcome-file>login.xhtml</welcome-file>

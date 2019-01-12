@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -64,7 +64,9 @@
                             </p:repeat>
 
                             <f:facet name="footer">
-                                <p:commandButton value="Bedienungsanleitung hinzufügen" update=":addManualDialog" oncomplete="PF('addManualDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                                <p:commandButton value="Bedienungsanleitung hinzufügen" update=":addManualDialog" oncomplete="PF('addManualDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                                    <f:setPropertyActionListener value="#{equipment}" target="#{addManualBean.equipment}" />
+                                </p:commandButton>
                             </f:facet>
                         </p:panel>
 
@@ -193,8 +195,9 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="Neues Gerät" id="addManualDialog" widgetVar="addManualDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
+        <p:dialog header="Neues Bedienungsanleitung" id="addManualDialog" widgetVar="addManualDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
             <h:form id="addManualForm" enctype="multipart/form-data">
+                <p:growl id="growls" showDetail="true" />
                 <p:outputPanel id="newManualData">
                     <h:panelGrid columns="2">
                         <p:outputLabel for="manualName" value="Name: "/>
@@ -202,11 +205,16 @@
                         <p:outputLabel for="manualDesc" value="Name: "/>
                         <p:inputText id="manualDesc" value="#{addManualBean.desc}"/>
                         <p:outputLabel for="fileUpload" value="Bedienungsanleitung: "/>
-                        <p:fileUpload id="fileUpload" value="#{addManualBean.file}" mode="simple" skinSimple="true"/>
+                        <!-- sizelimit should be 10MB -->
+                        <!-- TODO more attributes e.g. custom messages in german? -->
+                        <p:fileUpload id="fileUpload" fileUploadListener="#{addManualBean.handleFileUpload}" multiple="false"
+                                      mode="advanced"
+                                      update=":equipmentForm:messages" auto="true" sizeLimit="10000000"
+                                      allowTypes="/(\.|\/)(txt|md|pdf|html|jpe?g|png)$/" />
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="2">
-                        <p:commandButton value="Speichern" ajax="false" action="#{addManualBean.upload}" oncomplete="PF('addManualDialog').hide()" update=":equipmentForm:equipmentTable"/>
+                        <p:commandButton value="Speichern" action="#{addManualBean.addManual}" oncomplete="PF('addManualDialog').hide()" update=":equipmentForm:equipmentTable"/>
                         <p:commandButton value="Abbrechen" oncomplete="PF('addManualDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>

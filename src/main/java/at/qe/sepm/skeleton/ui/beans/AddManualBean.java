@@ -1,5 +1,7 @@
 package at.qe.sepm.skeleton.ui.beans;
 
+import at.qe.sepm.skeleton.model.Equipment;
+import at.qe.sepm.skeleton.model.EquipmentManual;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -21,35 +23,57 @@ public class AddManualBean {
     @Autowired
     private EquipmentService equipmentService;
 
-    private UploadedFile file;
     private String name;
     private String desc;
+    private Equipment equipment;
 
-    public void upload(){
-        if(file != null){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                FacesMessage.SEVERITY_INFO, "Success", "Betriebsanleitung erfolgreich hochgeladen")
-            );
-
-            System.out.println("SUCCESS");
-        }
-        System.out.println("FAIL");
-    }
+    private EquipmentManual manual;
 
     public void handleFileUpload(FileUploadEvent event){
+        System.out.println("Was Called");
+        System.out.println(event);
+        System.out.println(event.getFile());
+        System.out.println(event.getFile().getFileName());
+        this.manual = new EquipmentManual();
+        manual.setEquipment(equipment);
+        manual.setFilename(event.getFile().getFileName());
+        manual.setType(event.getFile().getContentType());
+        manual.setFile(event.getFile().getContents());
+
+        manual.setName("name");
+
+        equipmentService.saveManual(manual);
+
+        FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage("growla", msg);
+    }
+
+    public void addManual(){
+        if(manual == null){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", "Sie müssen zuerst eine Datei auswählen!")
+            );
+            return;
+        }
+
+        manual.setName(name);
+        manual.setDesc(desc);
+
+        equipmentService.saveManual(manual);
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-            FacesMessage.SEVERITY_INFO, "Success", "Betriebsanleitung erfolgreich hochgeladen")
+            FacesMessage.SEVERITY_INFO, "Success", "Betriebsanleitung '" + manual.getFilename() + "' erfolgreich gespeichert")
         );
 
-        System.out.println("SUCCESS");
+        this.manual = null;
     }
 
-    public UploadedFile getFile() {
-        return file;
+    public void setEquipment(Equipment equipment){
+        this.equipment = equipment;
     }
 
-    public void setFile(UploadedFile file) {
-        this.file = file;
+    public Equipment getEquipment(){
+        return equipment;
     }
 
     public String getName() {

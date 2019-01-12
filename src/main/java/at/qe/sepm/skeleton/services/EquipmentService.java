@@ -158,6 +158,7 @@ public class EquipmentService {
             manual.setCreateDate(new Date());
             manual.setCreateUser(getAuthenticatedUser());
         }
+        manual.getEquipment().addManual(manual);
         return equipmentManualRepository.save(manual);
     }
 
