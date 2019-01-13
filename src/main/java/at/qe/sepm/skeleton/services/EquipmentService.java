@@ -146,11 +146,25 @@ public class EquipmentService {
         System.out.println(equipment.getEquipmentGroups());
         List<EquipmentGroup> groups = new ArrayList<>(equipment.getEquipmentGroups());
         for(EquipmentGroup group: groups){
+            if(group.getEquipments().size() < 3){
+
+                List<Equipment> equipments = new ArrayList<>(group.getEquipments());
+                User u = group.getUser();
+                u.getEquipmentGroups().remove(group);
+                for (Equipment e: equipments) {
+                    e.removeEquipmentGroup(group);
+                }
+
+                equipmentGroupRepository.delete(group);
+
+                userRepository.save(u);
+
+                /*
             group.getEquipments().remove(equipment);
             equipment.getEquipmentGroups().remove(group);
             User user = group.getUser();
             userRepository.save(user);
-            if(group.getEquipments().size() < 2){
+            //if(group.getEquipments().size() < 2){
                 System.out.println("TESTTEST");
                 user.getEquipmentGroups().remove(group);
                 List<Equipment> eOfGroup = new ArrayList<>(group.getEquipments());
@@ -167,6 +181,12 @@ public class EquipmentService {
                 userRepository.save(user);
                 equipmentRepository.save(equipment);
                 System.out.println("TESTTEST");
+                */
+            } else {
+                group.getEquipments().remove(equipment);
+                equipment.getEquipmentGroups().remove(group);
+                User user = group.getUser();
+                userRepository.save(user);
             }
             System.out.println("TESTTEST");
         }
