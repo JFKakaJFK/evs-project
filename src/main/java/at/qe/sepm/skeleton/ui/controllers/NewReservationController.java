@@ -216,7 +216,10 @@ public class NewReservationController extends ReservationController implements S
         for(Equipment equipment : this.selectedEquipments)
         {
             if(!freeEquipments.contains(equipment))
+            {
+                msg = "Equipment is not available";
                 return false;
+            }
         }
 
         return true;

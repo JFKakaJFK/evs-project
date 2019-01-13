@@ -180,7 +180,7 @@ public class newGroupReservationController extends ReservationController impleme
         }
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
-        RequestContext.getCurrentInstance().showMessageInDialog(message);
+        PrimeFaces.current().dialog().showMessageDynamic(message);
     }
 
     public boolean groupsAvailable()
