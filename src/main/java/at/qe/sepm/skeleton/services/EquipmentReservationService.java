@@ -96,10 +96,13 @@ public class EquipmentReservationService {
         if(reservation.isNew()){
             reservation.setCreateDate(new Date());
         }
+        // TODO redo / test all cascading
+        /*
         Equipment e = reservation.getEquipment();
         e.addReservation(reservation);
         equipmentService.saveEquipment(e);
-        return reservation;
+        */
+        return equipmentReservationRepository.save(reservation);
     }
 
     /**
