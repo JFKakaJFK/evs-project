@@ -48,11 +48,15 @@ public class EquipmentGroupService {
      * @param end
      * @return
      */
+    // TODO clean up with predicate<equipment>
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public Collection<EquipmentGroup> getOwnGroupsFree(Date start, Date end){
         return equipmentGroupRepository.findAllByUser(getAuthenticatedUser()).stream()
             .filter(equipmentGroup -> equipmentGroup.getEquipments().stream()
-                .allMatch(equipment -> equipment.getState(start, end) == EquipmentState.AVAILABLE)
+                .allMatch(equipment ->
+                    equipment.getState(start, end) == EquipmentState.AVAILABLE ||
+                    (equipment.getState(start, end) == EquipmentState.OVERDUE &&
+                        (equipment.getOverdueReservation() == null) ? (false) : (start.getTime() > equipment.getOverdueReservation().getEndDateOverdue().getTime())))
             ).collect(Collectors.toList());
     }
 
