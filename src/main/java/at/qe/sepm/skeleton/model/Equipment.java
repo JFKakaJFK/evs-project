@@ -78,6 +78,18 @@ public class Equipment implements Persistable<Integer> {
         }
     }
 
+    public EquipmentReservation getOverdueReservation(){
+        for(EquipmentReservation reservation: reservations){
+            if(reservation.getEquipment().getId().equals(this.getId())){
+                if(!reservation.isCompleted() && reservation.getEndDate().getTime() < new Date().getTime()){
+                    return reservation;
+                }
+            }
+        }
+        // Should be unreachable
+        return null;
+    }
+
     /**
      * returns wheter the the time frame from start to end is within the maximal reservation duration
      *
@@ -119,13 +131,8 @@ public class Equipment implements Persistable<Integer> {
      * @return
      */
     public boolean isOverdue(){
-        // TODO handle case where equipment is not returned and next reservation already should have it
-        for(EquipmentReservation reservation: reservations){
-            if(reservation.getEquipment().getId().equals(this.getId())){
-                if(!reservation.isCompleted() && reservation.getEndDate().getTime() < new Date().getTime()){
-                    return true;
-                }
-            }
+        if(getOverdueReservation() != null){
+            return true;
         }
         // TODO return false(if no past reservation isn't complete, the equipment must be available)
         return !returned && isAvailable(new Date(), new Date());
