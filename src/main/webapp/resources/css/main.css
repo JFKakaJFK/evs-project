@@ -2,7 +2,7 @@
 
 :root {
     --color-1: #3A95E8;
-    --color-2: hsla(0, 0%, 80%, .25);
+    --color-2: hsla(0, 0%, 75%, .25);
 }
 /* ovveride chrome autocomplete color TODO doesn't work */
 input:-webkit-autofill {
@@ -35,6 +35,8 @@ body {
     border: 0;
     border-radius: 0;
     box-shadow: 0 0 8px hsla(0, 0%, 0%, .25), 0 0 16px hsla(0, 0%, 0%, .25);
+    padding: 16px 20px;
+    box-sizing: border-box;
 }
 
 #header ul > li > .ui-state-hover {
@@ -68,13 +70,15 @@ body {
 }
 
 #header button.ui-button {
-    border: 1px solid black;
+    border: 1px solid hsla(0, 0%, 40%, .5);
     border-radius: 4px;
     background-color: transparent;
+    background-image: none;
 }
 
-#header button.ui-button .ui-button-text{
-    padding: 2px 16px;
+#header button.ui-button:hover {
+    background: var(--color-1);
+    color: white;
 }
 
 #content {
