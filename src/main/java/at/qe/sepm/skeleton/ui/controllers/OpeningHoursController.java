@@ -19,16 +19,7 @@ public class OpeningHoursController {
 	private Date endTime;
 	private Date startPause;
 	private Date endPause;
-	
-	public void doReloadHours(){
-		
-		//TODO
-		
-	}
-	
-	public void doSaveHours(){
-		//TODO
-	}
+
 
 	public Set<Calendar> getOpeningHours() {
 		return openingHours;
