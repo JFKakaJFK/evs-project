@@ -8,12 +8,146 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
-        <h:form>
-            <p:panel>
-                <div style="height:20px">
-                    New Reservation Group ... #{sessionInfoBean.currentUserName}
+        <h:form id="newReservation">
+            <p:panel id="newReservationPanel" header="New Reservation of Equipmentgropus">
+                <!-- Date Select -->
+                <div class="ui-g">
+                    <div class="ui-g-4">
+                        <p:outputLabel for="lendingDatetime" value="Lending date: " />
+                        <p:calendar id="lendingDatetime" value="#{newGroupReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" >
+                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update=":newReservation:freeGroupTable" />
+                        </p:calendar>
+                    </div>
+
+                    <div class="ui-g-4">
+                        <p:outputLabel for="returnDatetime" value="Return date: " />
+                        <p:calendar id="returnDatetime" value="#{newGroupReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" >
+                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update=":newReservation:freeGroupTable" />
+                        </p:calendar>
+                    </div>
+
+                    <div class="ui-g-4">
+                        <p:commandButton
+                            value="Show Opening Hours"
+                            onclick="PF('openingDialog').show();"
+                        />
+                    </div>
                 </div>
+
+                <!-- Show Groups -->
+                <p:dataTable
+                    widgetVar="groupSelect"
+                    id="freeGroupTable"
+                    var="group"
+                    value="#{newGroupReservationController.defaultGroups}"
+                    selection="#{newGroupReservationController.selectedGroups}"
+                    rowKey="#{group.id}"
+                    style="margin-bottom:0"
+                    filteredValue="#{newGroupReservationController.filteredGroups}"
+                >
+
+                    <f:facet name="header">
+                        <div>
+                            <p:outputPanel style="text-align: left;float: left">
+                                <p:inputText id="globalFilter" onkeyup="PF('groupSelect').filter()" style="width:250px" placeholder="Search for Gruops"/>
+                            </p:outputPanel>
+
+                            <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
+                                <p:commandButton
+                                    value="Create new reservation"
+                                    action="#{newGroupReservationController.addGroupReservation}"
+                                />
+                            </p:outputPanel>
+
+                            <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
+                                <p:commandButton
+                                    value="Clear all"
+                                    update=":newReservation:newReservationPanel"
+                                    process="@this"
+                                    action="#{newGroupReservationController.resetInputs}"
+                                />
+                            </p:outputPanel>
+                            <div style="clear: both"></div>
+                        </div>
+                    </f:facet>
+
+                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+                    <p:column headerText="Group" filterBy="#{group.name}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{group.name}" />
+                    </p:column>
+
+                    <p:column headerText="Equipments" filterBy="#{group.equipmentAsString}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{group.equipmentAsString}" />
+                    </p:column>
+
+                    <p:column style="width:32px;text-align: center">
+                        <p:commandButton
+                            icon="pi pi-search"
+                            title="View"
+                            update=":newReservation:groupDialog"
+                            oncomplete="PF('groupDialog').show()"
+                            action="#{newGroupReservationController.calendarAction}"
+                        >
+                            <f:param name="detailGroup" value="#{group.id}" />
+
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+
             </p:panel>
+
+            <!-- DIALOG: calendar -->
+            <p:dialog
+                id="groupDialog"
+                header="Group '#{newGroupReservationController.detailGroup.name}' Schedule"
+                widgetVar="groupDialog"
+                modal="true"
+                showEffect="fade"
+                hideEffect="fade"
+                resizable="false"
+            >
+                <p:outputPanel
+                    id="equipmentInfo"
+                    style="text-align:center;width: 750px;height: 600px"
+                >
+                    <style type="text/css">
+                        .fc-time {
+                            display:none;
+                        }
+                    </style>
+
+                    <p:schedule
+                        id="reservationCalendar"
+                        value="#{newGroupReservationController.scheduleModel}"
+                        timeZone="GMT+1"
+                    />
+                </p:outputPanel>
+            </p:dialog>
+
+            <!-- DIALOG Opening Hours -->
+            <p:dialog id="openingDialog" header="Opening Hours" widgetVar="openingDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="openingPanel" style="text-align:center;width: 750px;">
+                    <p:dataTable
+                        value="#{newGroupReservationController.openingHours}"
+                        var="opening"
+                    >
+                        <p:column headerText="Weekday">
+                            <h:outputText value="#{opening.day}" />
+                        </p:column>
+
+                        <p:column headerText="Open">
+                            <h:outputText value="#{opening.startTime} - #{opening.endTime}" />
+                        </p:column>
+
+                        <p:column headerText="Pause">
+                            <h:outputText value="#{opening.startPause} - #{opening.endPause}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </p:outputPanel>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>

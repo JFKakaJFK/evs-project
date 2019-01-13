@@ -29,18 +29,12 @@ import java.util.*;
 
 @Component
 @Scope("view")
-public class NewReservationController implements Serializable {
+public class NewReservationController extends ReservationController implements Serializable {
     private boolean addedSuccessfully;
-
-    private Date lendingDate;
-    private Date returnDate;
 
     private List<Equipment> selectedEquipments;
     private List<Equipment> filteredEquipments;
     private Collection<Equipment> defaultEquipments;
-    private String msg;
-
-    private ScheduleModel scheduleModel;
 
     private Equipment detailEquipment;
 
@@ -64,36 +58,12 @@ public class NewReservationController implements Serializable {
         addedSuccessfully = false;
     }
 
-    public boolean isAddedSuccessfully() {
-        return addedSuccessfully;
-    }
-
-    public void setAddedSuccessfully(boolean addedSuccessfully) {
-        this.addedSuccessfully = addedSuccessfully;
-    }
-
     public Collection<Equipment> getDefaultEquipments() {
         return defaultEquipments;
     }
 
     public void setDefaultEquipments(Collection<Equipment> defaultEquipments) {
         this.defaultEquipments = defaultEquipments;
-    }
-
-    public Date getLendingDate() {
-        return lendingDate;
-    }
-
-    public void setLendingDate(Date lendingDate) {
-        this.lendingDate = lendingDate;
-    }
-
-    public Date getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
     }
 
     public Collection<Equipment> getAllEquipments()
@@ -117,21 +87,12 @@ public class NewReservationController implements Serializable {
         this.filteredEquipments = filteredEquipments;
     }
 
-    public ScheduleModel getScheduleModel()
-    {
-        return this.scheduleModel;
-    }
-
     public Equipment getDetailEquipment() {
         return detailEquipment;
     }
 
     public void setDetailEquipment(Equipment detailEquipment) {
         this.detailEquipment = detailEquipment;
-    }
-
-    public void setScheduleModel(ScheduleModel scheduleModel) {
-        this.scheduleModel = scheduleModel;
     }
 
     public String calendarAction()
@@ -142,12 +103,7 @@ public class NewReservationController implements Serializable {
         detailEquipment = equipmentService.loadEquipment(equipmentID);
 
         //update calender infos
-        Collection<EquipmentReservation> equipmentReservations = equipmentReservationService.getAllEquipmentReservationsContaining(detailEquipment);
-        for(EquipmentReservation equipmentReservation : equipmentReservations)
-        {
-            String duration = getTimeFromDate(equipmentReservation.getStartDate()) + " - " + getTimeFromDate(equipmentReservation.getEndDate());
-            scheduleModel.addEvent(new DefaultScheduleEvent(duration, equipmentReservation.getStartDate(), equipmentReservation.getEndDate()));
-        }
+        addReservationsOfEquipmentToSchedule(detailEquipment);
 
         return null;
     }
@@ -186,11 +142,6 @@ public class NewReservationController implements Serializable {
         }
     }
 
-    public Collection<OpeningHours> getOpeningHours()
-    {
-        return this.openingHoursService.getAllOpeningHours();
-    }
-
     /**
      * Resets all Inputs in View
      */
@@ -204,11 +155,6 @@ public class NewReservationController implements Serializable {
         PrimeFaces.current().resetInputs("newReservation:newReservationPanel");
     }
 
-    public String getTimeFromDate(Date date)
-    {
-        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
-        return localDateFormat.format(date);
-    }
 
     /*
         Code von Melanie :)
@@ -240,14 +186,6 @@ public class NewReservationController implements Serializable {
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
         RequestContext.getCurrentInstance().showMessageInDialog(message);
-    }
-
-    public boolean isWithinOpeningHours() {
-    	if(openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate)) {
-    		return true;
-    	}
-    	msg = "Reservation not during Opening Hours!";
-    	return false;
     }
 
     /**
@@ -316,20 +254,5 @@ public class NewReservationController implements Serializable {
         }
 
         return true;
-    }
-
-    /**
-     * Check URL in order to know if reservations was added successfully.
-     * In that case a growl success message will be displayed.
-     */
-
-    public void checkURL() {
-        Iterator<String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterNames();
-        if(params.hasNext()) {
-            String parameter = params.next();
-            if(parameter.equals("addedSuccessfully")) {
-                this.addedSuccessfully = true;
-            }
-        }
     }
 }
