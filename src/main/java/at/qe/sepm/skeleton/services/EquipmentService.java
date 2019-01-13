@@ -133,13 +133,57 @@ public class EquipmentService {
     }
 
     /**
+     * Deletes all Equipments from an Equipment Group
+     */
+    @PreAuthorize("hasAuthority('ADMIN')")
+    private void deleteAllEquipmentsFromGroup(EquipmentGroup equipmentGroup){
+        List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
+        // Detach ManyToMany(Equipment)
+        for (Equipment e: equipments) {
+            e.removeEquipmentGroup(equipmentGroup);
+        }
+        // Remove Group
+        equipmentGroupRepository.save(equipmentGroup);
+    }
+
+
+    /**
+     * Deletes all Groups from an Equipment
+     *
+     * @param equipment
+     */
+    @PreAuthorize("hasAuthority('ADMIN')")
+    private void deleteAllGroupsFromEquipment(Equipment equipment){
+        List<EquipmentGroup> equipmentGroups = new ArrayList<>(equipment.getEquipmentGroups());
+        // Detach ManyToMany(Equipment)
+        for (EquipmentGroup group: equipmentGroups) {
+            if(group.getEquipments().size() < 3){
+                deleteAllEquipmentsFromGroup(group);
+                User u = group.getUser();
+                u.removeEquipmentGroup(group);
+                userRepository.save(u);
+            } else {
+                group.getEquipments().remove(equipment);
+                equipment.removeEquipmentGroup(group);
+            }
+        }
+        // Remove Group
+        equipmentRepository.save(equipment);
+    }
+
+    /**
      * Deletes the Equipment and logs to logfile.
      *
      * @param equipment to delete
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteEquipment(Equipment equipment){
+        deleteAllGroupsFromEquipment(equipment);
+        System.out.println("test");
+        equipmentRepository.delete(equipment);
+        System.out.println("test");
         // For each group, remove the equipment from group and if necessary delete the group
+        /*
         System.out.println(equipment.getComments());
         System.out.println(equipment.getManuals());
         System.out.println(equipment.getReservations());
@@ -159,29 +203,6 @@ public class EquipmentService {
 
                 userRepository.save(u);
 
-                /*
-            group.getEquipments().remove(equipment);
-            equipment.getEquipmentGroups().remove(group);
-            User user = group.getUser();
-            userRepository.save(user);
-            //if(group.getEquipments().size() < 2){
-                System.out.println("TESTTEST");
-                user.getEquipmentGroups().remove(group);
-                List<Equipment> eOfGroup = new ArrayList<>(group.getEquipments());
-                for(Equipment e: eOfGroup){
-                    e.getEquipmentGroups().remove(group);
-                    group.getEquipments().remove(e);
-                    equipmentRepository.save(e);
-                }
-                System.out.println("TESTTEST");
-
-                //deleteEquipmentGroup(group);
-                equipmentGroupRepository.delete(group);
-                System.out.println("TESTTEST");
-                userRepository.save(user);
-                equipmentRepository.save(equipment);
-                System.out.println("TESTTEST");
-                */
             } else {
                 group.getEquipments().remove(equipment);
                 equipment.getEquipmentGroups().remove(group);
@@ -192,6 +213,7 @@ public class EquipmentService {
         }
         System.out.println("OSDJFOSD");
         equipmentRepository.delete(equipment);
+        */
         logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
     }
 
