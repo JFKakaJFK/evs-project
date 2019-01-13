@@ -20,6 +20,7 @@
                         <p:menuitem value="Manage Users" url="/admin/users.xhtml"/>
                         <p:menuitem value="Equipment Overview" url="/admin/equipment-overview.xhtml"/>
                         <p:menuitem value="Opening Hours" url="/admin/opening-hours.xhtml"/>
+                        <p:menuitem value="Feiertage" url="/admin/holidays.xhtml"/>
                     </p:submenu>
                     <f:facet name="options">
                         <p:commandButton value="Login" rendered="#{!sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/login.xhtml')}" />
