@@ -3,6 +3,7 @@ package at.qe.sepm.skeleton.model;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,6 +14,9 @@ import java.util.Set;
 public class EquipmentReservation implements Persistable<Integer> {
 
     private static final long serialVersionUID = 1L;
+
+    @Transient
+    private static final int BUFFER_TIME = 2;
 
     @Id
     @GeneratedValue
@@ -38,6 +42,29 @@ public class EquipmentReservation implements Persistable<Integer> {
 
     @Column(nullable = false)
     private boolean completed = false;
+
+    /**
+     * Returns true if the reservation is overdue
+     */
+    public boolean isOverdue(){
+        return equipment.getState() == EquipmentState.OVERDUE && !completed && new Date().getTime() > endDate.getTime();
+    }
+
+    /**
+     * Returns the endDate if the reservation is not overdue, else the current date plus BUFFER_TIME
+     *
+     * @return
+     */
+    public Date getEndDateOverdue(){
+        if (isOverdue()){
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, BUFFER_TIME);
+            return c.getTime();
+        } else {
+            return endDate;
+        }
+    }
 
     /**
      * A reservation is deletable if it hasn't begun yet
