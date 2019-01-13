@@ -150,8 +150,9 @@ public class NewReservationController extends ReservationController implements S
     }
 
 
-    /*
-        Code von Melanie :)
+    /**
+     *
+     * @throws IOException
      */
     public void addEquipmentReservation() throws IOException {
         //Todo: error and success information

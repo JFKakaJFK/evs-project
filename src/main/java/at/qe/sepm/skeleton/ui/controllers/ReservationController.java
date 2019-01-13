@@ -70,6 +70,12 @@ public class ReservationController {
         return this.openingHoursService.getAllOpeningHours();
     }
 
+    /*
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+     */
+
     public String getTimeFromDate(Date date)
     {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
