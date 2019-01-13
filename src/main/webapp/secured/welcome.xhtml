@@ -19,8 +19,8 @@
             <p:panel header="My Reservations">
                 <h:form id="reservationForm">
                     <p:menuButton value="New Reservation" style="margin-bottom: 10px">
-                        <p:menuitem value="Equipment" url="create-reservation.xhtml" icon="ui-icon-plusthick"/>
-                        <p:menuitem value="Equipment Group" url="create-reservationGroup.xhtml" icon="ui-icon-plusthick"/>
+                        <p:menuitem value="Equipment" url="create-reservation.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
+                        <p:menuitem value="Equipment Group" url="create-reservationGroup.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
                     </p:menuButton>
 
                     <p:dataTable
