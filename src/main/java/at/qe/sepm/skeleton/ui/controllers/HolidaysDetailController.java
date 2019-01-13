@@ -13,26 +13,52 @@ public class HolidaysDetailController {
     @Autowired
     private HolidaysService holidaysService;
 
+    /**
+     * Attribute to cache the currently displayed openingHours
+     */
     private Holidays holidays;
 
-    public void doReloadDate(){
-        holidaysService.loadHoliday(holidays.getName());
+    /**
+     * Sets the currently displayed holiday and reloads it form db. This holiday is
+     * targeted by any further calls of
+     * {@link #doReloadDate()}, {@link #doSaveDate()} and
+     * {@link #doDeleteDate()}.
+     *
+     * @param holidays
+     */
+    public void setHolidays(Holidays holidays) {
+        this.holidays = holidays;
+        doReloadDate();
     }
 
-    public void doDeleteDate(){
-        holidaysService.deleteHoliday(holidays);
-        holidays = null;
-    }
-
-    public void doSaveDate(){
-        holidays = holidaysService.saveHoliday(holidays);
-    }
-
+    /**
+     * Returns the currently displayed holiday.
+     *
+     * @return
+     */
     public Holidays getHolidays() {
         return holidays;
     }
 
-    public void setHolidays(Holidays holidays) {
-        this.holidays = holidays;
+    /**
+     * Action to force a reload of the currently displayed user.
+     */
+    public void doReloadDate() {
+        holidays = holidaysService.loadHoliday(holidays.getName());
+    }
+
+    /**
+     * Action to save the currently displayed user.
+     */
+    public void doSaveDate() {
+        holidays = this.holidaysService.saveHoliday(holidays);
+    }
+
+    /**
+     * Action to delete the currently displayed user.
+     */
+    public void doDeleteDate() {
+        this.holidaysService.deleteHoliday(holidays);
+        holidays = null;
     }
 }
