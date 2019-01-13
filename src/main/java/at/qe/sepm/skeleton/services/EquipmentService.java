@@ -1,10 +1,7 @@
 package at.qe.sepm.skeleton.services;
 
 import at.qe.sepm.skeleton.model.*;
-import at.qe.sepm.skeleton.repositories.EquipmentCommentRepository;
-import at.qe.sepm.skeleton.repositories.EquipmentManualRepository;
-import at.qe.sepm.skeleton.repositories.EquipmentRepository;
-import at.qe.sepm.skeleton.repositories.UserRepository;
+import at.qe.sepm.skeleton.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,8 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +33,12 @@ public class EquipmentService {
 
     @Autowired
     private EquipmentManualRepository equipmentManualRepository;
+
+    @Autowired
+    private EquipmentReservationRepository equipmentReservationRepository;
+
+    @Autowired
+    private EquipmentGroupRepository equipmentGroupRepository;
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
 
@@ -134,7 +139,38 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteEquipment(Equipment equipment){
-        equipment.remove();
+        // For each group, remove the equipment from group and if necessary delete the group
+        System.out.println(equipment.getComments());
+        System.out.println(equipment.getManuals());
+        System.out.println(equipment.getReservations());
+        System.out.println(equipment.getEquipmentGroups());
+        List<EquipmentGroup> groups = new ArrayList<>(equipment.getEquipmentGroups());
+        for(EquipmentGroup group: groups){
+            group.getEquipments().remove(equipment);
+            equipment.getEquipmentGroups().remove(group);
+            User user = group.getUser();
+            userRepository.save(user);
+            if(group.getEquipments().size() < 2){
+                System.out.println("TESTTEST");
+                user.getEquipmentGroups().remove(group);
+                List<Equipment> eOfGroup = new ArrayList<>(group.getEquipments());
+                for(Equipment e: eOfGroup){
+                    e.getEquipmentGroups().remove(group);
+                    group.getEquipments().remove(e);
+                    equipmentRepository.save(e);
+                }
+                System.out.println("TESTTEST");
+
+                //deleteEquipmentGroup(group);
+                equipmentGroupRepository.delete(group);
+                System.out.println("TESTTEST");
+                userRepository.save(user);
+                equipmentRepository.save(equipment);
+                System.out.println("TESTTEST");
+            }
+            System.out.println("TESTTEST");
+        }
+        System.out.println("OSDJFOSD");
         equipmentRepository.delete(equipment);
         logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
     }
@@ -165,7 +201,6 @@ public class EquipmentService {
         equipmentCommentRepository.delete(comment);
     }
 
-
     /**
      * Saves a manual
      *
@@ -192,10 +227,8 @@ public class EquipmentService {
         equipmentManualRepository.delete(manual);
     }
 
-
     private User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());
     }
-
 }

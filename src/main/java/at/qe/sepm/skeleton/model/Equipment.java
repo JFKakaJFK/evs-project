@@ -164,7 +164,8 @@ public class Equipment implements Persistable<Integer> {
      * Call this method to safely delete the Equipment
      */
     public void remove(){
-        for (EquipmentGroup e: equipmentGroups) {
+        List<EquipmentGroup> groups = new ArrayList<>(equipmentGroups);
+        for (EquipmentGroup e: groups) {
             removeEquipmentGroup(e);
         }
     }
@@ -275,6 +276,13 @@ public class Equipment implements Persistable<Integer> {
         sc.close();
     }
 
+    public List<EquipmentReservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<EquipmentReservation> reservations) {
+        this.reservations = reservations;
+    }
 
     public String getName() {
         return name;
