@@ -1,25 +1,27 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
-import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import at.qe.sepm.skeleton.services.UserService;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 @Component
 @Scope("view")
-public class ReservationListController {
+public class ReservationListController implements Serializable {
 	@Autowired
 	private EquipmentReservationService equipmentReservationService;
 
@@ -29,19 +31,38 @@ public class ReservationListController {
 	@Autowired
     private UserService userService;
 
-	//
-    private List<EquipmentReservation> selectedReservations;
+    private List<EquipmentReservation> defaultReservationsReturn;
+    private List<EquipmentReservation> selectedReservationsReturn;
+    private List<EquipmentReservation> filteredReservationsReturn;
 
-
-    public List<EquipmentReservation> getSelectedReservations() {
-        return selectedReservations;
+    @PostConstruct
+    public void Init()
+    {
+        this.defaultReservationsReturn = new ArrayList<>();
+        this.defaultReservationsReturn.addAll(equipmentReservationService.getAllBorrowedEquipments());
     }
 
-    public void setSelectedReservations(List<EquipmentReservation> selectedReservations) {
-        this.selectedReservations = selectedReservations;
+    public List<EquipmentReservation> getDefaultReservationsReturn() {
+        return defaultReservationsReturn;
     }
 
-    public Collection<EquipmentReservation> getReservations(){
+    public List<EquipmentReservation> getFilteredReservationsReturn() {
+        return filteredReservationsReturn;
+    }
+
+    public void setFilteredReservationsReturn(List<EquipmentReservation> filteredReservationsReturn) {
+        this.filteredReservationsReturn = filteredReservationsReturn;
+    }
+
+    public List<EquipmentReservation> getSelectedReservationsReturn() {
+        return selectedReservationsReturn;
+    }
+
+    public void setSelectedReservationsReturn(List<EquipmentReservation> selectedReservationsReturn) {
+        this.selectedReservationsReturn = selectedReservationsReturn;
+    }
+
+    public Collection<EquipmentReservation> getReservations() {
 		return equipmentReservationService.getAllEquipmentReservations();
 	}
 
@@ -52,8 +73,21 @@ public class ReservationListController {
         return equipmentReservationService.getAllByUser(authUser);
     }
 
-    public Collection<EquipmentReservation> getAllReservationsReturn()
+    public void doEquipmentReturn()
     {
-        return equipmentReservationService.getAllBorrowedEquipments();
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Equipment returnation", selectedReservationsReturn.size()+" has been returnd"));
+
+        if(selectedReservationsReturn.size() > 0)
+        {
+            for(EquipmentReservation equipmentReservation : selectedReservationsReturn)
+            {
+                EquipmentReservation res = equipmentReservationService.loadRerservation(equipmentReservation.getId());
+                res.setCompleted(true);
+                equipmentReservationService.saveReservation(res);
+            }
+
+
+        }
     }
 }

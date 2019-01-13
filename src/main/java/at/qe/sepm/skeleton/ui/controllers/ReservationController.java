@@ -99,6 +99,12 @@ public class ReservationController {
      * @return true if dates are valid
      */
     public boolean validateDate() {
+        if(lendingDate == null || returnDate == null)
+        {
+            msg = "Please select lending- and returndate";
+            return false;
+        }
+
         Date today = new Date();
         today.getTime();
         if((today.after(this.returnDate) && today.after(this.lendingDate)) || (returnDate.before(lendingDate))) {

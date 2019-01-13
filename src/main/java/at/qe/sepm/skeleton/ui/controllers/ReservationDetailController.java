@@ -9,10 +9,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.faces.context.FacesContext;
+import java.util.List;
 
 @Component
 @Scope("view")
 public class ReservationDetailController {
+    private List<EquipmentReservation> selectedReservationsReturn;
+
     @Autowired
     private EquipmentReservationService equipmentReservationService;
 
