@@ -3,9 +3,7 @@ package at.qe.sepm.skeleton.model;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Entity for equipment groups.
@@ -63,6 +61,16 @@ public class EquipmentGroup implements Persistable<Integer> {
         this.equipments = equipments;
     }
 
+    public Collection<Equipment> getAllWithinMaxDuration(Date startDate, Date endDate){
+        Collection<Equipment> within = new ArrayList<>();
+        for(Equipment e: equipments){
+            if(e.isWithinMaxReservationDuration(startDate, endDate)){
+                within.add(e);
+            }
+        }
+        return within;
+    }
+
     public boolean isWithinMaxReservationDuration(Date startDate, Date endDate){
         if(equipments == null){
             return true;
@@ -91,6 +99,10 @@ public class EquipmentGroup implements Persistable<Integer> {
         return equipments.toString().substring(1, equipments.toString().length() - 1);
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 
     @Override
     public boolean isNew() {
