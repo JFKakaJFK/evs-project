@@ -163,7 +163,7 @@ public class newGroupReservationController extends ReservationController impleme
 
         String title = "Add Reservation";
         if(this.selectedGroups.size() == 0)
-            msg = "Please select at least one equipment";
+            msg = "Please select at least one group";
 
         if(groupsAvailable() && validateDate() && withinOpeningHours())
         {
@@ -185,6 +185,11 @@ public class newGroupReservationController extends ReservationController impleme
 
     public boolean groupsAvailable()
     {
+        if(selectedGroups == null)
+        {
+            return false;
+        }
+
         return true;
     }
 }
