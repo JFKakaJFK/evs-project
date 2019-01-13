@@ -28,6 +28,55 @@ body {
     flex-direction: column;
 }
 
+#header .ui-menu.ui-menubar {
+    background-image: none;
+    background-color: none;
+    background: var(--color-2);
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 0 8px hsla(0, 0%, 0%, .25), 0 0 16px hsla(0, 0%, 0%, .25);
+}
+
+#header ul > li > .ui-state-hover {
+    background: initial;
+    color: initial;
+}
+
+#header ul ul > li > .ui-state-hover {
+    background: var(--color-1);
+    color: white;
+}
+
+#header ul .ui-state-hover .ui-icon {
+    background: initial;
+    color: initial;
+}
+
+#header ul ul.ui-menu-list {
+    padding: 0;
+    border: 1px solid hsla(0, 0%, 80%, .5);
+    border-radius: 4px;
+}
+
+#header ul ul.ui-menu-list.ui-shadow {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+#header ul.ui-menu-list li {
+    margin: 0;
+}
+
+#header button.ui-button {
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: transparent;
+}
+
+#header button.ui-button .ui-button-text{
+    padding: 2px 16px;
+}
+
 #content {
     box-sizing: border-box;
     padding: 20px;
