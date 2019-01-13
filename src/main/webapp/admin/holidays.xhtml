@@ -24,10 +24,6 @@
                     <p:commandButton update=":holidays:holidaysEditDialog" oncomplete="PF('holidaysEditDialog').show()" icon="ui-icon-note" title="Edit">
                         <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
                     </p:commandButton>
-                    <p:commandButton action="#{holidaysDetailController.doDeleteDate}" icon="ui-icon-trash" title="Delete" update=":holidays:holidayTable">
-                        <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
-                        <p:confirm header="Confirmation" message="Bist du sicher dass diese Ferien gelöscht werden sollen? Diese Operation ist unwiederrufbar." icon="ui-icon-alert" />
-                    </p:commandButton>
                 </p:column>
                 <f:facet name="footer">
                     <p:commandButton value="Neuen Feiertag hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick"/>
@@ -39,7 +35,7 @@
                     <h:panelGrid columns="3" cellpadding="5">
                         <p:outputLabel for="name" value="Holiday Name: " />
                         <p:inputText id="name" value="#{holidaysDetailController.holidays.name}"/>
-                        <p:outputLabel for="startDate" value="End Day:" />
+                        <p:outputLabel for="startDate" value="Start Day:" />
                         <p:calendar id="startDate" value="#{holidaysDetailController.holidays.startDate}" />
                         <p:outputLabel for="endDate" value="Start Day:" />
                         <p:calendar id="endDate" value="#{holidaysDetailController.holidays.endDate}" />
@@ -79,7 +75,7 @@
                         </h:panelGrid>
                         <p:separator/>
                         <h:panelGrid columns="3" style="text-align: center">
-                            <p:commandButton value="Feiertag hinzufügen" action="#{addHolidaysBean.addHoliday}" oncomplete="PF('addDialog').hide()" update=":holidays:holidayTable"/>
+                            <p:commandButton value="Feiertag hinzufügen" action="#{addHolidaysBean.addHolidays}" oncomplete="PF('addDialog').hide()" update=":holidays:holidayTable"/>
                             <p:commandButton value="Abbrechen" onclick="PF('addDialog').hide()" />
                         </h:panelGrid>
                     </p:outputPanel>
