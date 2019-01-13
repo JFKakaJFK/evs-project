@@ -5,6 +5,7 @@ import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.OpeningHours;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.OpeningHoursService;
+import at.qe.sepm.skeleton.services.UserService;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ReservationController {
 
     @Autowired
     private EquipmentReservationService equipmentReservationService;
+
+    @Autowired
+    private UserService userService;
 
     public boolean isAddedSuccessfully() {
         return addedSuccessfully;
@@ -72,7 +76,11 @@ public class ReservationController {
         return localDateFormat.format(date);
     }
 
-    public boolean isWithinOpeningHours() {
+    /**
+     * Check if selected time is in opening Hours
+     * @return true if valid
+     */
+    public boolean withinOpeningHours() {
         if(openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate)) {
             return true;
         }
@@ -80,6 +88,25 @@ public class ReservationController {
         return false;
     }
 
+    /**
+     * check if enddate is after startdate and after current date
+     * @return true if dates are valid
+     */
+    public boolean validateDate() {
+        Date today = new Date();
+        today.getTime();
+        if((today.after(this.returnDate) && today.after(this.lendingDate)) || (returnDate.before(lendingDate))) {
+            msg = "Dates are not valid!";
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * adds the reservations of an equipment to schedule
+     * @param equipment
+     */
     public void addReservationsOfEquipmentToSchedule(Equipment equipment)
     {
         Collection<EquipmentReservation> equipmentReservations = equipmentReservationService.getAllEquipmentReservationsContaining(equipment);
@@ -88,6 +115,21 @@ public class ReservationController {
             String duration = getTimeFromDate(equipmentReservation.getStartDate()) + " - " + getTimeFromDate(equipmentReservation.getEndDate());
             scheduleModel.addEvent(new DefaultScheduleEvent(duration, equipmentReservation.getStartDate(), equipmentReservation.getEndDate()));
         }
+    }
+
+    /**
+     * add an reservation of given equipment
+     * @param equipment
+     */
+    public void addEquipmentToReservations(Equipment equipment)
+    {
+        EquipmentReservation equipmentReservation = new EquipmentReservation();
+        equipmentReservation.setStartDate(this.lendingDate);
+        equipmentReservation.setEndDate(this.returnDate);
+        equipmentReservation.setEquipment(equipment);
+        equipmentReservation.setUser(userService.getAuthenticatedUser());
+
+        this.equipmentReservationService.saveReservation(equipmentReservation);
     }
 
     /**

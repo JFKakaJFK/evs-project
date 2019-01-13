@@ -2,17 +2,13 @@ package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
-import at.qe.sepm.skeleton.model.OpeningHours;
-import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import at.qe.sepm.skeleton.services.OpeningHoursService;
 import at.qe.sepm.skeleton.services.UserService;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.ScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -23,8 +19,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -167,25 +161,19 @@ public class NewReservationController extends ReservationController implements S
     	 if(this.selectedEquipments.size() == 0)
     	     msg = "Please select at least one equipment";
 
-        if(equipmentsAvailabe() && validateDate() && isWithinOpeningHours())
+        if(equipmentsAvailable() && validateDate() && withinOpeningHours())
         {
 
             for(Equipment newEquipment : this.selectedEquipments)
             {
-                EquipmentReservation equipmentReservation = new EquipmentReservation();
-                equipmentReservation.setStartDate(this.lendingDate);
-                equipmentReservation.setEndDate(this.returnDate);
-                equipmentReservation.setEquipment(newEquipment);
-                equipmentReservation.setUser(userService.getAuthenticatedUser());
-
-                this.equipmentReservationService.saveReservation(equipmentReservation);
+                addEquipmentToReservations(newEquipment);
             }
             msg = "Reservation(s) added successfully";
             FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
         }
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
-        RequestContext.getCurrentInstance().showMessageInDialog(message);
+        PrimeFaces.current().dialog().showMessageDynamic(message);
     }
 
     /**
@@ -213,38 +201,16 @@ public class NewReservationController extends ReservationController implements S
 	}
 
     /**
-     * Check if selected time is in opening Hours
-     * @return true if valid
+     * checks if selected equipments are available and lendingdate und returndate in maxduration
      */
-    public boolean withinOpeningHours() {
-    	return this.openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate);
-    }
-    
-    /**
-     * check if enddate is after startdate and after current date
-     * @return true if dates are valid
-     */
-    public boolean validateDate() {
-        Date today = new Date();
-        today.getTime();
-        if((today.after(this.returnDate) && today.after(this.lendingDate)) || (returnDate.before(lendingDate))) {
-        	msg = "Dates are not valid!";
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * checks if selected equipments are avialable
-     */
-    public boolean equipmentsAvailabe()
+    public boolean equipmentsAvailable()
     {
+        //TODO: add check lendingdate and returndate is in maxduration
+
         if(selectedEquipments == null || lendingDate == null || returnDate == null)
             return false;
 
-        //check if equipments are avialbe
+        //check if equipments are avialable
         List<Equipment> freeEquipments = (List<Equipment>) equipmentService.getAllFreeEquipments(lendingDate, returnDate);
 
         for(Equipment equipment : this.selectedEquipments)

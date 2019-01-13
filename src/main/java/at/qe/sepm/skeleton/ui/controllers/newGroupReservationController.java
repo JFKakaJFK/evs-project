@@ -2,9 +2,12 @@ package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentGroup;
+import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.services.EquipmentGroupService;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
+import at.qe.sepm.skeleton.services.UserService;
 import org.primefaces.PrimeFaces;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +37,9 @@ public class newGroupReservationController extends ReservationController impleme
 
     @Autowired
     private EquipmentReservationService equipmentReservationService;
+
+    @Autowired
+    private UserService userService;
 
    @PostConstruct
     public void Init()
@@ -82,10 +90,11 @@ public class newGroupReservationController extends ReservationController impleme
         {
             //ToDo: check max duration
 
-            if(returnDate.after(lendingDate) || lendingDate.equals(returnDate))
+            //check landing- and returndate
+            if(validateDate())
             {
                 List<EquipmentGroup> freeGroups = new ArrayList<>();
-                if(isWithinOpeningHours())
+                if(withinOpeningHours())
                 {
                     freeGroups.addAll(equipmentGroupService.getOwnGroupsFree(this.lendingDate, this.returnDate));
                 }
@@ -145,9 +154,37 @@ public class newGroupReservationController extends ReservationController impleme
         PrimeFaces.current().resetInputs("newReservation:newReservationPanel");
     }
 
-
-    public void addGroupReservation()
+    /**
+     * add selected groups in selectedGroups to database
+     * */
+    public void addGroupReservation() throws IOException
     {
+        //TODO: error and success information
 
+        String title = "Add Reservation";
+        if(this.selectedGroups.size() == 0)
+            msg = "Please select at least one equipment";
+
+        if(groupsAvailable() && validateDate() && withinOpeningHours())
+        {
+
+            for(EquipmentGroup group : this.selectedGroups)
+            {
+                for(Equipment newEquipment : group.getEquipments())
+                {
+                    addEquipmentToReservations(newEquipment);
+                }
+            }
+            msg = "Reservation(s) added successfully";
+            FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
+        }
+
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
+        RequestContext.getCurrentInstance().showMessageInDialog(message);
+    }
+
+    public boolean groupsAvailable()
+    {
+        return true;
     }
 }
