@@ -24,6 +24,10 @@
                     <p:commandButton update=":holidays:holidaysEditDialog" oncomplete="PF('holidaysEditDialog').show()" icon="ui-icon-note" title="Edit">
                         <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
                     </p:commandButton>
+                    <p:commandButton action="#{holidaysDetailController.doDeleteDate}" icon="ui-icon-trash" title="Delete" update=":holidays:holidayTable">
+                        <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
+                        <p:confirm header="Confirmation" message="Bist du sicher dass diese Ferien gelöscht werden sollen? Diese Operation ist unwiederrufbar." icon="ui-icon-alert" />
+                    </p:commandButton>
                 </p:column>
                 <f:facet name="footer">
                     <p:commandButton value="Neuen Feiertag hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick"/>
