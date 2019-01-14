@@ -158,9 +158,9 @@ public class NewReservationController extends ReservationController implements S
         //Todo: error and success information
     	//ToDo: check max duration for each equipment
         //check if equipments are avialbe and validate Date
-    	 String title = "Add Reservation";
+    	 String title = "Reservierung hinzufügen";
     	 if(this.selectedEquipments.size() == 0)
-    	     msg = "Please select at least one equipment";
+    	     msg = "Bitte wählen Sie mindestens ein Laborgerät aus";
 
         if(equipmentsAvailable() && validateDate() && withinOpeningHours())
         {
@@ -169,7 +169,7 @@ public class NewReservationController extends ReservationController implements S
             {
                 addEquipmentToReservations(newEquipment);
             }
-            msg = "Reservation(s) added successfully";
+            msg = "Reservierung wurde erfolgreich hinzugefügt";
             FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
         }
 
@@ -188,11 +188,11 @@ public class NewReservationController extends ReservationController implements S
 			for (EquipmentReservation er : allEquipmentReservations) {
 				if (!((this.getLendingDate().after(er.getEndDate()))
 						|| (this.getReturnDate().before(er.getStartDate())))) {
-					msg = "Equipment is not available";
+					msg = "Laborgerät nicht verfügbar";
 			        return false;
 				}
 				if(!(er.getEquipment().isWithinMaxReservationDuration(this.getLendingDate(), this.getReturnDate()))) {
-					msg = "Duration too long";
+					msg = "Die maximale Ausleihdauer wurde überschritten";
 					return false;
 				}
 			}
@@ -218,7 +218,7 @@ public class NewReservationController extends ReservationController implements S
         {
             if(!freeEquipments.contains(equipment))
             {
-                msg = "Equipment is not available";
+                msg = "Das Laborgerät ist nicht verfügbar";
                 return false;
             }
         }
