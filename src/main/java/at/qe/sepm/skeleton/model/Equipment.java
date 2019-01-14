@@ -43,9 +43,6 @@ public class Equipment implements Persistable<Integer> {
     @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<EquipmentManual> manuals = new ArrayList<>();
 
-    @ManyToOne(optional = false)
-    private User createUser;
-
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -341,14 +338,6 @@ public class Equipment implements Persistable<Integer> {
 
     public void setManuals(List<EquipmentManual> manuals) {
         this.manuals = manuals;
-    }
-
-    public User getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(User createUser) {
-        this.createUser = createUser;
     }
 
     public Date getCreateDate() {

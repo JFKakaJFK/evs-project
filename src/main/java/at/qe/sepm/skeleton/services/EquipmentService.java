@@ -127,7 +127,6 @@ public class EquipmentService {
     public Equipment saveEquipment(Equipment equipment){
         if(equipment.isNew()){
             equipment.setCreateDate(new Date());
-            equipment.setCreateUser(getAuthenticatedUser());
         }
         return equipmentRepository.save(equipment);
     }
