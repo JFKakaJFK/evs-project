@@ -42,12 +42,12 @@ public class EquipmentGroupDetailController {
         List<Equipment> old = new ArrayList<>(group.getEquipments());
         for(Equipment equipment: old){
             if(!selectedEquipments.contains(equipment)){
-                equipment.removeEquipmentGroup(group);
+                group.getEquipments().remove(equipment);
             }
         }
         for(Equipment equipment: selectedEquipments){
             if(!group.getEquipments().contains(equipment)){
-                equipment.addEquipmentGroup(group);
+                group.getEquipments().add(equipment);
             }
         }
         if(group.getEquipments().size() >= 2){

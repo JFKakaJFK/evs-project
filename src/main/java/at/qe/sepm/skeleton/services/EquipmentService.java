@@ -156,14 +156,16 @@ public class EquipmentService {
     private void deleteAllGroupsFromEquipment(Equipment equipment){
         List<EquipmentGroup> equipmentGroups = new ArrayList<>(equipmentGroupRepository.findAllByEquipmentsContains(equipment));
         // Detach ManyToMany(Equipment)
+        System.out.println(equipmentGroups);
         for (EquipmentGroup group: equipmentGroups) {
             if(group.getEquipments().size() < 3){
-                deleteAllEquipmentsFromGroup(group);
+                // deleteAllEquipmentsFromGroup(group);
                 User u = group.getUser();
                 u.removeEquipmentGroup(group);
                 userRepository.save(u);
             } else {
                 group.getEquipments().remove(equipment);
+                userRepository.save(group.getUser());
             }
         }
         // Remove Group

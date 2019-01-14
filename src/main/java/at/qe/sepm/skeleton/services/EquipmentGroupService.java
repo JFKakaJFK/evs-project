@@ -91,15 +91,17 @@ public class EquipmentGroupService {
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #equipmentGroup.user.username")
     public void deleteEquipmentGroup(EquipmentGroup equipmentGroup){
-        List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
+        // List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
         User u = equipmentGroup.getUser();
         u.getEquipmentGroups().remove(equipmentGroup);
+        /*
         for (Equipment e: equipments) {
             e.removeEquipmentGroup(equipmentGroup);
             // equipmentService.saveEquipment(e);
         }
 
         equipmentGroupRepository.delete(equipmentGroup);
+        */
 
         userRepository.save(u);
     }
