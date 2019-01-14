@@ -13,7 +13,7 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:dataTable id="equipmentGroupTable" var="group" value="#{equipmentGroupListController.allEquipmentGroupsByUser}">
+            <p:dataTable id="equipmentGroupTable" var="group" value="#{equipmentGroupListController.allEquipmentGroupsByUser}" emptyMessage="Sie haben noch keine Gerätegruppen">
                 <p:column headerText="Name">
                     <h:outputText value="#{group.name}"/>
                 </p:column>
@@ -121,7 +121,7 @@
 
                     <h:panelGrid columns="3">
                         <p:commandButton value="Save" action="#{addEquipmentGroupBean.addEquipmentGroup}" oncomplete="PF('addEquipmentGroupDialog').hide()" update=":equipmentGroupForm"/>
-                        <p:commandButton value="Zurück" oncomplete="PF('addEquipmentGroupDialog').hide()"/>
+                        <p:commandButton value="Zurück" oncomplete="PF('addEquipmentGroupDialog').hide()" immediate="true"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>

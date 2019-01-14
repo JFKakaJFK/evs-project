@@ -88,8 +88,6 @@ public class EquipmentGroupService {
     public void deleteEquipmentGroup(EquipmentGroup equipmentGroup){
         User u = equipmentGroup.getUser();
         u.removeEquipmentGroup(equipmentGroup);
-        //u.getEquipmentGroups().remove(equipmentGroup);
-          //equipmentGroup.setUser(null);
         userRepository.save(u);
     }
 

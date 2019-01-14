@@ -2,11 +2,15 @@ package at.qe.sepm.skeleton;
 
 import at.qe.sepm.skeleton.configs.CustomServletContextInitializer;
 import at.qe.sepm.skeleton.configs.ReservationProperties;
+import at.qe.sepm.skeleton.configs.StorageProperties;
 import at.qe.sepm.skeleton.configs.WebSecurityConfig;
+import at.qe.sepm.skeleton.services.StorageService;
 import at.qe.sepm.skeleton.utils.ViewScope;
 import java.util.HashMap;
 import javax.faces.webapp.FacesServlet;
+
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -26,7 +30,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
  */
 @SpringBootApplication
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties(ReservationProperties.class)
+@EnableConfigurationProperties({ReservationProperties.class, StorageProperties.class})
 public class Main extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
@@ -54,4 +58,11 @@ public class Main extends SpringBootServletInitializer {
         return customScopeConfigurer;
     }
 
+    @Bean
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+            storageService.deleteAll();
+            storageService.init();
+        };
+    }
 }

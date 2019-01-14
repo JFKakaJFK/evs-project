@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <h:form id="openingTimes">
+        <p:growl id="msgs" showDetail="true" />
+
+            <p:dataTable id="hoursTable" var="day" value="#{openingHoursListController.openingHours}">
+                <p:column headerText="day">
+                    <h:outputText value="#{day.day}"/>
+                </p:column>
+                <p:column headerText="StartTime">
+                    <h:outputText value="#{day.startTime}"/>
+                </p:column>
+                <p:column headerText="PauseStart">
+                    <h:outputText value="#{day.startPause}"/>
+                </p:column>
+                <p:column headerText="PauseEnd">
+                    <h:outputText value="#{day.endPause}"/>
+                </p:column>
+                <p:column headerText="CloseTime">
+                    <h:outputText value="#{day.endTime}"/>
+                </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton update=":openingTimes:openingHoursEditDialog" oncomplete="PF('openingHoursEditDialog').show()" icon="ui-icon-note" title="Edit">
+                        <f:setPropertyActionListener value="#{day}" target="#{openingHoursDetailController.openingHours}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Edit Opening Hours" id="openingHoursEditDialog" widgetVar="openingHoursEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="openingHoursData" rendered="#{not empty openingHoursDetailController.openingHours}">
+                    <h:panelGrid columns="4" cellpadding="5">
+                        <p:outputLabel for="startTime" value="startTime:" />
+                        <p:calendar id="startTime" value="#{openingHoursDetailController.openingHours.startTime}" pattern="HH:mm" timeOnly="true"  />
+                        <p:outputLabel for="startPause" value="startPause:" />
+                        <p:calendar id="startPause" value="#{openingHoursDetailController.openingHours.startPause}" pattern="HH:mm" timeOnly="true"  />
+                        <p:outputLabel for="endPause" value="endPause:" />
+                        <p:calendar id="endPause" value="#{openingHoursDetailController.openingHours.endPause}" pattern="HH:mm" timeOnly="true"  />
+                        <p:outputLabel for="endTime" value="endTime:" />
+                        <p:calendar id="endTime" value="#{openingHoursDetailController.openingHours.endTime}" pattern="HH:mm" timeOnly="true"  />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{openingHoursDetailController.doSaveHours()}" oncomplete="PF('openingHoursEditDialog').hide()" update=":openingTimes:hoursTable"/>
+                        <p:commandButton value="Reload" action="#{openingHoursDetailController.doReloadHours()}" update=":openingTimes:openingHoursData"/>
+                        <p:commandButton value="Abort" onclick="PF('openingHoursEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+        <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+            <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                <h:outputText value="Start Time:" />
+                <h:outputText value="#{openingHoursController.startTime}">
+                </h:outputText>
+                <h:outputText value="Start Pause:" />
+                <h:outputText value="#{openingHoursController.startPause}">
+                </h:outputText>
+                <h:outputText value="End Pause:" />
+                <h:outputText value="#{openingHoursController.endPause}">
+                </h:outputText>
+                <h:outputText value="End Time:" />
+                <h:outputText value="#{openingHoursController.endTime}">
+                </h:outputText>
+            </p:panelGrid>
+        </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

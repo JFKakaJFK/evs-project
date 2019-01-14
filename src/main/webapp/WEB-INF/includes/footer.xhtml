@@ -5,10 +5,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <body>
         <ui:composition>
-
-            <div style="float: right;">
+            <div>
                 <ui:fragment rendered="#{sessionInfoBean.loggedIn}">
-                    Logged in as #{sessionInfoBean.currentUserName} [#{sessionInfoBean.currentUser.highestPermission}]
+                    Logged in as #{sessionInfoBean.currentUserName} [#{sessionInfoBean.currentUser.rights}]
                 </ui:fragment>
                 <ui:fragment rendered="#{!sessionInfoBean.loggedIn}">
                     Not logged in

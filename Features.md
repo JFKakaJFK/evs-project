@@ -1,6 +1,6 @@
 # Features
 
-## 1. User management - BIS 2019 √
+## 1. User management - FERTIG
 
 - [x] User entity und Service anpassen (@Chris)
 - [x] PasswordEncoder einfügen und testUser anpassen (@Chris)
@@ -9,12 +9,13 @@
 
 ### TODO/Notes
 
-- cNumber Getters und Setters müssen so geschrieben werden weil JSF diese sonst nicht erkennt
-- use testing
-- navbar anpassen (brauchen wir die tests?)
-- sollen in den views alle ROLES angezeigt werden oder nur die mit am meisten rechte?
+- NOTE: cNumber Getters und Setters müssen so geschrieben werden weil JSF diese sonst nicht erkennt
+- [x] navbar anpassen (brauchen wir die tests?)
+- [x] sollen in den views alle ROLES angezeigt werden oder nur die mit am meisten rechte?
+- [ ] TODO: zb sicheres passwort generieren und per mail schicken
+- [ ] BUG: user overview sortieren geht erst nachdem man in der suchleiste etwas gesucht hat(umstellung der List<> auf filteredUsers)
 
-## 2. Equipment management & Opening Hours - BIS ENDE FERIEN
+## 2. Equipment management & Opening Hours - FAST FERTIG
 
 - [x] Equipment Entity und Service (@Johannes)
 - [x] testEquipments hinzufügen (@Johannes)
@@ -23,25 +24,35 @@
 - [x] view zur Übersicht aller Equipments und equipment hinzufügen **ADMIN** (@Andi)
 - [x] OpeningHours Entity und Service (@Chris)
 - [x] testÖffnungszeiten hinzufügen (@Chris)
-- [ ] view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
-- [ ] view zum Ansehen der equipmentDetails(Kommentare, Manuals) **?ALLe? = STUDENT** und Kommentare/Manuals hinzufügen/entfernen nur für **ADMIN**
+- [x] view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
+- [x] view zum Ansehen der equipmentDetails(Kommentare, Manuals) **?ALLe? = STUDENT** und Kommentare/Manuals hinzufügen/entfernen nur für **ADMIN**
 
 ### TODO/Notes
 
-- Bug: beim ändern des eqipments wird die maximale ausleihdauer auf 0 gesetzt wenn man diese nicht verändert
+- [ ] Bug: beim ändern des eqipments wird die maximale ausleihdauer auf 0 gesetzt wenn man diese nicht verändert
+- [x] TODO: erstellen von kommentaren
+- [ ] Bug: beim erstellen der anleitungen/kommentare wird die tabelle wieder eingeklappt/es sind anfangs immer alle expansions ausgeklappt[so thread](https://stackoverflow.com/questions/43598420/how-to-keep-primefaces-rowexpansion-open-in-an-update-of-the-table)
+- [x] TODO: up/download von manuals
 
-## 3. Simple Reservations - BIS ENDE FERIEN
+## 3. Alle Reservations - IN ENTWICKLUNG
 
-- [ ] Reservation Entity (@Johannes)
-- [ ] testReservationen (@Johannes)
-- [ ] ReservationListController (@Melanie @Markus)
-- [ ] addReservationController (@Melanie @Markus)
-- [ ] Bestätigungsmails (@Melanie @Markus)
-- [ ] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Andi)
-- [ ] view zur Einsicht(und löschen) aller reservierungen **ADMIN** (@Andi)
-- [ ] view zur Einsicht aller ausgeliehenen und überfälligen Equipments(und Rückgabebestätigungen) **ADMIN** (@Andi)
+- [x] Reservation Entity (@Johannes)
+- [x] testReservationen (@Johannes)
+- [x] ReservationListController (@Melanie @Markus)
+- [x] addReservationController (@Melanie @Markus)
+- [ ] Bestätigungsmails (@Markus)
+- [x] AddEquipmentGroupReservationController (@Melanie @Markus)
+- [x] EquipmentGroupListController (@Melanie @Markus)
+- [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Andi @Chris)
+- [ ] view zur Einsicht aller Reservierungen(und löschen) **ADMIN** (@Melanie)
+- [x] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Andi @Chris)
+- [x] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Andi @Chris)
 
-## 4. EquipmentGroup management - BIS ~ 10.
+### TODO/Notes
+
+- [x] TODO: Kaskadierung beim löschen in alle Richtungen (sollte passen)
+
+## 4. EquipmentGroup management - FERTIG
 
 - [x] equipmentgroup entity (@Johannes)
 - [x] testEquipmentGroups (@Johannes)
@@ -52,18 +63,35 @@
 
 ### TODO/Notes
 
-- Hotfix: Kaskadierung beim löschen von equipmentgruppen eventuell besser umsetzen
-- TODO: bei my-equipmentgroups ändern der equipments in der gruppe ermöglichen
+- [x] TODO: Kaskadierung beim löschen von equipmentgruppen eventuell besser umsetzen
 
-## 5. EquipmentGroup reservations - BIS 15.
+## 6. TODO
 
-- [ ] AddEquipmentGroupReservationController (@Melanie @Markus)
-- [ ] EquipmentGroupListController (@Melanie @Markus)
-- [ ] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Andi)
-- [ ] view zur Einsicht aller EquipmentGroupReservierungen(und löschen) **ADMIN** (@Andi)
-- [ ] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Andi)
+- [ ] ui sprache ist deutsch, alles was noch englisch ist anpassen (@Melanie)
+- [ ] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen. (@Melanie)
+- [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
+- [ ] growl/messages für alle delete/add aktionen? (@Andi)
+- [ ] bei den datatables pagination, search & sort(siehe neue user overview) (@Andi)
 
-## 6. Testing & Bugfixes
+## Technische Dokumentation
 
+> Fertigen Sie eine Pr¨asentation (max. 10 Minuten) der Technischen Details zu ihrem
+System an, die am 21.01.2018 im Proseminar pr¨asentiert werden muss. Hierzu
+werden zwei bis drei Studierende ihres Teams zuf¨allig ausgew¨ahlt um die Inhalte
+zu pr¨asentieren.
+
+- Feature File-Up/Download (@Johannes)
+
+## Live-Demo
+
+> Bereiten Sie eine Live-Demo (max. 10 Minuten) Ihres Systems vor, welche am
+28.01.2018 im Proseminar pr¨asentiert wird. Hierzu werden zwei bis drei Studierende
+ihres Teams zuf¨allig ausgew¨ahlt um die Inhalte zu pr¨asentieren.
+
+
+## Vor Abgabe
+
+- [ ] kontrolle ob alle features laut spezifikation existieren
 - [ ] test entities für alles und dokumentation
-- [ ] vagrantfile updaten
+- [ ] vagrantfile testen und falls nötig ändern
+- [ ] unit tests

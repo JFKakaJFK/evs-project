@@ -4,6 +4,9 @@
           http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
+    <!-- if a setting doesn't change anything, chances are the setting also needs to be applied
+            to the CustomServletContextInitializer's onStartup method -->
+
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -15,6 +18,9 @@
         <location>/error/access_denied.xhtml</location>
     </error-page>
 
+    <error-page>
+        <location>/error/default.xhtml</location>
+    </error-page>
 
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -25,15 +31,16 @@
         <param-value>true</param-value>
     </context-param>
 
-    <context-param>
-        <param-name>primefaces.UPLOADER</param-name>
-        <param-value>auto</param-value>
-    </context-param>
-
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+
+    <!-- upload stuff -->
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>commons</param-value>
+    </context-param>
 
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
@@ -46,6 +53,11 @@
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
 
+    <!-- theme -->
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>bootstrap</param-value>
+    </context-param>
 
     <welcome-file-list>
         <welcome-file>login.xhtml</welcome-file>

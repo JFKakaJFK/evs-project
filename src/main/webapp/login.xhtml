@@ -6,16 +6,23 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <f:event type="preRenderView" listener="#{loginBean.checkURL}"/>
+        <h:outputStylesheet name="css/login.css" />
+
         <form id="login_form" action="#{request.contextPath}/login" method="post">
+            <p:messages id="messages" showDetail="true" closable="true" severity="error">
+                <p:autoUpdate />
+            </p:messages>
+            <h2>Log In</h2>
             <h:panelGrid columns="2">
-                <p:outputLabel for="username" value="Username:"/>
+                <p:outputLabel for="username" value="Benutzername:"/>
                 <p:inputText id="username" type="text" required="true"/>
 
-                <p:outputLabel for="password" value="Password:"/>
+                <p:outputLabel for="password" value="Passwort:"/>
                 <p:inputText id="password" type="password" required="true"/>
 
                 <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                    <span class="ui-button-text">Login</span>
+                    <span class="ui-button-text">Einloggen</span>
                 </button>
             </h:panelGrid>
         </form>

@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <h:form id="holidays">
+        <p:growl id="msgs" showDetail="true" />
+
+            <p:dataTable id="holidayTable" var="holiday" value="#{holidaysListController.all}">
+                <p:column headerText="holiday name">
+                    <h:outputText value="#{holiday.name}"/>
+                </p:column>
+                <p:column headerText="start Day">
+                    <h:outputText value="#{holiday.startDate}"/>
+                </p:column>
+                <p:column headerText="end Day">
+                    <h:outputText value="#{holiday.endDate}"/>
+                </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton update=":holidays:holidaysEditDialog" oncomplete="PF('holidaysEditDialog').show()" icon="ui-icon-note" title="Edit">
+                        <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
+                    </p:commandButton>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton value="Neuen Feiertag hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick"/>
+                </f:facet>
+            </p:dataTable>
+
+            <p:dialog header="Edit Holidays" id="holidaysEditDialog" widgetVar="holidaysEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="openingHoursData" rendered="#{not empty holidaysDetailController.holidays}">
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel for="name" value="Holiday Name: " />
+                        <p:inputText id="name" value="#{holidaysDetailController.holidays.name}"/>
+                        <p:outputLabel for="startDate" value="Start Day:" />
+                        <p:calendar id="startDate" value="#{holidaysDetailController.holidays.startDate}" />
+                        <p:outputLabel for="endDate" value="Start Day:" />
+                        <p:calendar id="endDate" value="#{holidaysDetailController.holidays.endDate}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{holidaysDetailController.doSaveDate()}" oncomplete="PF('holidaysEditDialog').hide()" update=":holidays:holidayTable"/>
+                        <p:commandButton value="Reload" action="#{holidaysDetailController.doReloadDate()}" update=":holidays:holidaysEditDialog"/>
+                        <p:commandButton value="Abort" onclick="PF('holidaysEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                    <h:outputText value="Start Date:" />
+                    <h:outputText value="#{holidaysController.startDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="End Date:" />
+                    <h:outputText value="#{holidaysController.endDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                </p:panelGrid>
+            </p:dialog>
+
+            <p:dialog header="Neuen Feiertag hinzufügen" id="addDialog" widgetVar="addDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <h:form id="addHolidayForm">
+                    <p:outputPanel>
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="addName" value="Name: "/>
+                            <p:inputText id="addName" value="#{addHolidaysBean.name}" required="true"/>
+                            <p:outputLabel for="addStartDate" value="Start Date: "/>
+                            <p:calendar id="addStartDate" value="#{addHolidaysBean.startDate}" required="true"/>
+                            <p:outputLabel for="addEndDate" value="End Date: "/>
+                            <p:calendar id="addEndDate" value="#{addHolidaysBean.endDate}" required="true"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <h:panelGrid columns="3" style="text-align: center">
+                            <p:commandButton value="Feiertag hinzufügen" action="#{addHolidaysBean.addHolidays}" oncomplete="PF('addDialog').hide()" update=":holidays:holidayTable"/>
+                            <p:commandButton value="Abbrechen" onclick="PF('addDialog').hide()" />
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

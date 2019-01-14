@@ -3,26 +3,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <body>
         <ui:composition>
             <h:form>
                 <p:menubar>
-                    <p:submenu label="Reservations" rendered="#{sessionInfoBean.loggedIn}">
+                    <p:submenu styleClass="dropdown" label="Reservations" rendered="#{sessionInfoBean.loggedIn}">
                         <p:menuitem value="My Reservations" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
                         <p:menuitem value="Reservations Overview" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
                     </p:submenu>
-                    <p:submenu label="Equipment Groups" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}">
+                    <p:submenu styleClass="dropdown" label="Equipment Groups" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="My Groups" url="/secured/my-equipmentgroups.xhtml" />
                         <p:menuitem value="Groups Overview" url="/admin/equipmentgroup-overview.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
                     </p:submenu>
-                    <p:submenu label="Admin Submenu" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                    <p:submenu styleClass="dropdown" label="Admin Submenu" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="Manage Users" url="/admin/users.xhtml"/>
                         <p:menuitem value="Equipment Overview" url="/admin/equipment-overview.xhtml"/>
-                        <p:menuitem value="Opening Hours" url=""/>
+                        <p:menuitem value="Opening Hours" url="/admin/opening-hours.xhtml"/>
+                        <p:menuitem value="Feiertage" url="/admin/holidays.xhtml"/>
                     </p:submenu>
-                    <p:menuitem value="Login" url="/login.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>
-                    <p:menuitem value="Logout" url="/logout" rendered="#{sessionInfoBean.loggedIn}"/>
+                    <f:facet name="options">
+                        <p:commandButton value="Login" rendered="#{!sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/login.xhtml')}" />
+                        <p:commandButton value="Logout" rendered="#{sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/logout')}" />
+                    </f:facet>
                 </p:menubar>
             </h:form>
         </ui:composition>
