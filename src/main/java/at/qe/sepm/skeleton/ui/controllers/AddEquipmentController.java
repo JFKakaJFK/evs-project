@@ -33,7 +33,7 @@ public class AddEquipmentController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     public void addEquipment() throws IOException {
-        String title = "Add Equipment";
+        String title = "Laborgerät hinzufügen";
         String msg;
         Equipment equipment = new Equipment();
 
@@ -45,7 +45,7 @@ public class AddEquipmentController {
 
         this.equipmentService.saveEquipment(equipment);
 
-        msg = "Equipment added successfully";
+        msg = "Laborgerät wurde erfolgreich hinzugefügt!";
         FacesContext.getCurrentInstance().getExternalContext().redirect("equipment-overview.xhtml?addedSuccessfully");
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
