@@ -98,7 +98,9 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllFreeEquipments(Date startDate, Date endDate){
         return equipmentRepository.findAll().stream()
-            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE)
+            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE ||
+                (equipment.getState(startDate, endDate) == EquipmentState.OVERDUE &&
+                    (equipment.getOverdueReservation() == null) ? (false) : (startDate.getTime() > equipment.getOverdueReservation().getEndDateOverdue().getTime())))
             .collect(Collectors.toList());
     }
 
@@ -181,38 +183,6 @@ public class EquipmentService {
         System.out.println("test");
         equipmentRepository.delete(equipment);
         System.out.println("test");
-        // For each group, remove the equipment from group and if necessary delete the group
-        /*
-        System.out.println(equipment.getComments());
-        System.out.println(equipment.getManuals());
-        System.out.println(equipment.getReservations());
-        System.out.println(equipment.getEquipmentGroups());
-        List<EquipmentGroup> groups = new ArrayList<>(equipment.getEquipmentGroups());
-        for(EquipmentGroup group: groups){
-            if(group.getEquipments().size() < 3){
-
-                List<Equipment> equipments = new ArrayList<>(group.getEquipments());
-                User u = group.getUser();
-                u.getEquipmentGroups().remove(group);
-                for (Equipment e: equipments) {
-                    e.removeEquipmentGroup(group);
-                }
-
-                equipmentGroupRepository.delete(group);
-
-                userRepository.save(u);
-
-            } else {
-                group.getEquipments().remove(equipment);
-                equipment.getEquipmentGroups().remove(group);
-                User user = group.getUser();
-                userRepository.save(user);
-            }
-            System.out.println("TESTTEST");
-        }
-        System.out.println("OSDJFOSD");
-        equipmentRepository.delete(equipment);
-        */
         logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
     }
 
