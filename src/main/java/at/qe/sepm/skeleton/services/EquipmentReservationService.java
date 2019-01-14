@@ -40,7 +40,7 @@ public class EquipmentReservationService {
     public Collection<EquipmentReservation> getAllBorrowedEquipments(){
         Collection<Equipment> borrowed = equipmentService.getAllBorrowedEquipments();
         return equipmentReservationRepository.findAll().stream()
-            .filter(reservation -> borrowed.contains(reservation.getEquipment()))
+            .filter(reservation -> borrowed.contains(reservation.getEquipment()) && !reservation.isCompleted() && new Date().after(reservation.getStartDate()))
             .collect(Collectors.toList());
     }
 
@@ -60,7 +60,7 @@ public class EquipmentReservationService {
      * @param equipment
      * @return
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<EquipmentReservation> getAllEquipmentReservationsContaining(Equipment equipment){
         return equipmentReservationRepository.findAllByEquipment(equipment);
     }
@@ -70,7 +70,7 @@ public class EquipmentReservationService {
      *
      * @return
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<EquipmentReservation> getAllEquipmentReservations(){
         return equipmentReservationRepository.findAll();
     }
@@ -91,7 +91,7 @@ public class EquipmentReservationService {
      * @param reservation
      * @return
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public EquipmentReservation saveReservation(EquipmentReservation reservation){
         if(reservation.isNew()){
             reservation.setCreateDate(new Date());
@@ -104,7 +104,7 @@ public class EquipmentReservationService {
      *
      * @param reservation
      */
-    @PreAuthorize("hasAuthority('ADMIN') or principal eq #reservation.getUser()")
+    @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #reservation.getUser().username")
     public void deleteReservation(EquipmentReservation reservation) throws ReservationInProgressException {
         if(reservation.isDeletable()){
             Equipment e = reservation.getEquipment();

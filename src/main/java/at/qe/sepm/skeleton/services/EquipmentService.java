@@ -80,7 +80,9 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllFreeEquipments(Date startDate, Date endDate){
         return equipmentRepository.findAll().stream()
-            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE)
+            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE ||
+                (equipment.getState(startDate, endDate) == EquipmentState.OVERDUE &&
+                    (equipment.getOverdueReservation() == null) ? (false) : (startDate.getTime() > equipment.getOverdueReservation().getEndDateOverdue().getTime())))
             .collect(Collectors.toList());
     }
 
@@ -96,7 +98,6 @@ public class EquipmentService {
     public Equipment saveEquipment(Equipment equipment){
         if(equipment.isNew()){
             equipment.setCreateDate(new Date());
-            equipment.setCreateUser(getAuthenticatedUser());
         }
         return equipmentRepository.save(equipment);
     }
@@ -137,6 +138,7 @@ public class EquipmentService {
         }
         equipment = deleteAllGroupsFromEquipment(equipment);
         equipmentRepository.delete(equipment);
+
         logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
     }
 

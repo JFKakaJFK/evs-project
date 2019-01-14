@@ -29,8 +29,6 @@ public class Equipment implements Persistable<Integer> {
 
     private boolean locked;
 
-    private boolean returned = true;
-
     @Transient
     private EquipmentState state;
 
@@ -44,9 +42,6 @@ public class Equipment implements Persistable<Integer> {
     @Fetch(FetchMode.SELECT)
     @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<EquipmentManual> manuals = new ArrayList<>();
-
-    @ManyToOne(optional = false)
-    private User createUser;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -77,7 +72,7 @@ public class Equipment implements Persistable<Integer> {
     public EquipmentReservation getOverdueReservation(){
         for(EquipmentReservation reservation: reservations){
             if(reservation.getEquipment().getId().equals(this.getId())){
-                if(!reservation.isCompleted() && reservation.getEndDate().getTime() < new Date().getTime()){
+                if(!reservation.isCompleted() && reservation.getEndDate().before(new Date())){
                     return reservation;
                 }
             }
@@ -106,14 +101,11 @@ public class Equipment implements Persistable<Integer> {
      */
     // TODO available if reservation blocking availability is completed
     public boolean isAvailable(Date startDate, Date endDate){
-        if(!returned){
-            return false;
-        }
         // check all reservations, if any between  start & end return false
         // TODO maybe check if it was returned? not relevant for distant reservations though
         for(EquipmentReservation reservation: this.reservations){
             if(reservation.getEquipment().getId().equals(this.getId())){
-                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < reservation.getStartDate().getTime())){
+                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < (reservation.getStartDate().getTime()) /*+ TODO schonfrist*/)){
                     return false;
                 }
             }
@@ -130,8 +122,7 @@ public class Equipment implements Persistable<Integer> {
         if(getOverdueReservation() != null){
             return true;
         }
-        // TODO return false(if no past reservation isn't complete, the equipment must be available)
-        return !returned && isAvailable(new Date(), new Date());
+        return false;
     }
 
     /* ManyToOne cascading methods */
@@ -312,28 +303,12 @@ public class Equipment implements Persistable<Integer> {
         this.manuals = manuals;
     }
 
-    public User getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(User createUser) {
-        this.createUser = createUser;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public boolean isReturned() {
-        return returned = true;
-    }
-
-    public void setReturned(boolean returned) {
-        this.returned = returned;
     }
 
     @Override

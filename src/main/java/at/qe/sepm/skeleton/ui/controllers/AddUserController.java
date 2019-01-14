@@ -60,7 +60,7 @@ public class AddUserController {
      * Create new user
      */
     public void addUser() throws IOException {
-        String title = "Add User";
+        String title = "Benutzer hinzufügen";
         String msg;
 
         User addedUser = new User();
@@ -76,15 +76,15 @@ public class AddUserController {
             convertRoles(addedUser);
             if(userService.loadUser(this.username) != null) {
                 //here one could also specify,that the same condition holds if a username has deleted and someone tries to pick it again
-                msg = "Please choose another username";
+                msg = "Bitte wählen Sie einen anderen Benutzername";
             }else {
                 this.userService.saveUser(addedUser);
-                msg = "User added successfully";
+                msg = "Benutzer wurde erfolgreich hinzugefügt!";
                 FacesContext.getCurrentInstance().getExternalContext().redirect("users.xhtml?addedSuccessfully");
             }
 
         }else {
-            msg = "The email address is invalid"; //or c-Id
+            msg = "Die angegebene E-Mail Adresse ist nicht gültig"; //or c-Id
         }
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);

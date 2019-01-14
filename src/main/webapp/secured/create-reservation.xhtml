@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -9,19 +9,21 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
         <h:form id="newReservation">
+            <p:growl id="growl" showDetail="true" sticky="true" />
+
             <p:panel id="newReservationPanel" header="New Reservation">
                 <div class="ui-g">
                     <div class="ui-g-4">
                         <p:outputLabel for="lendingDatetime" value="Lending date: " />
                         <p:calendar id="lendingDatetime" value="#{newReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" >
-                            <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update=":newReservation:freeEquipmentTable" />
+                            <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update="@form" />
                         </p:calendar>
                     </div>
 
                     <div class="ui-g-4">
                         <p:outputLabel for="returnDatetime" value="Return date: " />
                         <p:calendar id="returnDatetime" value="#{newReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" >
-                            <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update=":newReservation:freeEquipmentTable" />
+                            <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update="@form" />
                         </p:calendar>
                     </div>
 
@@ -56,6 +58,7 @@
                                 <p:commandButton
                                     value="Create new reservation"
                                     action="#{newReservationController.addEquipmentReservation}"
+                                    update="@form"
                                 />
                             </p:outputPanel>
 
