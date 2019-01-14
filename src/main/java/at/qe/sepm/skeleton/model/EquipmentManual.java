@@ -42,9 +42,6 @@ public class EquipmentManual implements Persistable<Integer> {
     @Column
     private byte[] file;
 
-    @ManyToOne(optional = false)
-    private User createUser;
-
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -105,14 +102,6 @@ public class EquipmentManual implements Persistable<Integer> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public User getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(User createUser) {
-        this.createUser = createUser;
     }
 
     public Date getCreateDate() {

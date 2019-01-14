@@ -228,7 +228,6 @@ public class EquipmentService {
     public EquipmentComment saveComment(EquipmentComment comment){
         if(comment.isNew()){
             comment.setCreateDate(new Date());
-            comment.setCreateUser(getAuthenticatedUser());
         }
         return equipmentCommentRepository.save(comment);
     }
@@ -254,7 +253,6 @@ public class EquipmentService {
     public EquipmentManual saveManual(EquipmentManual manual){
         if(manual.isNew()){
             manual.setCreateDate(new Date());
-            manual.setCreateUser(getAuthenticatedUser());
         }
         return equipmentManualRepository.save(manual);
     }

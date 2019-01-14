@@ -28,9 +28,6 @@ public class EquipmentComment implements Persistable<Integer> {
     @ManyToOne
     private Equipment equipment;
 
-    @ManyToOne(optional = false)
-    private User createUser;
-
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -57,14 +54,6 @@ public class EquipmentComment implements Persistable<Integer> {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public User getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(User createUser) {
-        this.createUser = createUser;
     }
 
     public Date getCreateDate() {
