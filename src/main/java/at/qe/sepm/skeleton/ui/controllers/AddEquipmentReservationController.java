@@ -35,7 +35,7 @@ public class AddEquipmentReservationController {
 
 
     public void addEquipmentReservation() throws IOException {
-        String title = "Add Reservation";
+        String title = "Reservierung hinzufügen";
         String msg;
        EquipmentReservation equipmentReservation = new EquipmentReservation();
 
@@ -51,7 +51,7 @@ public class AddEquipmentReservationController {
             }
 
         else {
-            msg = "The equipment " + this.name + " is not available";
+            msg = "Das Laborgerät " + this.name + " ist zum gewünschten Zeitpunkt nicht verfügbar";
         }
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
