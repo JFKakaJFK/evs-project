@@ -110,7 +110,7 @@ public class EquipmentReservationService {
      *
      * @param reservation
      */
-    @PreAuthorize("hasAuthority('ADMIN') or principal eq #reservation.getUser()")
+    @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #reservation.getUser().username")
     public void deleteReservation(EquipmentReservation reservation){
         if(reservation.isDeletable()){
             Equipment e = reservation.getEquipment();
