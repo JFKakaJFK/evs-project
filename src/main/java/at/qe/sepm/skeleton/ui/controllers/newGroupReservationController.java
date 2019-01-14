@@ -161,9 +161,9 @@ public class newGroupReservationController extends ReservationController impleme
     {
         //TODO: error and success information
 
-        String title = "Add Reservation";
+        String title = "Reservierung hinzufügen";
         if(this.selectedGroups.size() == 0)
-            msg = "Please select at least one group";
+            msg = "Bitte wählen Sie mindestens eine Laborgruppe aus";
 
         if(groupsAvailable() && validateDate() && withinOpeningHours())
         {
@@ -175,7 +175,7 @@ public class newGroupReservationController extends ReservationController impleme
                     addEquipmentToReservations(newEquipment);
                 }
             }
-            msg = "Reservation(s) added successfully";
+            msg = "Reservierung wurde erfolgreich hinzugefügt";
             FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
         }
 
