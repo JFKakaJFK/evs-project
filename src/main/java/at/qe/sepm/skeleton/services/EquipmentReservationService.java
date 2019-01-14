@@ -70,7 +70,7 @@ public class EquipmentReservationService {
      *
      * @return
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<EquipmentReservation> getAllEquipmentReservations(){
         return equipmentReservationRepository.findAll();
     }
@@ -91,7 +91,7 @@ public class EquipmentReservationService {
      * @param reservation
      * @return
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public EquipmentReservation saveReservation(EquipmentReservation reservation){
         if(reservation.isNew()){
             reservation.setCreateDate(new Date());
