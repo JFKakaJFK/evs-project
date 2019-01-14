@@ -12,7 +12,7 @@
 - NOTE: cNumber Getters und Setters müssen so geschrieben werden weil JSF diese sonst nicht erkennt
 - [x] navbar anpassen (brauchen wir die tests?)
 - [x] sollen in den views alle ROLES angezeigt werden oder nur die mit am meisten rechte?
-- [ ] TODD: zb sicheres passwort generieren und per mail schicken
+- [ ] TODO: zb sicheres passwort generieren und per mail schicken
 - [ ] BUG: user overview sortieren geht erst nachdem man in der suchleiste etwas gesucht hat(umstellung der List<> auf filteredUsers)
 
 ## 2. Equipment management & Opening Hours - FAST FERTIG
@@ -38,17 +38,15 @@
 
 - [x] Reservation Entity (@Johannes)
 - [x] testReservationen (@Johannes)
-- [ ] ReservationListController (@Melanie @Markus)
-- [ ] addReservationController (@Melanie @Markus)
-- [ ] Bestätigungsmails (@Melanie @Markus)
-- [ ] AddEquipmentGroupReservationController (@Melanie @Markus)
-- [ ] EquipmentGroupListController (@Melanie @Markus)
-- [ ] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Andi @Chris)
-- [ ] view zur Einsicht aller EquipmentGroupReservierungen(und löschen) **ADMIN** (@Andi @Chris)
-- [ ] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Andi @Chris)
-- [ ] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Andi @Chris)
-- [ ] view zur Einsicht(und löschen) aller reservierungen **ADMIN** (@Andi @Chris)
-- [ ] view zur Einsicht aller ausgeliehenen und überfälligen Equipments(und Rückgabebestätigungen) **ADMIN** (@Andi @Chris)
+- [x] ReservationListController (@Melanie @Markus)
+- [x] addReservationController (@Melanie @Markus)
+- [ ] Bestätigungsmails (@Markus)
+- [x] AddEquipmentGroupReservationController (@Melanie @Markus)
+- [x] EquipmentGroupListController (@Melanie @Markus)
+- [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Andi @Chris)
+- [ ] view zur Einsicht aller Reservierungen(und löschen) **ADMIN** (@Melanie)
+- [x] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Andi @Chris)
+- [x] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Andi @Chris)
 
 ### TODO/Notes
 
@@ -67,11 +65,33 @@
 
 - [x] TODO: Kaskadierung beim löschen von equipmentgruppen eventuell besser umsetzen
 
-## 6. Testing & Bugfixes
+## 6. TODO
 
-- [ ] ui sprache ist deutsch, alles was noch englisch ist anpassen
-- [ ] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen.
+- [ ] ui sprache ist deutsch, alles was noch englisch ist anpassen (@Melanie)
+- [ ] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen. (@Melanie)
+- [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
+- [ ] growl/messages für alle delete/add aktionen? (@Andi)
+- [ ] bei den datatables pagination, search & sort(siehe neue user overview) (@Andi)
+
+## Technische Dokumentation
+
+> Fertigen Sie eine Pr¨asentation (max. 10 Minuten) der Technischen Details zu ihrem
+System an, die am 21.01.2018 im Proseminar pr¨asentiert werden muss. Hierzu
+werden zwei bis drei Studierende ihres Teams zuf¨allig ausgew¨ahlt um die Inhalte
+zu pr¨asentieren.
+
+- Feature File-Up/Download (@Johannes)
+
+## Live-Demo
+
+> Bereiten Sie eine Live-Demo (max. 10 Minuten) Ihres Systems vor, welche am
+28.01.2018 im Proseminar pr¨asentiert wird. Hierzu werden zwei bis drei Studierende
+ihres Teams zuf¨allig ausgew¨ahlt um die Inhalte zu pr¨asentieren.
+
+
+## Vor Abgabe
+
 - [ ] kontrolle ob alle features laut spezifikation existieren
 - [ ] test entities für alles und dokumentation
-- [ ] vagrantfile updaten
+- [ ] vagrantfile testen und falls nötig ändern
 - [ ] unit tests
