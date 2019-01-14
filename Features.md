@@ -24,7 +24,7 @@
 - [x] view zur Übersicht aller Equipments und equipment hinzufügen **ADMIN** (@Andi)
 - [x] OpeningHours Entity und Service (@Chris)
 - [x] testÖffnungszeiten hinzufügen (@Chris)
-- [ ] view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
+- [x] view zur Einsicht der Öffnungszeiten und zum ändern **ADMIN** (@Andi)
 - [x] view zum Ansehen der equipmentDetails(Kommentare, Manuals) **?ALLe? = STUDENT** und Kommentare/Manuals hinzufügen/entfernen nur für **ADMIN**
 
 ### TODO/Notes
