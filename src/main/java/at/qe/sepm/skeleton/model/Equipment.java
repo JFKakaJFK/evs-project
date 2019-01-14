@@ -29,8 +29,6 @@ public class Equipment implements Persistable<Integer> {
 
     private boolean locked;
 
-    private boolean returned = true;
-
     @Transient
     private EquipmentState state;
 
@@ -110,14 +108,11 @@ public class Equipment implements Persistable<Integer> {
      * @return
      */
     public boolean isAvailable(Date startDate, Date endDate){
-        if(!returned){
-            return false;
-        }
         // check all reservations, if any between  start & end return false
         // TODO maybe check if it was returned? not relevant for distant reservations though
         for(EquipmentReservation reservation: this.reservations){
             if(reservation.getEquipment().getId().equals(this.getId())){
-                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < reservation.getStartDate().getTime())){
+                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < (reservation.getStartDate().getTime()) /*+ TODO schonfrist*/)){
                     return false;
                 }
             }
@@ -135,7 +130,7 @@ public class Equipment implements Persistable<Integer> {
             return true;
         }
         // TODO return false(if no past reservation isn't complete, the equipment must be available)
-        return !returned && isAvailable(new Date(), new Date());
+        return isAvailable(new Date(), new Date());
     }
 
     /* ManyToMany cascading methods */
@@ -362,14 +357,6 @@ public class Equipment implements Persistable<Integer> {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public boolean isReturned() {
-        return returned = true;
-    }
-
-    public void setReturned(boolean returned) {
-        this.returned = returned;
     }
 
     public List<EquipmentGroup> getEquipmentGroups() {
