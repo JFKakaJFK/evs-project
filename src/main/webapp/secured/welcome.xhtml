@@ -1,16 +1,17 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/templates/main.xhtml">
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
     <ui:define name ="content">
         <f:event type="preRenderView" listener="#{newReservationController.checkURL}"/>
 
-        <h:form>
+        <h:panelGroup layout="block" id="welcomeForm">
             <h:form rendered="#{newReservationController.addedSuccessfully}">
                 <p:growl id="successGrowl" showDetail="true" sticky="false"/>
                 <f:event type="preRenderComponent" listener="#{growlBean.showMessage('Reservation(s) added successfully!')}"/>
@@ -84,7 +85,6 @@
                                     <p:commandButton
                                         value="Confirm retunation"
                                         action="#{reservationListController.doEquipmentReturn}"
-                                        update="reservationEquipmentTable"
                                     >
                                         <p:confirm header="Confirmation" message="Are you sure that you want to confirm the returnation of the selected equipments? You cannot undo this operation." icon="ui-icon-alert" />
                                     </p:commandButton>
@@ -110,11 +110,24 @@
                         </p:column>
 
                         <p:column
-                            headerText="Return Date"
+                            headerText="C-Identifier"
+                            filterBy="#{reservation.user.username} #{reservation.user.cNumber}"
+                            filterStyle="display:none;"
+                            filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{reservation.user.cNumber}"/>
+                        </p:column>
+
+                        <p:column
+                            headerText="Name"
                             filterBy="#{reservation.user.firstName} #{reservation.user.lastName}"
                             filterStyle="display: none"
                             filterMatchMode="contains"
                         >
+                            <h:outputText value="#{reservation.user.firstName} #{reservation.user.lastName}"/>
+                        </p:column>
+
+                        <p:column headerText="Return Date">
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
 
@@ -129,6 +142,6 @@
                     </p:dataTable>
                 </h:form>
             </p:panel>
-        </h:form>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

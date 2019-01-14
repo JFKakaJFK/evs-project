@@ -60,7 +60,7 @@ public class EquipmentReservationService {
      * @param equipment
      * @return
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<EquipmentReservation> getAllEquipmentReservationsContaining(Equipment equipment){
         return equipmentReservationRepository.findAllByEquipment(equipment);
     }
