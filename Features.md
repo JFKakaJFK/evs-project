@@ -43,10 +43,10 @@
 - [ ] Bestätigungsmails (@Markus)
 - [x] AddEquipmentGroupReservationController (@Melanie @Markus)
 - [x] EquipmentGroupListController (@Melanie @Markus)
-- [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Andi @Chris)
+- [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Chris)
 - [ ] view zur Einsicht aller Reservierungen(und löschen) **ADMIN** (@Melanie)
-- [x] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Andi @Chris)
-- [x] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Andi @Chris)
+- [x] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Chris)
+- [x] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Chris)
 
 ### TODO/Notes
 
