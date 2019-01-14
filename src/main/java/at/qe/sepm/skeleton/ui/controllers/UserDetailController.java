@@ -1,10 +1,16 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.User;
+import at.qe.sepm.skeleton.services.ReservationInProgressException;
+import at.qe.sepm.skeleton.services.UserDeletionException;
+import at.qe.sepm.skeleton.services.UserIsAuthenticatedUserException;
 import at.qe.sepm.skeleton.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  * Controller for the user detail view.
@@ -65,7 +71,14 @@ public class UserDetailController {
      * Action to delete the currently displayed user.
      */
     public void doDeleteUser() {
-        this.userService.deleteUser(user);
+        try{
+            this.userService.deleteUser(user);
+        } catch (UserDeletionException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", e.getMessage())
+            );
+        }
+
         user = null;
     }
 

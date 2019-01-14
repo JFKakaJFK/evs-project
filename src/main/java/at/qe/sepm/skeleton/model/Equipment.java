@@ -104,6 +104,7 @@ public class Equipment implements Persistable<Integer> {
      * @param endDate
      * @return
      */
+    // TODO available if reservation blocking availability is completed
     public boolean isAvailable(Date startDate, Date endDate){
         if(!returned){
             return false;

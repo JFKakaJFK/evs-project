@@ -2,6 +2,7 @@ package at.qe.sepm.skeleton.tests;
 
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.model.UserRole;
+import at.qe.sepm.skeleton.services.UserDeletionException;
 import at.qe.sepm.skeleton.services.UserService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -67,7 +68,11 @@ public class UserServiceTest {
         User toBeDeletedUser = userService.loadUser("user1");
         Assert.assertNotNull("User1 could not be loaded from test data source", toBeDeletedUser);
 
-        userService.deleteUser(toBeDeletedUser);
+        try{
+            userService.deleteUser(toBeDeletedUser);
+        } catch (UserDeletionException e){
+            // TODO handle
+        }
 
         Assert.assertEquals("No user has been deleted after calling UserService.deleteUser", 2, userService.getAllUsers().size());
         User deletedUser = userService.loadUser("user1");
@@ -182,7 +187,11 @@ public class UserServiceTest {
     public void testUnauthorizedDeleteUser() {
         User user = userService.loadUser("user1");
         Assert.assertEquals("Call to userService.loadUser returned wrong user", "user1", user.getUsername());
-        userService.deleteUser(user);
+        try{
+            userService.deleteUser(user);
+        } catch (UserDeletionException e){
+            // TODO handle
+        }
     }
 
 }

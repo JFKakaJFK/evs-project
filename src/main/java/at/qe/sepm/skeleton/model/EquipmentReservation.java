@@ -72,7 +72,7 @@ public class EquipmentReservation implements Persistable<Integer> {
      * @return
      */
     public boolean isDeletable(){
-        return new Date().getTime() < this.getStartDate().getTime() || completed;
+        return new Date().before(this.getStartDate()) || completed;
     }
 
     public Equipment getEquipment() {

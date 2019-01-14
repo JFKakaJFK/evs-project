@@ -105,10 +105,15 @@ public class EquipmentReservationService {
      * @param reservation
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal eq #reservation.getUser()")
-    public void deleteReservation(EquipmentReservation reservation){
-        Equipment e = reservation.getEquipment();
-        e.removeReservation(reservation);
-        equipmentService.saveEquipment(e);
+    public void deleteReservation(EquipmentReservation reservation) throws ReservationInProgressException {
+        if(reservation.isDeletable()){
+            Equipment e = reservation.getEquipment();
+            e.removeReservation(reservation);
+            equipmentService.saveEquipment(e);
+        } else {
+            throw new ReservationInProgressException("Der Benutzer hat derzeit noch Geräte ausgeliehen und kann erst gelöscht werden nachdem er diese zurückgebracht hat.");
+        }
+
 
         // TODO log reservation deletet by whom
     }

@@ -102,27 +102,12 @@ public class EquipmentService {
     }
 
     /**
-     * Deletes all Equipments from an Equipment Group
-     */
-    @PreAuthorize("hasAuthority('ADMIN')")
-    private void deleteAllEquipmentsFromGroup(EquipmentGroup equipmentGroup){
-        List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
-        // Detach ManyToMany(Equipment)
-        for (Equipment e: equipments) {
-            equipmentGroup.getEquipments().remove(e);
-        }
-        // Remove Group
-        equipmentGroupRepository.save(equipmentGroup);
-    }
-
-
-    /**
      * Deletes all Groups from an Equipment
      *
      * @param equipment
      */
     @PreAuthorize("hasAuthority('ADMIN')")
-    private void deleteAllGroupsFromEquipment(Equipment equipment){
+    private Equipment deleteAllGroupsFromEquipment(Equipment equipment){
         List<EquipmentGroup> equipmentGroups = new ArrayList<>(equipmentGroupRepository.findAllByEquipmentsContains(equipment));
         // Detach ManyToMany(Equipment)
         for (EquipmentGroup group: equipmentGroups) {
@@ -137,7 +122,7 @@ public class EquipmentService {
                 userRepository.save(group.getUser());
             }
         }
-        equipmentRepository.save(equipment);
+        return equipmentRepository.save(equipment);
     }
 
     /**
@@ -146,8 +131,11 @@ public class EquipmentService {
      * @param equipment to delete
      */
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteEquipment(Equipment equipment){
-        deleteAllGroupsFromEquipment(equipment);
+    public void deleteEquipment(Equipment equipment) throws EquipmentDeletionException {
+        if(equipment.getState() == EquipmentState.BOOKED || equipment.getState() == EquipmentState.OVERDUE){
+            throw new EquipmentDeletionException("Ein ausgeliehenes Gerät kann nicht gelöscht werden.");
+        }
+        equipment = deleteAllGroupsFromEquipment(equipment);
         equipmentRepository.delete(equipment);
         logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
     }

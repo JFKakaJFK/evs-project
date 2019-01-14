@@ -3,11 +3,13 @@ package at.qe.sepm.skeleton.ui.controllers;
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentComment;
 import at.qe.sepm.skeleton.model.EquipmentManual;
+import at.qe.sepm.skeleton.services.EquipmentDeletionException;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Map;
@@ -57,7 +59,14 @@ public class EquipmentDetailController {
     }
 
     public void doDeleteEquipment(){
-        this.equipmentService.deleteEquipment(equipment);
+        try{
+            this.equipmentService.deleteEquipment(equipment);
+        } catch (EquipmentDeletionException e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", e.getMessage())
+            );
+        }
+
         this.equipment = null;
     }
 

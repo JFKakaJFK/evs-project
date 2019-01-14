@@ -4,6 +4,7 @@ package at.qe.sepm.skeleton.ui.controllers;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.EquipmentService;
+import at.qe.sepm.skeleton.services.ReservationInProgressException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -47,7 +48,11 @@ public class ReservationDetailController {
     public void doDeleteReservation() {
         if(equipmentReservation != null)
         {
-            this.equipmentReservationService.deleteReservation(equipmentReservation);
+            try {
+                this.equipmentReservationService.deleteReservation(equipmentReservation);
+            } catch (ReservationInProgressException e){
+                // TODO growl/message (e.getMessage())
+            }
             equipmentReservation = null;
         }
     }

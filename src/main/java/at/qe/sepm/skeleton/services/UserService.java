@@ -84,16 +84,21 @@ public class UserService {
      *
      * @param user the user to delete
      */
-    // TODO: catch invalid permission exception if current user is @param user to display growl/message?
-    @PreAuthorize("hasAuthority('ADMIN') and principal.username ne #user.username")
-    public void deleteUser(User user) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteUser(User user) throws UserDeletionException {
+        if(user.equals(getAuthenticatedUser())){
+            throw new UserIsAuthenticatedUserException("Du kannst dich nicht selbst löschen.");
+        }
+        List<EquipmentReservation> reservations = new ArrayList<>(equipmentReservationService.getAllByUser(user));
+        if(reservations.stream().anyMatch(reservation -> !reservation.isDeletable())){
+            throw new ReservationInProgressException("Der Benutzer hat derzeit noch Geräte ausgeliehen und kann erst gelöscht werden nachdem er diese zurückgebracht hat.");
+        }
         List<EquipmentGroup> equipmentGroups = new ArrayList<>(user.getEquipmentGroups());
         for(EquipmentGroup equipmentGroup: equipmentGroups){
-            //user.getEquipmentGroups().remove(equipmentGroup);
-            equipmentGroupService.deleteEquipmentGroup(equipmentGroup);
+            user.getEquipmentGroups().remove(equipmentGroup);
+            user = userRepository.save(user);
         }
-        // user.setEquipmentGroups(null);
-        List<EquipmentReservation> reservations = new ArrayList<>(equipmentReservationService.getAllByUser(user));
+
         for(EquipmentReservation reservation: reservations){
             equipmentReservationService.deleteReservation(reservation);
         }
