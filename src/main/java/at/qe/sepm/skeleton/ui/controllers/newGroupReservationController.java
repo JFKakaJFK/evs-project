@@ -103,7 +103,6 @@ public class newGroupReservationController extends ReservationController impleme
 
                     if(freeGroups.size() == 0)
                     {
-                        //TODO: Error Message
                         //no freeGroups within max reservation duration
                         showErrorMessage("Keine Gerätegruppe ist in diesem Ausleihzeitraum verfübar");
                     }
@@ -111,7 +110,6 @@ public class newGroupReservationController extends ReservationController impleme
 
                 else
                 {
-                    //TODO: ERROR Message
                     //selected dates are not in openinghours
                     showErrorMessage("Ausleih und/oder Rückgabedatum sind nicht innerhalb der Öffnungszeiten");
                 }
