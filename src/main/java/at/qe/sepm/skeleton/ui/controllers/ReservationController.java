@@ -90,7 +90,7 @@ public class ReservationController {
         if(openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate)) {
             return true;
         }
-        msg = "Reservation not during Opening Hours!";
+        msg = "Reservierung ist nicht während den Önnungszeiten!";
         return false;
     }
 
@@ -108,7 +108,7 @@ public class ReservationController {
         Date today = new Date();
         today.getTime();
         if((today.after(this.returnDate) && today.after(this.lendingDate)) || (returnDate.before(lendingDate))) {
-            msg = "Dates are not valid!";
+            msg = "Ungültiges Datum";
             return false;
         }
 
