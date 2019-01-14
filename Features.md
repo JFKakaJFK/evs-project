@@ -72,6 +72,8 @@
 - [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
 - [ ] growl/messages für alle delete/add aktionen? (@Andi)
 - [ ] bei den datatables pagination, search & sort(siehe neue user overview) (@Andi)
+- [ ] bei datatables add button in header verschieben, damit dieser bei langen tables gut erreichbar ist (@Andi)
+- [ ] add & delete buttons einfärben (@Johannes)
 
 ## Technische Dokumentation
 
