@@ -40,7 +40,7 @@ public class EquipmentReservationService {
     public Collection<EquipmentReservation> getAllBorrowedEquipments(){
         Collection<Equipment> borrowed = equipmentService.getAllBorrowedEquipments();
         return equipmentReservationRepository.findAll().stream()
-            .filter(reservation -> borrowed.contains(reservation.getEquipment()))
+            .filter(reservation -> borrowed.contains(reservation.getEquipment()) && !reservation.isCompleted())
             .collect(Collectors.toList());
     }
 
