@@ -67,7 +67,7 @@ public class EmailController {
 		   
 		   
 		   Message msg = new MimeMessage(session);
-		   msg.setFrom(new InternetAddress("tutorialspoint@gmail.com", false));
+		   msg.setFrom(new InternetAddress("test.hilpold@gmail.com", false));
 
 		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail())); //sets recipients
 		   msg.setSubject("Buchung"); //
