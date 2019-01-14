@@ -74,10 +74,7 @@
                             <p:repeat id="commentTable" value="#{equipment.comments}" var="comment">
                                 <p:panel header="#{comment.title}" style="margin-bottom:10px">
                                     <h:outputText value="#{comment.message}"/>
-                                    <!--
-                                    <p:separator />
-                                    <h:outputText value="#{comment.createDate} by #{comment.createUser}"/>
-                                    -->
+
                                     <f:facet name="actions">
                                         <p:commandButton update=":equipmentForm:commentEditDialog" oncomplete="PF('commentEditDialog').show()" icon="ui-icon-note" title="Edit"  rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                                             <f:setPropertyActionListener value="#{comment}" target="#{equipmentDetailController.comment}" />

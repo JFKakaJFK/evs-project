@@ -23,16 +23,6 @@ public class EquipmentDetailController {
     private EquipmentComment comment;
     private EquipmentManual manual;
 
-    // TODO
-    @Deprecated
-    public void loadEquipmentByURL(){
-        Map<String, String> params =FacesContext.getCurrentInstance().
-            getExternalContext().getRequestParameterMap();
-        System.out.println(params.getOrDefault("id", "404"));
-        Integer id = Integer.valueOf(params.get("id"));
-        this.equipment = equipmentService.loadEquipment(id);
-    }
-
     public void setEquipment(Equipment equipment){
         this.equipment = equipment;
         doReloadEquipment();

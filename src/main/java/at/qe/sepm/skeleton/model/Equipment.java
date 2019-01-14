@@ -82,7 +82,6 @@ public class Equipment implements Persistable<Integer> {
                 }
             }
         }
-        // Should be unreachable
         return null;
     }
 

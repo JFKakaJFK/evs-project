@@ -96,27 +96,20 @@ public class EquipmentReservationService {
         if(reservation.isNew()){
             reservation.setCreateDate(new Date());
         }
-        // TODO redo / test all cascading
-        /*
-        Equipment e = reservation.getEquipment();
-        e.addReservation(reservation);
-        equipmentService.saveEquipment(e);
-        */
         return equipmentReservationRepository.save(reservation);
     }
 
     /**
-     * Deletes a reservation if the start Date is in the Future
+     * Deletes a reservation without checking whether the start Date is in the Future
      *
      * @param reservation
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal eq #reservation.getUser()")
     public void deleteReservation(EquipmentReservation reservation){
-        if(reservation.isDeletable()){
-            Equipment e = reservation.getEquipment();
-            e.removeReservation(reservation);
-            equipmentService.saveEquipment(e);
-        }
+        Equipment e = reservation.getEquipment();
+        e.removeReservation(reservation);
+        equipmentService.saveEquipment(e);
+
         // TODO log reservation deletet by whom
     }
 

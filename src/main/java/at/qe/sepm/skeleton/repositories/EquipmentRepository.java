@@ -8,7 +8,6 @@ import java.util.List;
  * Repository for managing {@link Equipment} entities.
  */
 public interface EquipmentRepository extends AbstractRepository<Equipment, Integer> {
-    List<Equipment> findByNameContaining(String name);
 
     Equipment findById(Integer id);
 }

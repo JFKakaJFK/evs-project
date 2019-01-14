@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.Param;
  * of Innsbruck.
  */
 public interface UserRepository extends AbstractRepository<User, String> {
-        User findFirstByUsername(String username);
+    User findFirstByUsername(String username);
 
     List<User> findByUsernameContaining(String username);
 

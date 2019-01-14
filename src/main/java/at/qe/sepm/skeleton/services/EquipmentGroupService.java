@@ -1,7 +1,5 @@
 package at.qe.sepm.skeleton.services;
 
-import at.qe.sepm.skeleton.configs.ReservationProperties;
-import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentGroup;
 import at.qe.sepm.skeleton.model.EquipmentState;
 import at.qe.sepm.skeleton.model.User;
@@ -28,9 +26,6 @@ public class EquipmentGroupService {
     private UserRepository userRepository;
 
     @Autowired
-    private EquipmentService equipmentService;
-
-    @Autowired
     private EquipmentGroupRepository equipmentGroupRepository;
 
     /**
@@ -49,7 +44,6 @@ public class EquipmentGroupService {
      * @param end
      * @return
      */
-    // TODO clean up with predicate<equipment>
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public Collection<EquipmentGroup> getOwnGroupsFree(Date start, Date end){
         return equipmentGroupRepository.findAllByUser(getAuthenticatedUser()).stream()
@@ -92,18 +86,10 @@ public class EquipmentGroupService {
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #equipmentGroup.user.username")
     public void deleteEquipmentGroup(EquipmentGroup equipmentGroup){
-        // List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
         User u = equipmentGroup.getUser();
-        u.getEquipmentGroups().remove(equipmentGroup);
-        /*
-        for (Equipment e: equipments) {
-            e.removeEquipmentGroup(equipmentGroup);
-            // equipmentService.saveEquipment(e);
-        }
-
-        equipmentGroupRepository.delete(equipmentGroup);
-        */
-
+        u.removeEquipmentGroup(equipmentGroup);
+        //u.getEquipmentGroups().remove(equipmentGroup);
+          //equipmentGroup.setUser(null);
         userRepository.save(u);
     }
 

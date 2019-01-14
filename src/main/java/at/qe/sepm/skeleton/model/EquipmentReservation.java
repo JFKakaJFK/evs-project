@@ -75,12 +75,6 @@ public class EquipmentReservation implements Persistable<Integer> {
         return new Date().getTime() < this.getStartDate().getTime() || completed;
     }
 
-    // TODO remove since reservation.getEquipment.getName has the same functionality
-    @Deprecated
-    public String getEquipmentAsString(){
-        return equipment.toString();
-    }
-
     public Equipment getEquipment() {
         return equipment;
     }

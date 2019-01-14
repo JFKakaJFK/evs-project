@@ -29,7 +29,7 @@
                         value="#{reservationListController.allUserReservations}"
                     >
                         <p:column headerText="Equipment">
-                            <h:outputText value="#{reservation.equipmentAsString}"/>
+                            <h:outputText value="#{reservation.equipment.name}"/>
                         </p:column>
                         <p:column headerText="Lending date">
                             <h:outputText value="#{reservation.startDate}"/>
@@ -102,11 +102,11 @@
 
                         <p:column
                             headerText="Equipment"
-                            filterBy="#{reservation.equipmentAsString}"
+                            filterBy="#{reservation.equipment.name}"
                             filterStyle="display: none"
                             filterMatchMode="contains"
                         >
-                            <h:outputText value="#{reservation.equipmentAsString}" />
+                            <h:outputText value="#{reservation.equipment.name}" />
                         </p:column>
 
                         <p:column

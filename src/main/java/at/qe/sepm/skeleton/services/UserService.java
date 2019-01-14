@@ -1,6 +1,7 @@
 package at.qe.sepm.skeleton.services;
 
 import at.qe.sepm.skeleton.model.EquipmentGroup;
+import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 
@@ -32,6 +33,9 @@ public class UserService {
 
     @Autowired
     private EquipmentGroupService equipmentGroupService;
+
+    @Autowired
+    private EquipmentReservationService equipmentReservationService;
 
     /**
      * Returns a collection of all users.
@@ -76,19 +80,23 @@ public class UserService {
     }
 
     /**
-     * Deletes the user.
+     * Deletes the user. A user cannot delete himself.
      *
      * @param user the user to delete
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    // TODO: catch invalid permission exception if current user is @param user to display growl/message?
+    @PreAuthorize("hasAuthority('ADMIN') and principal.username ne #user.username")
     public void deleteUser(User user) {
-        // hotfix: cascade tries to delete groups after deleting user but
-        // constraints keep user from being deleted as long as groups depend on user
         List<EquipmentGroup> equipmentGroups = new ArrayList<>(user.getEquipmentGroups());
         for(EquipmentGroup equipmentGroup: equipmentGroups){
+            //user.getEquipmentGroups().remove(equipmentGroup);
             equipmentGroupService.deleteEquipmentGroup(equipmentGroup);
         }
-        user.setEquipmentGroups(null);
+        // user.setEquipmentGroups(null);
+        List<EquipmentReservation> reservations = new ArrayList<>(equipmentReservationService.getAllByUser(user));
+        for(EquipmentReservation reservation: reservations){
+            equipmentReservationService.deleteReservation(reservation);
+        }
 
         userRepository.delete(user);
 
