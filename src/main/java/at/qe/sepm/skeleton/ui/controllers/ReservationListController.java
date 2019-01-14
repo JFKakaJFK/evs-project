@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class ReservationListController implements Serializable {
     private List<EquipmentReservation> selectedReservationsReturn;
     private List<EquipmentReservation> filteredReservationsReturn;
 
+    private boolean returnedSuccessfully = false;
+
     @PostConstruct
     public void Init()
     {
@@ -51,6 +54,14 @@ public class ReservationListController implements Serializable {
             this.defaultReservationsReturn = new ArrayList<>();
             this.defaultReservationsReturn.addAll(equipmentReservationService.getAllBorrowedEquipments());
         }
+    }
+
+    public boolean isReturnedSuccessfully() {
+        return returnedSuccessfully;
+    }
+
+    public void setReturnedSuccessfully(boolean returnedSuccessfully) {
+        this.returnedSuccessfully = returnedSuccessfully;
     }
 
     public List<EquipmentReservation> getDefaultReservationsReturn() {
@@ -86,9 +97,7 @@ public class ReservationListController implements Serializable {
 
     public void doEquipmentReturn()
     {
-        //FacesContext context = FacesContext.getCurrentInstance();
-        //context.addMessage(null, new FacesMessage("Equipment returnation", selectedReservationsReturn.size()+" has been returnd"));
-
+        FacesContext context = FacesContext.getCurrentInstance();
         if(selectedReservationsReturn.size() > 0)
         {
             for(EquipmentReservation equipmentReservation : selectedReservationsReturn)
@@ -98,20 +107,30 @@ public class ReservationListController implements Serializable {
                 equipmentReservationService.saveReservation(res);
             }
 
-            try
-            {
-                reload();   //reloads page
-            }
+            this.defaultReservationsReturn.clear();
+            this.defaultReservationsReturn.addAll(this.equipmentReservationService.getAllBorrowedEquipments());
 
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            context.addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_INFO,
+                "Equipment returnation",
+                selectedReservationsReturn.size()+" equipments returned successfully"
+            ));
+        }
+
+        else
+        {
+            //no equipment selected
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Equipment returnation", "Please select at least one equipment"));
         }
     }
 
-    public void reload() throws IOException {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+    public void checkURL() {
+        Iterator<String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterNames();
+        if(params.hasNext()) {
+            String parameter = params.next();
+            if(parameter.equals("returnedSuccessfully")) {
+                this.returnedSuccessfully = true;
+            }
+        }
     }
 }

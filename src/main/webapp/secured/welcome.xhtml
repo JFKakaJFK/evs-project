@@ -13,7 +13,7 @@
 
         <h:panelGroup layout="block" id="welcomeForm">
             <h:form rendered="#{newReservationController.addedSuccessfully}">
-                <p:growl id="successGrowl" showDetail="true" sticky="false"/>
+                <p:growl id="successGrowl1" showDetail="true" sticky="false"/>
                 <f:event type="preRenderComponent" listener="#{growlBean.showMessage('Reservation(s) added successfully!')}"/>
             </h:form>
 
@@ -62,6 +62,8 @@
                 rendered="#{sessionInfoBean.hasRole('ADMIN')}"
             >
                 <h:form id="reservationReturnForm">
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+
                     <p:dataTable
                         widgetVar="reservationSelect"
                         id="reservationEquipmentTable"
@@ -85,6 +87,7 @@
                                     <p:commandButton
                                         value="Confirm retunation"
                                         action="#{reservationListController.doEquipmentReturn}"
+                                        update="@form"
                                     >
                                         <p:confirm header="Confirmation" message="Are you sure that you want to confirm the returnation of the selected equipments? You cannot undo this operation." icon="ui-icon-alert" />
                                     </p:commandButton>
