@@ -1,5 +1,7 @@
 package at.qe.sepm.skeleton.ui.controllers;
 import at.qe.sepm.skeleton.model.User;
+import at.qe.sepm.skeleton.services.UserService;
+import at.qe.sepm.skeleton.ui.beans.*;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +36,14 @@ import java.util.Properties;
  * Controller for booking tools via email
  */
 
+
 @RestController //Using "@RestController" instead of simple "@Component" annotation 
 @Scope("notify")
 
 public class EmailController {
-	
+
 	@Autowired
-	User user;
+	private UserService userService;
 	
 	@RequestMapping(value = "/sendemail")
 	   public String sendEmail() {
@@ -61,7 +64,7 @@ public class EmailController {
 		   
 		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 		      protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication(user.getEmail(), user.getPassword()); //WARNING: Could be wrong 
+		         return new PasswordAuthentication(userService.getAuthenticatedUser().getUsername(), userService.getAuthenticatedUser().getPassword()); //WARNING: Could be wrong 
 		      }
 		   });
 		   
@@ -69,7 +72,7 @@ public class EmailController {
 		   Message msg = new MimeMessage(session);
 		   msg.setFrom(new InternetAddress("test.hilpold@gmail.com", false));
 
-		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail())); //sets recipients
+		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userService.getAuthenticatedUser().getEmail())); //sets recipients
 		   msg.setSubject("Buchung"); //
 		   msg.setContent("Buchung war erfolgreich", "text/html");
 		   msg.setSentDate(new Date());
