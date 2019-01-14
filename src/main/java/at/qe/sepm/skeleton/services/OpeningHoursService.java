@@ -78,7 +78,10 @@ public class OpeningHoursService {
     }
 
     public boolean isWithinOpeningHours(Date date) {
-        OpeningHours openingHours = null;
+        OpeningHours openingHours = this.loadOpeningHour(getWeekDay(date));
+        if(openingHours == null)
+            return false;
+
         try
         {
             DateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -94,14 +97,15 @@ public class OpeningHoursService {
         }
 
 
-        if(openingHours == null)
-            return false;
 
-        else
+
+        if(openingHours != null)
         {
             if(openingHours.getStartPause() == null || openingHours.getEndPause() == null)
             {
-                if(date.after(openingHours.getStartTime()) && date.before(openingHours.getEndTime()))
+                if((date.after(openingHours.getStartTime()) || date.equals(openingHours.getStartTime()))
+                    &&
+                    (date.before(openingHours.getEndTime()) || date.equals(openingHours.getEndTime())))
                 {
                     return true;
                 }
@@ -111,10 +115,13 @@ public class OpeningHoursService {
             else
             {
                 //check sartTime, endTime + startPause, endPause
-                if((date.after(openingHours.getStartTime()) && date.before(openingHours.getStartPause()))
+                if(
+                    (date.after(openingHours.getStartTime()) || date.equals(openingHours.getStartTime())) && (date.before(openingHours.getStartPause()) || date.equals(openingHours.getStartPause()))
                         ||
-                    (date.after(openingHours.getEndPause()) && date.before(openingHours.getEndTime()))
+                    (
+                        (date.after(openingHours.getEndPause()) || date.equals(openingHours.getEndPause())) && (date.before(openingHours.getEndTime()) || date.equals(openingHours.getEndTime())))
                 )
+
                 {
                     return true;
                 }

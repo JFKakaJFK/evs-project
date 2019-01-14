@@ -1,68 +1,51 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
-import at.qe.sepm.skeleton.model.EquipmentReservation;
-import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.services.EquipmentService;
-import at.qe.sepm.skeleton.services.OpeningHoursService;
-import at.qe.sepm.skeleton.services.UserService;
 import org.primefaces.PrimeFaces;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import org.primefaces.context.RequestContext;
-import javax.faces.application.FacesMessage;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Scope("view")
 public class NewReservationController extends ReservationController implements Serializable {
-    private boolean addedSuccessfully;
-
     private List<Equipment> selectedEquipments;
     private List<Equipment> filteredEquipments;
-    private Collection<Equipment> defaultEquipments;
+    private List<Equipment> defaultEquipments;
 
     private Equipment detailEquipment;
 
     @Autowired
     private EquipmentService equipmentService;
 
-    @Autowired
-    private EquipmentReservationService equipmentReservationService;
-
-    @Autowired
-    private OpeningHoursService openingHoursService;
-
-    @Autowired
-    private UserService userService;
-
     @PostConstruct
     public void Init()
     {
         scheduleModel = new DefaultScheduleModel();
-        defaultEquipments = equipmentService.getAllEquipments();
+        defaultEquipments = new ArrayList<>();
+        defaultEquipments.addAll(equipmentService.getAllEquipments());
         addedSuccessfully = false;
     }
 
-    public Collection<Equipment> getDefaultEquipments() {
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //              GETTER AND SETTER
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    public List<Equipment> getDefaultEquipments() {
         return defaultEquipments;
     }
 
-    public void setDefaultEquipments(Collection<Equipment> defaultEquipments) {
+    public void setDefaultEquipments(List<Equipment> defaultEquipments) {
         this.defaultEquipments = defaultEquipments;
-    }
-
-    public Collection<Equipment> getAllEquipments()
-    {
-        return equipmentService.getAllEquipments();
     }
 
     public List<Equipment> getSelectedEquipments() {
@@ -89,6 +72,14 @@ public class NewReservationController extends ReservationController implements S
         this.detailEquipment = detailEquipment;
     }
 
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //              SPECIFIC METHODS
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    /**
+     * Eventlistener which add the reservations of a specific equipment to the calender
+     * @return null
+     */
     public String calendarAction()
     {
         scheduleModel.clear();
@@ -102,24 +93,45 @@ public class NewReservationController extends ReservationController implements S
         return null;
     }
 
-    public void dateChanged(SelectEvent event)
+    /**
+     * Eventlistener which filters the equipments by landingdate and returningdate
+     */
+    public void dateChanged()
     {
         if(this.lendingDate != null && this.returnDate != null)
         {
-            //ToDo: check if selcted time + weekday is in openinghours
-            //ToDo: check max duration
-
-            if(returnDate.after(lendingDate) || lendingDate.equals(returnDate))
+            if(validateDate())
             {
                 Collection<Equipment> freeEquipments = null;
                 if(withinOpeningHours())
                 {
                     freeEquipments = equipmentService.getAllFreeEquipments(lendingDate, returnDate);
+
+                    //removes equipments which are not within max reservation duration
+                    freeEquipments = freeEquipments.stream()
+                        .filter(p -> p.isWithinMaxReservationDuration(lendingDate, returnDate)).collect(Collectors.toList());
+
+                    if(freeEquipments.size() == 0)
+                    {
+                        //no freeEquipments within max reservation duration
+                        showErrorMessage("Kein Gerät ist in diesem Ausleihzeitraum verfübar");
+                    }
                 }
 
+                else
+                {
+                    //selected dates are not in openinghours
+                    showErrorMessage("Ausleih und/oder Rückgabedatum sind nicht innerhalb der Öffnungszeiten");
+                }
+
+                //replace
                 if(filteredEquipments == null)
                 {
-                    this.defaultEquipments = freeEquipments;
+                    this.defaultEquipments.clear();
+                    if(freeEquipments != null)
+                    {
+                        this.defaultEquipments.addAll(freeEquipments);
+                    }
                 }
 
                 else
@@ -141,7 +153,8 @@ public class NewReservationController extends ReservationController implements S
      */
     public void resetInputs()
     {
-        this.defaultEquipments = equipmentService.getAllEquipments();
+        this.defaultEquipments.clear();
+        this.defaultEquipments.addAll(equipmentService.getAllEquipments());
         this.lendingDate = null;
         this.returnDate = null;
 
@@ -151,65 +164,46 @@ public class NewReservationController extends ReservationController implements S
 
 
     /**
-     *
-     * @throws IOException
+     * add selected equipments from NewReservationController#selectedEquipments to EquipmentReservation
      */
-    public void addEquipmentReservation() throws IOException {
-        //Todo: error and success information
-    	//ToDo: check max duration for each equipment
-        //check if equipments are avialbe and validate Date
-    	 String title = "Reservierung hinzufügen";
+    public void addEquipmentReservation() {
+         //check if at least one equipment is selected
     	 if(this.selectedEquipments.size() == 0)
-    	     msg = "Bitte wählen Sie mindestens ein Laborgerät aus";
+         {
+             showErrorMessage("Min. eine Gerät muss ausgewählt werden.");
+         }
 
-        if(equipmentsAvailable() && validateDate() && withinOpeningHours())
+        if(selectedEquipmentsAvailable() && validateDate() && withinOpeningHours())
         {
 
             for(Equipment newEquipment : this.selectedEquipments)
             {
                 addEquipmentToReservations(newEquipment);
             }
-            msg = "Reservierung wurde erfolgreich hinzugefügt";
-            FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
-        }
 
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
-        PrimeFaces.current().dialog().showMessageDynamic(message);
+            //redirect to welcome page
+            try
+            {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
+            }
+
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
-     * check if the equipment is available
-     * @return
+     * checks if selected equipments are available and lendingdate und returndate in maxduration time
+     * @return true if equipments are available
      */
-	public boolean isAvailable() {
-		Collection<EquipmentReservation> allEquipmentReservations = new ArrayList<EquipmentReservation>();
-		for (Equipment equipment : selectedEquipments) {
-			allEquipmentReservations = equipmentReservationService.getAllEquipmentReservationsContaining(equipment);
-			for (EquipmentReservation er : allEquipmentReservations) {
-				if (!((this.getLendingDate().after(er.getEndDate()))
-						|| (this.getReturnDate().before(er.getStartDate())))) {
-					msg = "Laborgerät nicht verfügbar";
-			        return false;
-				}
-				if(!(er.getEquipment().isWithinMaxReservationDuration(this.getLendingDate(), this.getReturnDate()))) {
-					msg = "Die maximale Ausleihdauer wurde überschritten";
-					return false;
-				}
-			}
-
-		}
-		return true;
-	}
-
-    /**
-     * checks if selected equipments are available and lendingdate und returndate in maxduration
-     */
-    public boolean equipmentsAvailable()
+    private boolean selectedEquipmentsAvailable()
     {
-        //TODO: add check lendingdate and returndate is in maxduration
-
         if(selectedEquipments == null || lendingDate == null || returnDate == null)
+        {
             return false;
+        }
 
         //check if equipments are avialable
         List<Equipment> freeEquipments = (List<Equipment>) equipmentService.getAllFreeEquipments(lendingDate, returnDate);
@@ -218,7 +212,13 @@ public class NewReservationController extends ReservationController implements S
         {
             if(!freeEquipments.contains(equipment))
             {
-                msg = "Das Laborgerät ist nicht verfügbar";
+                showErrorMessage("Min. ein Gerät ist nicht verfügbar.");
+                return false;
+            }
+
+            if(!equipment.isWithinMaxReservationDuration(this.lendingDate, this.returnDate))
+            {
+                showErrorMessage("Die Maximaleausleihdauer wurde überschritten.");
                 return false;
             }
         }

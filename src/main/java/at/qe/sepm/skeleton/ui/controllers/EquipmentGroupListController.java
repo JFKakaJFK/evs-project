@@ -38,7 +38,6 @@ public class EquipmentGroupListController {
      * @return
      */
     public Collection<EquipmentGroup> getAllEquipmentGroupsByUser(){
-        // TODO COnsole log
         return groupService.getOwnGroups();
     }
 

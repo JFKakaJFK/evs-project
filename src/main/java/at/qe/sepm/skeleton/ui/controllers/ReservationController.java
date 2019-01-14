@@ -10,6 +10,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -90,7 +91,6 @@ public class ReservationController {
         if(openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate)) {
             return true;
         }
-        msg = "Reservierung ist nicht während den Önnungszeiten!";
         return false;
     }
 
@@ -101,14 +101,14 @@ public class ReservationController {
     public boolean validateDate() {
         if(lendingDate == null || returnDate == null)
         {
-            msg = "Please select lending- and returndate";
+            showErrorMessage("Bitte Ausleih- und/oder Rückgabedatum auswählen");
             return false;
         }
 
         Date today = new Date();
         today.getTime();
         if((today.after(this.returnDate) && today.after(this.lendingDate)) || (returnDate.before(lendingDate))) {
-            msg = "Ungültiges Datum";
+            showErrorMessage("Ungültiges Ausleih und/oder Rückgabedatum");
             return false;
         }
 
@@ -156,5 +156,11 @@ public class ReservationController {
                 this.addedSuccessfully = true;
             }
         }
+    }
+
+    public void showErrorMessage(String message)
+    {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Neue Reservierung",  message) );
     }
 }

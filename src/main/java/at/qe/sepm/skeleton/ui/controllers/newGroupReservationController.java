@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Scope("view")
@@ -82,14 +83,11 @@ public class newGroupReservationController extends ReservationController impleme
 
     /**
      * Eventlistener which filters the equipmentgroups by landingdate and returningdate
-     * @param event
      */
-    public void dateChanged(SelectEvent event)
+    public void dateChanged()
     {
         if(this.lendingDate != null && this.returnDate != null)
         {
-            //ToDo: check max duration
-
             //check landing- and returndate
             if(validateDate())
             {
@@ -97,6 +95,25 @@ public class newGroupReservationController extends ReservationController impleme
                 if(withinOpeningHours())
                 {
                     freeGroups.addAll(equipmentGroupService.getOwnGroupsFree(this.lendingDate, this.returnDate));
+
+                    //removes groups which are not within max reservation duration
+                    freeGroups = freeGroups.stream()
+                        .filter(p -> p.isWithinMaxReservationDuration(this.lendingDate, this.returnDate))
+                        .collect(Collectors.toList());
+
+                    if(freeGroups.size() == 0)
+                    {
+                        //TODO: Error Message
+                        //no freeGroups within max reservation duration
+                        showErrorMessage("Keine Gerätegruppe ist in diesem Ausleihzeitraum verfübar");
+                    }
+                }
+
+                else
+                {
+                    //TODO: ERROR Message
+                    //selected dates are not in openinghours
+                    showErrorMessage("Ausleih und/oder Rückgabedatum sind nicht innerhalb der Öffnungszeiten");
                 }
 
                 if(filteredGroups == null)
@@ -155,14 +172,14 @@ public class newGroupReservationController extends ReservationController impleme
     }
 
     /**
-     * add selected groups in selectedGroups to database
+     * add equipments of selectedgroups to equipmentsreservations
      * */
-    public void addGroupReservation() throws IOException
+    public void addGroupReservation()
     {
-        //TODO: error and success information
-
-        String title = "Reservierung hinzufügen";
         if(this.selectedGroups.size() == 0)
+        {
+            showErrorMessage("Min. eine Gruppe muss ausgewählt werden.");
+        }
             msg = "Bitte wählen Sie mindestens eine Laborgruppe aus";
 
         if(groupsAvailable() && validateDate() && withinOpeningHours())
@@ -175,19 +192,47 @@ public class newGroupReservationController extends ReservationController impleme
                     addEquipmentToReservations(newEquipment);
                 }
             }
-            msg = "Reservierung wurde erfolgreich hinzugefügt";
-            FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
-        }
 
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, title, msg);
-        PrimeFaces.current().dialog().showMessageDynamic(message);
+            //redirect to welcome page
+            try
+            {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
+            }
+
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
+    /**
+     * Checks if selected groups are available and lendingdate und returndate in maxduration time
+     * @return
+     */
     public boolean groupsAvailable()
     {
         if(selectedGroups == null)
         {
             return false;
+        }
+
+        //check if equipments are avialable
+        List<EquipmentGroup> freeGroups = (List<EquipmentGroup>) equipmentGroupService.getOwnGroupsFree(lendingDate, returnDate);
+
+        for(EquipmentGroup equipmentGroup : selectedGroups)
+        {
+            if(!freeGroups.contains(equipmentGroup))
+            {
+                showErrorMessage("Min. eine Gruppe ist nicht verfügbar.");
+                return false;
+            }
+
+            if(!equipmentGroup.isWithinMaxReservationDuration(this.lendingDate, this.returnDate))
+            {
+                showErrorMessage("Die Maximaleausleihdauer wurde überschritten.");
+                return false;
+            }
         }
 
         return true;
