@@ -140,7 +140,7 @@ public class EquipmentService {
         List<Equipment> equipments = new ArrayList<>(equipmentGroup.getEquipments());
         // Detach ManyToMany(Equipment)
         for (Equipment e: equipments) {
-            e.removeEquipmentGroup(equipmentGroup);
+            equipmentGroup.getEquipments().remove(e);
         }
         // Remove Group
         equipmentGroupRepository.save(equipmentGroup);
@@ -154,7 +154,7 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     private void deleteAllGroupsFromEquipment(Equipment equipment){
-        List<EquipmentGroup> equipmentGroups = new ArrayList<>(equipment.getEquipmentGroups());
+        List<EquipmentGroup> equipmentGroups = new ArrayList<>(equipmentGroupRepository.findAllByEquipmentsContains(equipment));
         // Detach ManyToMany(Equipment)
         for (EquipmentGroup group: equipmentGroups) {
             if(group.getEquipments().size() < 3){
@@ -164,7 +164,6 @@ public class EquipmentService {
                 userRepository.save(u);
             } else {
                 group.getEquipments().remove(equipment);
-                equipment.removeEquipmentGroup(group);
             }
         }
         // Remove Group

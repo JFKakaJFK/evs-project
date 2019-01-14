@@ -53,10 +53,6 @@ public class Equipment implements Persistable<Integer> {
     private Date createDate;
 
     @Fetch(FetchMode.SELECT)
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "equipments", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<EquipmentGroup> equipmentGroups;
-
-    @Fetch(FetchMode.SELECT)
     @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     List<EquipmentReservation> reservations = new ArrayList<>();
 
@@ -136,38 +132,6 @@ public class Equipment implements Persistable<Integer> {
         }
         // TODO return false(if no past reservation isn't complete, the equipment must be available)
         return !returned && isAvailable(new Date(), new Date());
-    }
-
-    /* ManyToMany cascading methods */
-
-    /**
-     * Safely add an EquipmentGroup
-     *
-     * @param equipmentGroup
-     */
-    public void addEquipmentGroup(EquipmentGroup equipmentGroup){
-        equipmentGroups.add(equipmentGroup);
-        equipmentGroup.getEquipments().add(this);
-    }
-
-    /**
-     * Safely remove an EquipmentGroup
-     *
-     * @param equipmentGroup
-     */
-    public void removeEquipmentGroup(EquipmentGroup equipmentGroup){
-        equipmentGroups.remove(equipmentGroup);
-        equipmentGroup.getEquipments().remove(this);
-    }
-
-    /**
-     * Call this method to safely delete the Equipment
-     */
-    public void remove(){
-        List<EquipmentGroup> groups = new ArrayList<>(equipmentGroups);
-        for (EquipmentGroup e: groups) {
-            removeEquipmentGroup(e);
-        }
     }
 
     /* ManyToOne cascading methods */
@@ -370,14 +334,6 @@ public class Equipment implements Persistable<Integer> {
 
     public void setReturned(boolean returned) {
         this.returned = returned;
-    }
-
-    public List<EquipmentGroup> getEquipmentGroups() {
-        return equipmentGroups;
-    }
-
-    public void setEquipmentGroups(List<EquipmentGroup> equipmentGroups) {
-        this.equipmentGroups = equipmentGroups;
     }
 
     @Override
