@@ -2,25 +2,18 @@ package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentGroup;
-import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.services.EquipmentGroupService;
-import at.qe.sepm.skeleton.services.EquipmentReservationService;
-import at.qe.sepm.skeleton.services.UserService;
 import org.primefaces.PrimeFaces;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,12 +28,6 @@ public class newGroupReservationController extends ReservationController impleme
 
     @Autowired
     private EquipmentGroupService equipmentGroupService;
-
-    @Autowired
-    private EquipmentReservationService equipmentReservationService;
-
-    @Autowired
-    private UserService userService;
 
    @PostConstruct
     public void Init()
@@ -206,9 +193,9 @@ public class newGroupReservationController extends ReservationController impleme
 
     /**
      * Checks if selected groups are available and lendingdate und returndate in maxduration time
-     * @return
+     * @return boolean
      */
-    public boolean groupsAvailable()
+    private boolean groupsAvailable()
     {
         if(selectedGroups == null)
         {
