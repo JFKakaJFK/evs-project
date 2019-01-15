@@ -132,7 +132,7 @@
                     <p:separator/>
                     <h:panelGrid columns="3" style="text-align: center">
                         <p:commandButton value="Benutzer hinzufügen" action="#{addUserBean.addUser}" oncomplete="PF('addDialog').hide()" update=":userForm:usersTable"/>
-                        <p:commandButton value="Abbrechen" onclick="PF('addDialog').hide()" />
+                        <p:commandButton value="Abbrechen"  immediate="true" onclick="PF('addDialog').hide()" />
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>
