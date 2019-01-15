@@ -44,7 +44,7 @@
 - [x] AddEquipmentGroupReservationController (@Melanie @Markus)
 - [x] EquipmentGroupListController (@Melanie @Markus)
 - [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Chris)
-- [ ] view zur Einsicht aller Reservierungen(und löschen) **ADMIN** (@Melanie)
+- [x] view zur Einsicht aller Reservierungen(und löschen) **ADMIN** (@Melanie)
 - [x] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Chris)
 - [x] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Chris)
 
@@ -67,7 +67,7 @@
 
 ## 6. TODO
 
-- [ ] ui sprache ist deutsch, alles was noch englisch ist anpassen (@Melanie)
+- [x] ui sprache ist deutsch, alles was noch englisch ist anpassen (@Melanie)
 - [ ] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen. (@Melanie)
 - [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
 - [ ] growl/messages für alle delete/add aktionen? (@Andi)
