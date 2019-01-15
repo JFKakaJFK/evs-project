@@ -14,7 +14,7 @@ public class LoginBean {
     public void checkURL() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         if (params.containsKey("expired")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ihre Sitzung ist abgelaufen.\n bitte melden Sie sich erneut an."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ihre Sitzung ist abgelaufen.\n Bitte melden Sie sich erneut an."));
         }
     }
 }
