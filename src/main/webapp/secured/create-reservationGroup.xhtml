@@ -11,18 +11,18 @@
         <h:form id="newReservation">
             <p:growl id="growl" showDetail="true" sticky="true" />
 
-            <p:panel id="newReservationPanel" header="New Reservation of Equipmentgropus">
+            <p:panel id="newReservationPanel" header="Neue Reservierung für Laborgerätgruppen">
                 <!-- Date Select -->
                 <div class="ui-g">
                     <div class="ui-g-4">
-                        <p:outputLabel for="lendingDatetime" value="Lending date: " />
+                        <p:outputLabel for="lendingDatetime" value="Ausleidatum: " />
                         <p:calendar id="lendingDatetime" value="#{newGroupReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" >
                             <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" />
                         </p:calendar>
                     </div>
 
                     <div class="ui-g-4">
-                        <p:outputLabel for="returnDatetime" value="Return date: " />
+                        <p:outputLabel for="returnDatetime" value="Rückgabedatum: " />
                         <p:calendar id="returnDatetime" value="#{newGroupReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" >
                             <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" />
                         </p:calendar>
@@ -30,7 +30,7 @@
 
                     <div class="ui-g-4">
                         <p:commandButton
-                            value="Show Opening Hours"
+                            value="Öffnungszeiten anzeigen"
                             onclick="PF('openingDialog').show();"
                         />
                     </div>
@@ -51,12 +51,12 @@
                     <f:facet name="header">
                         <div>
                             <p:outputPanel style="text-align: left;float: left">
-                                <p:inputText id="globalFilter" onkeyup="PF('groupSelect').filter()" style="width:250px" placeholder="Search for Gruops"/>
+                                <p:inputText id="globalFilter" onkeyup="PF('groupSelect').filter()" style="width:250px" placeholder="Suche nach Gruppen"/>
                             </p:outputPanel>
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
                                 <p:commandButton
-                                    value="Create new reservation"
+                                    value="neue Reservierung erstellen"
                                     action="#{newGroupReservationController.addGroupReservation}"
                                     update="@form"
                                 />
@@ -64,7 +64,7 @@
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
                                 <p:commandButton
-                                    value="Clear all"
+                                    value="Alle löschen"
                                     update=":newReservation:newReservationPanel"
                                     process="@this"
                                     action="#{newGroupReservationController.resetInputs}"
@@ -76,18 +76,18 @@
 
                     <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
-                    <p:column headerText="Group" filterBy="#{group.name}" filterStyle="display: none" filterMatchMode="contains">
+                    <p:column headerText="Laborgerätgruppe" filterBy="#{group.name}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{group.name}" />
                     </p:column>
 
-                    <p:column headerText="Equipments" filterBy="#{group.equipmentAsString}" filterStyle="display: none" filterMatchMode="contains">
+                    <p:column headerText="Laborgeräte" filterBy="#{group.equipmentAsString}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{group.equipmentAsString}" />
                     </p:column>
 
                     <p:column style="width:32px;text-align: center">
                         <p:commandButton
                             icon="pi pi-search"
-                            title="View"
+                            title="Ansicht"
                             update=":newReservation:groupDialog"
                             oncomplete="PF('groupDialog').show()"
                             action="#{newGroupReservationController.calendarAction}"
@@ -130,17 +130,17 @@
             </p:dialog>
 
             <!-- DIALOG Opening Hours -->
-            <p:dialog id="openingDialog" header="Opening Hours" widgetVar="openingDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog id="openingDialog" header="Öffnungszeiten" widgetVar="openingDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="openingPanel" style="text-align:center;width: 750px;">
                     <p:dataTable
                         value="#{newGroupReservationController.openingHours}"
                         var="opening"
                     >
-                        <p:column headerText="Weekday">
+                        <p:column headerText="Wochentag">
                             <h:outputText value="#{opening.day}" />
                         </p:column>
 
-                        <p:column headerText="Open">
+                        <p:column headerText="Geöffnet">
                             <h:outputText value="#{opening.startTime} - #{opening.endTime}" />
                         </p:column>
 
