@@ -13,41 +13,35 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * A bean for handling the download of {@link EquipmentManual}
+ */
 @Controller
 @Scope("request")
-public class FileDownloadBean {
+public class EquipmentManualDownloadBean {
 
     @Autowired
     private StorageService storageService;
 
-    /*
-    // PRIMEFACES VERSION
-    // would need getters and setters
-    private DefaultStreamedContent file;
-    */
-
+    /**
+     * Downloads the {@link EquipmentManual} to the client
+     *
+     * @param manual to download
+     * @throws IOException
+     */
     public void download(EquipmentManual manual) throws IOException {
         Path p = storageService.load(manual.getFilename());
 
-        System.out.println(p.getFileName());
-
-        /*
-        // PRIMEFACES VERSION
-        // Works only if the uploads folder is in the src/main/webapp/** folder
-        InputStream input = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/upload-dir/" + manual.getFilename());
-        file = new DefaultStreamedContent(input, manual.getType(), manual.getOriginalFileName());
-        */
-
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
-
+        // prepare response headers
         ec.responseReset();
         ec.setResponseContentType(manual.getType());
-        ec.setResponseContentLength(((int) p.toFile().length()));
+        ec.setResponseContentLength(((int) p.toFile().length())); // only for the browsers download progressbar
         ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + manual.getOriginalFileName() + "\"");
-
+        // prepare stream to client
         OutputStream outputStream = ec.getResponseOutputStream();
-
+        // stream the file to the client
         Files.copy(p, outputStream);
 
         fc.responseComplete();

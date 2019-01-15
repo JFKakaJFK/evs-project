@@ -1,8 +1,8 @@
 package at.qe.sepm.skeleton.services;
 
+import at.qe.sepm.skeleton.exceptions.ReservationInProgressException;
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
-import at.qe.sepm.skeleton.model.EquipmentState;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.EquipmentReservationRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
@@ -25,9 +25,6 @@ import java.util.stream.Collectors;
 public class EquipmentReservationService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private EquipmentReservationRepository equipmentReservationRepository;
 
     @Autowired
@@ -38,9 +35,8 @@ public class EquipmentReservationService {
      */
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<EquipmentReservation> getAllBorrowedEquipments(){
-        Collection<Equipment> borrowed = equipmentService.getAllBorrowedEquipments();
         return equipmentReservationRepository.findAll().stream()
-            .filter(reservation -> borrowed.contains(reservation.getEquipment()) && !reservation.isCompleted() && new Date().after(reservation.getStartDate()))
+            .filter(EquipmentReservation::isOverdue)
             .collect(Collectors.toList());
     }
 
@@ -50,7 +46,7 @@ public class EquipmentReservationService {
      * @param id
      */
     @PreAuthorize("hasAuthority('STUDENT')")
-    public EquipmentReservation loadRerservation(Integer id){
+    public EquipmentReservation loadReservation(Integer id){
         return equipmentReservationRepository.findOne(id);
     }
 
@@ -96,6 +92,7 @@ public class EquipmentReservationService {
         if(reservation.isNew()){
             reservation.setCreateDate(new Date());
         }
+        reservation.getEquipment().addReservation(reservation);
         return equipmentReservationRepository.save(reservation);
     }
 
@@ -113,18 +110,6 @@ public class EquipmentReservationService {
         } else {
             throw new ReservationInProgressException("Der Benutzer hat derzeit noch Geräte ausgeliehen und kann erst gelöscht werden nachdem er diese zurückgebracht hat.");
         }
-
-
-        // TODO log reservation deletet by whom
-    }
-
-    /**
-     * Returns the currently authenticated User
-     *
-     * @return
-     */
-    private User getAuthenticatedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findFirstByUsername(auth.getName());
+        // TODO log reservation deleted by whom
     }
 }

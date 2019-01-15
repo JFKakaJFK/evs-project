@@ -11,9 +11,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 /**
- * Bean for add-equipmentReservation functionality.
+ * Bean for adding a new {@link Equipment}
  */
-
 @Component
 @Scope("request")
 public class AddEquipmentBean {
@@ -27,6 +26,9 @@ public class AddEquipmentBean {
     private boolean locked;
     private String maxDuration;
 
+    /**
+     * Creates and persists a new reservation
+     */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void addEquipment(){
         Equipment equipment = new Equipment();

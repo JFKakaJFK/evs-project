@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Bean to add a new user.
+ * Bean to add a new {@link User}
  */
 @Component
 @Scope("session")
@@ -38,7 +38,7 @@ public class AddUserBean {
     private String role;
 
     /**
-     * Creates and persists a new user
+     * Creates and persists a new {@link User}
      */
     public void addUser(){
         if(!validateEmail()){
@@ -76,11 +76,10 @@ public class AddUserBean {
     }
 
     /**
-     * Check if the csav is valid
+     * Check if the c-identifier is valid
      *
      * @return true if cId is valid else false
      */
-
     public boolean validateCNumber(){
         if(cNumber == null){
             return false;

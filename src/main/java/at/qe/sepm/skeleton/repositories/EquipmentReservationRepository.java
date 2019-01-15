@@ -6,6 +6,9 @@ import at.qe.sepm.skeleton.model.User;
 
 import java.util.List;
 
+/**
+ * Repository for managing {@link EquipmentReservation} entities.
+ */
 public interface EquipmentReservationRepository extends AbstractRepository<EquipmentReservation, Integer> {
 
     List<EquipmentReservation> findAllByUser(User user);

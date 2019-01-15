@@ -7,10 +7,8 @@ import at.qe.sepm.skeleton.services.EquipmentService;
 import at.qe.sepm.skeleton.services.UserService;
 import at.qe.sepm.skeleton.ui.beans.SessionInfoBean;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 
 @Component
 @Scope("view")
@@ -43,6 +39,7 @@ public class ReservationListController implements Serializable {
     private List<EquipmentReservation> defaultReservationsReturn;
     private List<EquipmentReservation> selectedReservationsReturn;
     private List<EquipmentReservation> filteredReservationsReturn;
+    private List<EquipmentReservation> allReservationsReturn;
 
     private boolean returnedSuccessfully = false;
 
@@ -53,6 +50,8 @@ public class ReservationListController implements Serializable {
         {
             this.defaultReservationsReturn = new ArrayList<>();
             this.defaultReservationsReturn.addAll(equipmentReservationService.getAllBorrowedEquipments());
+            this.allReservationsReturn= new ArrayList<>();
+            this.allReservationsReturn.addAll(equipmentReservationService.getAllEquipmentReservations());
         }
     }
 
@@ -66,6 +65,14 @@ public class ReservationListController implements Serializable {
 
     public List<EquipmentReservation> getDefaultReservationsReturn() {
         return defaultReservationsReturn;
+    }
+
+    public List<EquipmentReservation> getAllReservationsReturn() {
+        return allReservationsReturn;
+    }
+
+    public void setAllReservationsReturn(List<EquipmentReservation> allReservationsReturn) {
+        this.allReservationsReturn = allReservationsReturn;
     }
 
     public List<EquipmentReservation> getFilteredReservationsReturn() {
@@ -102,7 +109,7 @@ public class ReservationListController implements Serializable {
         {
             for(EquipmentReservation equipmentReservation : selectedReservationsReturn)
             {
-                EquipmentReservation res = equipmentReservationService.loadRerservation(equipmentReservation.getId());
+                EquipmentReservation res = equipmentReservationService.loadReservation(equipmentReservation.getId());
                 res.setCompleted(true);
                 equipmentReservationService.saveReservation(res);
             }

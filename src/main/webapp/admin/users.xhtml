@@ -54,12 +54,12 @@
                     </p:commandButton>
                     <p:commandButton action="#{userDetailController.doDeleteUser}" icon="ui-icon-trash" title="Delete" update=":userForm:usersTable">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
-                        <p:confirm header="Confirmation" message="Bist du sicher dass dieser Benutzer gelöscht werden soll? Diese Operation ist unwiederrufbar." icon="ui-icon-alert" />
+                        <p:confirm header="Bestätigung" message="Bist du sicher dass dieser Benutzer gelöscht werden soll? Diese Operation ist unwiederrufbar." icon="ui-icon-alert" />
                     </p:commandButton>
                 </p:column>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Neuen User hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick"/>
+                    <p:commandButton value="Neuer User hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick"/>
                 </f:facet>
             </p:dataTable>
 
@@ -69,7 +69,7 @@
                     <h:panelGrid columns="2">
                         <p:outputLabel for="firstName" value="Vorname: " />
                         <p:inputText id="firstName" value="#{userDetailController.user.firstName}"/>
-                        <p:outputLabel for="firstName" value="Email: " />
+                        <p:outputLabel for="lastName" value="Nachname: " />
                         <p:inputText id="lastName" value="#{userDetailController.user.lastName}"/>
                         <p:outputLabel for="cNum" value="C-Kennung: " />
                         <p:inputText id="cNum" value="#{userDetailController.user.cNumber}"/>
@@ -132,7 +132,7 @@
                     <p:separator/>
                     <h:panelGrid columns="3" style="text-align: center">
                         <p:commandButton value="Benutzer hinzufügen" action="#{addUserBean.addUser}" oncomplete="PF('addDialog').hide()" update=":userForm:usersTable"/>
-                        <p:commandButton value="Abbrechen" onclick="PF('addDialog').hide()" />
+                        <p:commandButton value="Abbrechen"  immediate="true" onclick="PF('addDialog').hide()" />
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>

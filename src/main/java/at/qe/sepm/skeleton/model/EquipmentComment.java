@@ -1,14 +1,12 @@
 package at.qe.sepm.skeleton.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Entity for equipment comments
+ * Entity for equipment comments, each comment has a title and a message
  */
 @Entity
 public class EquipmentComment implements Persistable<Integer> {

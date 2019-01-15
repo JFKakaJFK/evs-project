@@ -3,13 +3,11 @@ package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
-import at.qe.sepm.skeleton.services.EquipmentService;
-import at.qe.sepm.skeleton.services.ReservationInProgressException;
+import at.qe.sepm.skeleton.exceptions.ReservationInProgressException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.faces.context.FacesContext;
 import java.util.List;
 
 @Component
@@ -38,7 +36,7 @@ public class ReservationDetailController {
      * Action to force a reload of the currently displayed reservation.
      */
     public void doReloadReservation() {
-        this.equipmentReservation = this.equipmentReservationService.loadRerservation(
+        this.equipmentReservation = this.equipmentReservationService.loadReservation(
             this.equipmentReservation.getId());
     }
 

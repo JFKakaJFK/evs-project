@@ -1,6 +1,4 @@
-package at.qe.sepm.skeleton.services;
-
-import at.qe.sepm.skeleton.configs.ReservationProperties;
+package at.qe.sepm.skeleton.exceptions;
 
 public class ReservationInProgressException extends UserDeletionException {
 

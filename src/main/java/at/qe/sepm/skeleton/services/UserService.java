@@ -1,10 +1,11 @@
 package at.qe.sepm.skeleton.services;
 
-import at.qe.sepm.skeleton.model.Equipment;
+import at.qe.sepm.skeleton.exceptions.ReservationInProgressException;
+import at.qe.sepm.skeleton.exceptions.UserDeletionException;
+import at.qe.sepm.skeleton.exceptions.UserIsAuthenticatedUserException;
 import at.qe.sepm.skeleton.model.EquipmentGroup;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.User;
-import at.qe.sepm.skeleton.repositories.EquipmentGroupRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 
 import java.util.ArrayList;

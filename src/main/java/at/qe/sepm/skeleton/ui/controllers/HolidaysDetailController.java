@@ -13,6 +13,7 @@ public class HolidaysDetailController {
     @Autowired
     private HolidaysService holidaysService;
 
+    // TODO maybe: holidays view edit dialog does sometimes not open(not rendered when holidays is empty)?
     /**
      * Attribute to cache the currently displayed openingHours
      */

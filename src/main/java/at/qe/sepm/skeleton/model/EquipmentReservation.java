@@ -15,6 +15,7 @@ public class EquipmentReservation implements Persistable<Integer> {
 
     private static final long serialVersionUID = 1L;
 
+    // TODO relocate to reservation properties
     @Transient
     private static final int BUFFER_TIME = 2;
 
@@ -44,10 +45,27 @@ public class EquipmentReservation implements Persistable<Integer> {
     private boolean completed = false;
 
     /**
+     * Returns the state of the reservation as string
+     *
+     * @return
+     */
+    public String getState(){
+        if(!completed && new Date().before(startDate)){
+            return "ZUKÜNFTIG";
+        } else if(isOverdue()){
+            return "ÜBERFÄLLIG";
+        } else if(isCompleted()){
+            return "ABGESCHLOSSEN";
+        } else {
+            return "AKTIV";
+        }
+    }
+
+    /**
      * Returns true if the reservation is overdue
      */
     public boolean isOverdue(){
-        return equipment.getState() == EquipmentState.OVERDUE && !completed && new Date().getTime() > endDate.getTime();
+        return !completed && new Date().after(endDate);
     }
 
     /**

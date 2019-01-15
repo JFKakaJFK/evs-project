@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Controller for equipment overview view
+ */
 @Controller
 @Scope("view")
 public class EquipmentListController {
@@ -16,6 +19,11 @@ public class EquipmentListController {
     @Autowired
     private EquipmentService equipmentService;
 
+    /**
+     * Returns all stored equipment
+     *
+     * @return
+     */
     public Collection<Equipment> getEquipment() {
         return equipmentService.getAllEquipments();
     }

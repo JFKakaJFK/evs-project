@@ -17,9 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 /**
- * Bean for add equipment manual functionality.
+ * Bean for add {@link EquipmentManual} functionality.
  */
-
 @ManagedBean
 public class AddManualBean {
 
@@ -36,6 +35,11 @@ public class AddManualBean {
     private String filename = null;
     private Equipment equipment;
 
+    /**
+     * Catches a fileupload and stores file
+     *
+     * @param event
+     */
     public void handleFileUpload(FileUploadEvent event){
 
         originalFileName = event.getFile().getFileName();
@@ -48,6 +52,9 @@ public class AddManualBean {
         }
     }
 
+    /**
+     * Creates and persists a new {@link EquipmentManual}
+     */
     public void addManual(){
         if(filename == null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
@@ -74,6 +81,11 @@ public class AddManualBean {
         );
     }
 
+    /**
+     * If the creation of a new {@link EquipmentManual} is aborted after uploading a file, delete the file
+     *
+     * @throws IOException
+     */
     public void abort() throws IOException {
         if(filename != null){
             storageService.deleteFile(filename);

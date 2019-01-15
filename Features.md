@@ -43,10 +43,10 @@
 - [ ] Bestätigungsmails (@Markus)
 - [x] AddEquipmentGroupReservationController (@Melanie @Markus)
 - [x] EquipmentGroupListController (@Melanie @Markus)
-- [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Andi @Chris)
+- [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Chris)
 - [ ] view zur Einsicht aller Reservierungen(und löschen) **ADMIN** (@Melanie)
-- [x] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Andi @Chris)
-- [x] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Andi @Chris)
+- [x] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Chris)
+- [x] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Chris)
 
 ### TODO/Notes
 
@@ -67,11 +67,15 @@
 
 ## 6. TODO
 
-- [ ] ui sprache ist deutsch, alles was noch englisch ist anpassen (@Melanie)
-- [ ] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen. (@Melanie)
+- [x] ui sprache ist deutsch, alles was noch englisch ist anpassen (@Melanie)
+- [x] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen. (@Melanie)
 - [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
 - [ ] growl/messages für alle delete/add aktionen? (@Andi)
+- [ ] `emptyMessage=""` bei den datatables anpassen? (@Irgendwer)
 - [ ] bei den datatables pagination, search & sort(siehe neue user overview) (@Andi)
+- [ ] bei datatables add button in header verschieben, damit dieser bei langen tables gut erreichbar ist (@Andi)
+- [ ] add & delete buttons einfärben (@Johannes)
+- [ ] TODOs im code finden und erledigen (@alle mit TODOs)
 
 ## Technische Dokumentation
 

@@ -1,7 +1,9 @@
+/* remove menubar and footer */
 #header, #footer {
     display: none;
 }
 
+/* create the full-width/height background image and layout the login form */
 #content {
     max-width: initial;
     width: 100%;
@@ -13,6 +15,7 @@
     background-size: cover;
 }
 
+/* style and layout of the login form */
 #content #login_form {
     display: inline-block;
     background: white;
@@ -25,20 +28,19 @@
     top: 10%;
 }
 
+/* remove shift to the right on small screens */
 @media only screen and (max-width: 800px) {
     #content #login_form {
         left: 0;
     }
 }
 
-.ui-outputlabel, input[type="text"], button[type="submit"] {
-    font-family: 'Open Sans', 'sans-serif';
-}
-
+/* change the heading font */
 h2 {
     font-family: Raleway, 'sans-serif';
 }
 
+/* style the input fields */
 input[type="text"]#username, input[type="password"]#password {
     border: 0;
     box-shadow: none;
@@ -49,6 +51,7 @@ input[type="text"]#username, input[type="password"]#password {
     margin-left: 20px;
 }
 
+/* style the submit button */
 button[type="submit"] {
     margin: 30px auto 0;
     border: 0 !important;
@@ -63,6 +66,7 @@ button[type="submit"] {
     text-shadow: none;
 }
 
+/* style the session expired message */
 div#messages {
     width: 350px;
     font-size: 1rem;

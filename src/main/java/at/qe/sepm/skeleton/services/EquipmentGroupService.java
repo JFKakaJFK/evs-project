@@ -1,8 +1,6 @@
 package at.qe.sepm.skeleton.services;
 
-import at.qe.sepm.skeleton.model.EquipmentGroup;
-import at.qe.sepm.skeleton.model.EquipmentState;
-import at.qe.sepm.skeleton.model.User;
+import at.qe.sepm.skeleton.model.*;
 import at.qe.sepm.skeleton.repositories.EquipmentGroupRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +46,8 @@ public class EquipmentGroupService {
     public Collection<EquipmentGroup> getOwnGroupsFree(Date start, Date end){
         return equipmentGroupRepository.findAllByUser(getAuthenticatedUser()).stream()
             .filter(equipmentGroup -> equipmentGroup.getEquipments().stream()
-                .allMatch(equipment ->
-                    equipment.getState(start, end) == EquipmentState.AVAILABLE ||
-                    (equipment.getState(start, end) == EquipmentState.OVERDUE &&
-                        (equipment.getOverdueReservation() == null) ? (false) : (start.getTime() > equipment.getOverdueReservation().getEndDateOverdue().getTime())))
-            ).collect(Collectors.toList());
+                .allMatch(equipment -> equipment.getState(start, end) == EquipmentState.AVAILABLE))
+            .collect(Collectors.toList());
     }
 
     /**

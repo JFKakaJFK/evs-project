@@ -13,14 +13,10 @@ import javax.faces.context.FacesContext;
 import java.util.*;
 
 /**
- * Session information bean to retrieve session-specific parameters.
- *
- * This class is part of the skeleton project provided for students of the
- * course "Softwaredevelopment and Project Management" offered by the University
- * of Innsbruck.
+ * Bean for adding a new {@link EquipmentGroup}
  */
 @Component
-@Scope("session")
+@Scope("request")
 public class AddEquipmentGroupBean {
 
     @Autowired
@@ -30,6 +26,29 @@ public class AddEquipmentGroupBean {
     private Equipment equipment;
     private List<Equipment> equipments = new ArrayList<>();
     private List<Equipment> filteredEquipments;
+
+    /**
+     * Creates and persists a new {@link EquipmentGroup}
+     */
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    public void addEquipmentGroup(){
+        if(equipments.size() >= 2){
+            EquipmentGroup equipmentGroup = new EquipmentGroup();
+
+            equipmentGroup.setName(name);
+            equipmentGroup.getEquipments().addAll(equipments);
+
+            equipmentGroupService.saveEquipmentGroup(equipmentGroup);
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Gruppe " + equipmentGroup.getName() +  " wurde erfolgreich erstellt.")
+            );
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Sie haben zu wenig Geräte ausgewählt.")
+            );
+        }
+    }
 
     public List<Equipment> getFilteredEquipments() {
         return filteredEquipments;
@@ -49,26 +68,6 @@ public class AddEquipmentGroupBean {
 
     public void setEquipments(List<Equipment> equipments) {
         this.equipments = equipments;
-    }
-
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public void addEquipmentGroup(){
-        if(equipments.size() >= 2){
-            EquipmentGroup equipmentGroup = new EquipmentGroup();
-
-            equipmentGroup.setName(name);
-            equipmentGroup.getEquipments().addAll(equipments);
-
-            equipmentGroupService.saveEquipmentGroup(equipmentGroup);
-
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Gruppe " + equipmentGroup.getName() +  " wurde erfolgreich erstellt.")
-            );
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Zu wenig Geräte in Gruppe")
-            );
-        }
     }
 
     public String getName() {

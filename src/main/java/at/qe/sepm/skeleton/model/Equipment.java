@@ -1,5 +1,6 @@
 package at.qe.sepm.skeleton.model;
 
+import at.qe.sepm.skeleton.configs.ReservationProperties;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.data.domain.Persistable;
@@ -20,6 +21,12 @@ public class Equipment implements Persistable<Integer> {
     @GeneratedValue
     private Integer id;
 
+    // TODO relocate to separate config properties
+    @Transient
+    private static final long BUFFER = 30 * 60 * 1000;
+    @Transient
+    private static final int BUFFER_TIME = 2 * 24 * 60 * 60 * 1000;
+
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -28,9 +35,6 @@ public class Equipment implements Persistable<Integer> {
     private String labLocation;
 
     private boolean locked;
-
-    @Transient
-    private EquipmentState state;
 
     @Column(nullable = false)
     private Long maxDurationMilliseconds;
@@ -49,39 +53,10 @@ public class Equipment implements Persistable<Integer> {
 
     @Fetch(FetchMode.SELECT)
     @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<EquipmentReservation> reservations = new ArrayList<>();
+    private List<EquipmentReservation> reservations = new ArrayList<>();
 
     /**
-     * Returns an EquipmentState depending on the start and end Date
-     * @param start
-     * @param end
-     * @return
-     */
-    public EquipmentState getState(Date start, Date end){
-        if(locked){
-            return EquipmentState.LOCKED;
-        } else if(isOverdue()) {
-            return EquipmentState.OVERDUE;
-        } else if(isAvailable(start, end)) {
-            return EquipmentState.AVAILABLE;
-        } else {
-            return EquipmentState.BOOKED;
-        }
-    }
-
-    public EquipmentReservation getOverdueReservation(){
-        for(EquipmentReservation reservation: reservations){
-            if(reservation.getEquipment().getId().equals(this.getId())){
-                if(!reservation.isCompleted() && reservation.getEndDate().before(new Date())){
-                    return reservation;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * returns wheter the the time frame from start to end is within the maximal reservation duration
+     * Returns whether the the time frame from start to end is within the maximal reservation duration
      *
      * @param startDate
      * @param endDate
@@ -92,20 +67,63 @@ public class Equipment implements Persistable<Integer> {
     }
 
     /**
-     * Returns whether a equipment is available in a timeframe
+     * Returns an {@link EquipmentState} depending on the start and end Date, if the equipment is currently
+     * {@link EquipmentState#OVERDUE}, but the time frame starts far enough in the future it will be {@link EquipmentState#AVAILABLE}
+     *
+     * @param start of the enquiry
+     * @param end of the enquiry
+     * @return {@link EquipmentState} for the period
+     */
+    // TODO maybe rename one of the getState methods
+    public EquipmentState getState(Date start, Date end){
+        if(locked){
+            return EquipmentState.LOCKED;
+        } else if(isAvailable(start, end)){
+            return EquipmentState.AVAILABLE;
+        } else if(isOverdue()){
+            return EquipmentState.OVERDUE;
+        } else {
+            return EquipmentState.BOOKED;
+        }
+    }
+
+    /**
+     * Returns an {@link EquipmentState} depending on the current date, in contrast to the other getState method, this
+     * method will NOT set currently {@link EquipmentState#OVERDUE} to {@link EquipmentState#AVAILABLE} in the future.
+     *
+     * @return
+     */
+    // TODO maybe rename one of the getState methods
+    public EquipmentState getState() {
+        Date now = new Date();
+        if(locked){
+            return EquipmentState.LOCKED;
+        } else if(isOverdue()){
+            return EquipmentState.OVERDUE;
+        } else if(isAvailable(now, now)){
+            return EquipmentState.AVAILABLE;
+        }  else {
+            return EquipmentState.BOOKED;
+        }
+    }
+
+    /**
+     * Returns whether a equipment is available in a timeframe, assuming
      *
      * Assumes that the endDate > Startdate for any given reservation
      * @param startDate
      * @param endDate
      * @return
      */
-    // TODO available if reservation blocking availability is completed
-    public boolean isAvailable(Date startDate, Date endDate){
-        // check all reservations, if any between  start & end return false
-        // TODO maybe check if it was returned? not relevant for distant reservations though
+    private boolean isAvailable(Date startDate, Date endDate){
         for(EquipmentReservation reservation: this.reservations){
-            if(reservation.getEquipment().getId().equals(this.getId())){
-                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < (reservation.getStartDate().getTime()) /*+ TODO schonfrist*/)){
+            boolean reservationEndsBeforeStartDate = (reservation.getEndDate().getTime() + BUFFER) < startDate.getTime();
+            boolean reservationStartsAfterEndDate = (endDate.getTime() + BUFFER) < reservation.getStartDate().getTime();
+            if (!(reservationEndsBeforeStartDate || reservationStartsAfterEndDate)){
+                return false;
+            }
+            if(reservation.isOverdue()){
+                if(!((reservation.getEndDateOverdue().getTime() + BUFFER_TIME) < startDate.getTime())){
                     return false;
                 }
             }
@@ -118,9 +136,11 @@ public class Equipment implements Persistable<Integer> {
      *
      * @return
      */
-    public boolean isOverdue(){
-        if(getOverdueReservation() != null){
-            return true;
+    private boolean isOverdue(){
+        for(EquipmentReservation reservation: reservations){
+            if(!reservation.isCompleted() && reservation.getEndDate().before(new Date())){
+                return true;
+            }
         }
         return false;
     }
@@ -195,8 +215,13 @@ public class Equipment implements Persistable<Integer> {
 
     /* Getters & Setters */
 
+    /**
+     * Returns the maximal reservation duration in the format DDTage hh:mmStd.
+     *
+     * @return formatted string
+     */
     public String getMaxDurationFormatted(){
-        return String.format("%dDays, %dHours, %dMinutes",
+        return String.format("%dTage %d:%dStd.",
             TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds),
             TimeUnit.MILLISECONDS.toHours(maxDurationMilliseconds) -
                 TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds)),
@@ -205,6 +230,11 @@ public class Equipment implements Persistable<Integer> {
         );
     }
 
+    /**
+     * Returns the maximal reservation duration as string
+     *
+     * @return DD:hh:mm
+     */
     public String getMaxDuration(){
         return String.format("%2d:2%d:%2d",
             TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds),
@@ -215,6 +245,11 @@ public class Equipment implements Persistable<Integer> {
         );
     }
 
+    /**
+     * Parses a string with the format DD:hh:mm and sets the maximal reservation duration
+     *
+     * @param duration
+     */
     public void setMaxDuration(String duration){
         Scanner sc = new Scanner(duration).useDelimiter(":");
         long millis = 0;
@@ -269,14 +304,6 @@ public class Equipment implements Persistable<Integer> {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
-    }
-
-    public EquipmentState getState() {
-        return getState(new Date(), new Date());
-    }
-
-    public void setState(EquipmentState state) {
-        this.state = state;
     }
 
     public Long getMaxDurationMilliseconds() {

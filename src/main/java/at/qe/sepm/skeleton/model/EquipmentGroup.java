@@ -6,7 +6,8 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- * Entity for equipment groups.
+ * Entity for equipment groups. Each group has a {@link EquipmentGroup#name}, a {@link User} and multiple
+ * {@link Equipment}
  */
 @Entity
 public class EquipmentGroup implements Persistable<Integer> {
@@ -88,7 +89,7 @@ public class EquipmentGroup implements Persistable<Integer> {
             return true;
         }
         for(Equipment e: equipments){
-            if(!e.isAvailable(startDate, endDate)){
+            if(!(e.getState(startDate, endDate) == EquipmentState.AVAILABLE)){
                 return false;
             }
         }
@@ -107,5 +108,18 @@ public class EquipmentGroup implements Persistable<Integer> {
     @Override
     public boolean isNew() {
         return (null == user);
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof EquipmentGroup){
+            return this.id.equals(((EquipmentGroup) obj).getId());
+        }
+        return false;
     }
 }

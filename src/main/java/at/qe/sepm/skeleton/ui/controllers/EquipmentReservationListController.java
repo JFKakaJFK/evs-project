@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Controller for reservation overview view
+ */
 @Controller
 @Scope("view")
 public class EquipmentReservationListController {
@@ -16,6 +19,11 @@ public class EquipmentReservationListController {
     @Autowired
     private EquipmentReservationService equipmentReservationService;
 
+    /**
+     * Returns all stored reservations
+     *
+     * @return
+     */
     public Collection<EquipmentReservation> getEquipmentReservation() {
         return equipmentReservationService.getAllEquipmentReservations();
     }

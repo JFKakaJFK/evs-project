@@ -1,20 +1,12 @@
 package at.qe.sepm.skeleton.model;
 
-import at.qe.sepm.skeleton.services.StorageService;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Persistable;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.persistence.*;
-import java.io.*;
-import java.nio.file.Path;
 import java.util.Date;
 
 /**
- * Enity for equipment manuals
+ * Enity for equipment manuals, each manual has a name, description and an associated file
  */
 @Entity
 public class EquipmentManual implements Persistable<Integer> {
