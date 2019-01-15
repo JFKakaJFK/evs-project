@@ -36,7 +36,7 @@ public class ReservationDetailController {
      * Action to force a reload of the currently displayed reservation.
      */
     public void doReloadReservation() {
-        this.equipmentReservation = this.equipmentReservationService.loadRerservation(
+        this.equipmentReservation = this.equipmentReservationService.loadReservation(
             this.equipmentReservation.getId());
     }
 

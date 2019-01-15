@@ -35,9 +35,8 @@ public class EquipmentReservationService {
      */
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<EquipmentReservation> getAllBorrowedEquipments(){
-        Collection<Equipment> borrowed = equipmentService.getAllBorrowedEquipments();
         return equipmentReservationRepository.findAll().stream()
-            .filter(reservation -> borrowed.contains(reservation.getEquipment()) && !reservation.isCompleted() && new Date().after(reservation.getStartDate()))
+            .filter(EquipmentReservation::isOverdue)
             .collect(Collectors.toList());
     }
 
@@ -47,7 +46,7 @@ public class EquipmentReservationService {
      * @param id
      */
     @PreAuthorize("hasAuthority('STUDENT')")
-    public EquipmentReservation loadRerservation(Integer id){
+    public EquipmentReservation loadReservation(Integer id){
         return equipmentReservationRepository.findOne(id);
     }
 

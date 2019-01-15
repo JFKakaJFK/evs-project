@@ -91,13 +91,23 @@
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
 
+
                         <p:column
                             headerText="Status"
                             filterBy="#{reservation.user.cNumber} #{reservation.user.username}"
                             filterStyle="display: none"
                             filterMatchMode="contains"
                         >
+                            <!--
+                            TODO bitte nicht equipmentstatus anzeigen, da die reservierung zb schon abgeschlossen(gerät zurúckgebracht)
+                            sein kann, das equipment aber derzeit ausgeliehen/úberfällig sein kann, das aber nichts mit diesr reservierung zu tun hat.
+
+                            besser wäre es reservation.state anzuzeigen
+
+                            -->
+                            <!--
                             <h:outputText value="#{reservation.equipment.state}" />
+                            -->
                         </p:column>
                     </p:dataTable>
                 </h:form>

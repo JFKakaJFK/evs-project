@@ -77,17 +77,6 @@ public class EquipmentService {
     }
 
     /**
-     * Loads a single {@link EquipmentManual} by its {@link EquipmentManual#id}
-     *
-     * @param id
-     * @return
-     */
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public EquipmentManual loadManual(Integer id){
-        return equipmentManualRepository.findById(id);
-    }
-
-    /**
      * Returns a collectioin of all Equipments which are currently booked or are overdue
      */
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -107,28 +96,9 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllFreeEquipments(Date startDate, Date endDate){
-        /*
         return equipmentRepository.findAll().stream()
-            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE ||
-                (equipment.getState(startDate, endDate) == EquipmentState.OVERDUE &&
-                    (equipment.getOverdueReservation() == null) ? (false) : (startDate.after(equipment.getOverdueReservation().getEndDateOverdue()))))
+            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE)
             .collect(Collectors.toList());
-            */
-        // TODO LOGIC
-        List<Equipment> all = equipmentRepository.findAll();
-        List<Equipment> free = new ArrayList<>();
-        for(Equipment e: all){
-            if((e.getState(startDate, endDate) == EquipmentState.AVAILABLE)){
-                free.add(e);
-            }
-            EquipmentReservation r = e.getOverdueReservation();
-            if(r != null){
-                if(r.getEndDateOverdue().before(startDate)){
-                    free.add(e);
-                }
-            }
-        }
-        return free;
     }
 
     /**

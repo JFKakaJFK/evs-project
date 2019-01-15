@@ -89,7 +89,7 @@ public class EquipmentGroup implements Persistable<Integer> {
             return true;
         }
         for(Equipment e: equipments){
-            if(!e.isAvailable(startDate, endDate)){
+            if(!(e.getState(startDate, endDate) == EquipmentState.AVAILABLE)){
                 return false;
             }
         }

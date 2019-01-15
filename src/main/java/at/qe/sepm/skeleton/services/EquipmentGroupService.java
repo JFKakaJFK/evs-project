@@ -44,40 +44,10 @@ public class EquipmentGroupService {
      */
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public Collection<EquipmentGroup> getOwnGroupsFree(Date start, Date end){
-        // TODO Logik passt nicht
-        /*
         return equipmentGroupRepository.findAllByUser(getAuthenticatedUser()).stream()
             .filter(equipmentGroup -> equipmentGroup.getEquipments().stream()
-                .allMatch(equipment ->
-                    equipment.getState(start, end) == EquipmentState.AVAILABLE ||
-                    (equipment.getState(start, end) == EquipmentState.OVERDUE &&
-                        (equipment.getOverdueReservation() == null) ? (false) : (start.getTime() > equipment.getOverdueReservation().getEndDateOverdue().getTime())))
-            ).collect(Collectors.toList());
-           */
-
-        boolean groupisfree = true;
-        List<EquipmentGroup> own = new ArrayList<>(equipmentGroupRepository.findAllByUser(getAuthenticatedUser()));
-        List<EquipmentGroup> ownfree = new ArrayList<>();
-        for(EquipmentGroup g: own){
-            groupisfree = true;
-            for(Equipment e: g.getEquipments()){
-                if((e.getState(start, end) == EquipmentState.AVAILABLE)){
-                    continue;
-                }
-                EquipmentReservation r = e.getOverdueReservation();
-                if(r != null){
-                    if(r.getEndDateOverdue().before(start)){
-                        continue;
-                    }
-                }
-                groupisfree = false;
-                break;
-            }
-            if(groupisfree){
-                ownfree.add(g);
-            }
-        }
-        return ownfree;
+                .allMatch(equipment -> equipment.getState(start, end) == EquipmentState.AVAILABLE))
+            .collect(Collectors.toList());
     }
 
     /**
