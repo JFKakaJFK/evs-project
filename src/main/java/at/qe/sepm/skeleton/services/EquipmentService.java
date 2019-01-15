@@ -1,5 +1,6 @@
 package at.qe.sepm.skeleton.services;
 
+import at.qe.sepm.skeleton.exceptions.EquipmentDeletionException;
 import at.qe.sepm.skeleton.model.*;
 import at.qe.sepm.skeleton.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Service for accessing and manipulating equipment related data.
+ * Service for accessing and manipulating {@link Equipment}, {@link EquipmentManual} and {@link EquipmentComment} entities.
  */
 @Component
 @Scope("application")
@@ -43,28 +44,51 @@ public class EquipmentService {
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
 
+    /**
+     * Method retrieves and returns all Equipments
+     *
+     * @return
+     */
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllEquipments() {
         return equipmentRepository.findAll();
     }
 
+    /**
+     * Method retrieves and returns a single Equipment
+     *
+     * @param id
+     * @return
+     */
     @PreAuthorize("hasAuthority('STUDENT')")
     public Equipment loadEquipment(Integer id){
         return equipmentRepository.findById(id);
     }
 
+    /**
+     * Loads a single {@link EquipmentComment} by its {@link EquipmentComment@id}
+     *
+     * @param id
+     * @return
+     */
     @PreAuthorize("hasAuthority('STUDENT')")
     public EquipmentComment loadComment(Integer id){
         return equipmentCommentRepository.findById(id);
     }
 
+    /**
+     * Loads a single {@link EquipmentManual} by its {@link EquipmentManual#id}
+     *
+     * @param id
+     * @return
+     */
     @PreAuthorize("hasAuthority('STUDENT')")
     public EquipmentManual loadManual(Integer id){
         return equipmentManualRepository.findById(id);
     }
 
     /**
-     * Returns a collectioin of all Equipments which need to be returned or are overdue
+     * Returns a collectioin of all Equipments which are currently booked or are overdue
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public Collection<Equipment> getAllBorrowedEquipments(){
@@ -75,7 +99,7 @@ public class EquipmentService {
     }
 
     /**
-     * Returns a collection of all free eqipments in a timeframe
+     * Returns a collection of all free {@link Equipment} entities in a time frame
      *
      * @param startDate of timeframe
      * @param endDate of timeframe
@@ -83,11 +107,28 @@ public class EquipmentService {
      */
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllFreeEquipments(Date startDate, Date endDate){
+        /*
         return equipmentRepository.findAll().stream()
             .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE ||
                 (equipment.getState(startDate, endDate) == EquipmentState.OVERDUE &&
-                    (equipment.getOverdueReservation() == null) ? (false) : (startDate.getTime() > equipment.getOverdueReservation().getEndDateOverdue().getTime())))
+                    (equipment.getOverdueReservation() == null) ? (false) : (startDate.after(equipment.getOverdueReservation().getEndDateOverdue()))))
             .collect(Collectors.toList());
+            */
+        // TODO LOGIC
+        List<Equipment> all = equipmentRepository.findAll();
+        List<Equipment> free = new ArrayList<>();
+        for(Equipment e: all){
+            if((e.getState(startDate, endDate) == EquipmentState.AVAILABLE)){
+                free.add(e);
+            }
+            EquipmentReservation r = e.getOverdueReservation();
+            if(r != null){
+                if(r.getEndDateOverdue().before(startDate)){
+                    free.add(e);
+                }
+            }
+        }
+        return free;
     }
 
     /**
@@ -170,7 +211,6 @@ public class EquipmentService {
         return equipmentCommentRepository.save(comment);
     }
 
-    // TODO move deletion method here(from equipmentDetailController)
     /**
      * Deletes a comment
      *
@@ -198,7 +238,6 @@ public class EquipmentService {
         return equipmentManualRepository.save(manual);
     }
 
-    // TODO move deletion method here(from equipmentDetailController)
     /**
      * Deletes a manual
      *
@@ -209,13 +248,18 @@ public class EquipmentService {
         try{
             storageService.deleteFile(manual.getFilename());
         } catch (IOException e){
-            // TODO
+            // TODO log file wasn't found/couldn't be deleted
         }
         Equipment e = manual.getEquipment();
         e.removeManual(manual);
         equipmentRepository.save(e);
     }
 
+    /**
+     * Returns the currently authenticated User
+     *
+     * @return
+     */
     private User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());

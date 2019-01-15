@@ -2,7 +2,7 @@ package at.qe.sepm.skeleton.tests;
 
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.model.UserRole;
-import at.qe.sepm.skeleton.services.UserDeletionException;
+import at.qe.sepm.skeleton.exceptions.UserDeletionException;
 import at.qe.sepm.skeleton.services.UserService;
 import org.junit.Assert;
 import org.junit.Test;

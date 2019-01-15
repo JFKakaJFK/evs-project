@@ -6,7 +6,8 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- * Entity for equipment groups.
+ * Entity for equipment groups. Each group has a {@link EquipmentGroup#name}, a {@link User} and multiple
+ * {@link Equipment}
  */
 @Entity
 public class EquipmentGroup implements Persistable<Integer> {

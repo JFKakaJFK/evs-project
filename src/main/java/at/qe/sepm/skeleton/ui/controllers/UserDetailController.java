@@ -1,7 +1,7 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.User;
-import at.qe.sepm.skeleton.services.UserDeletionException;
+import at.qe.sepm.skeleton.exceptions.UserDeletionException;
 import at.qe.sepm.skeleton.services.UserService;
 import at.qe.sepm.skeleton.ui.beans.SessionInfoBean;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -15,6 +15,7 @@ public class EquipmentReservation implements Persistable<Integer> {
 
     private static final long serialVersionUID = 1L;
 
+    // TODO relocate to reservation properties
     @Transient
     private static final int BUFFER_TIME = 2;
 

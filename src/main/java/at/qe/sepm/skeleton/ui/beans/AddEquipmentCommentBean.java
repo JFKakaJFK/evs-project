@@ -9,14 +9,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 /**
- * Session information bean to retrieve session-specific parameters.
- *
- * This class is part of the skeleton project provided for students of the
- * course "Softwaredevelopment and Project Management" offered by the University
- * of Innsbruck.
+ * Bean for adding a new {@link EquipmentComment}
  */
 @Component
-@Scope("session")
+@Scope("request")
 public class AddEquipmentCommentBean {
 
     @Autowired
@@ -26,6 +22,9 @@ public class AddEquipmentCommentBean {
     private String message;
     private Equipment equipment;
 
+    /**
+     * Creates and persists a new {@link EquipmentComment}
+     */
     public void addComment(){
         EquipmentComment comment = new EquipmentComment();
         comment.setTitle(title);

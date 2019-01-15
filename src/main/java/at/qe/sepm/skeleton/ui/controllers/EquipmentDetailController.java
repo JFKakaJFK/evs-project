@@ -3,7 +3,7 @@ package at.qe.sepm.skeleton.ui.controllers;
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentComment;
 import at.qe.sepm.skeleton.model.EquipmentManual;
-import at.qe.sepm.skeleton.services.EquipmentDeletionException;
+import at.qe.sepm.skeleton.exceptions.EquipmentDeletionException;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -11,9 +11,10 @@ import org.springframework.stereotype.Component;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.Map;
 
+/**
+ * A controller for managing {@link Equipment}, {@link EquipmentComment} and {@link EquipmentManual} entities
+ */
 @Component
 @Scope("view")
 public class EquipmentDetailController {
@@ -24,6 +25,66 @@ public class EquipmentDetailController {
     private Equipment equipment;
     private EquipmentComment comment;
     private EquipmentManual manual;
+    private Integer expandedRowElementId = 1;
+
+    /**
+     * Reloads a persisted entity
+     */
+    public void doReloadEquipment(){
+        equipment = equipmentService.loadEquipment(equipment.getId());
+    }
+
+    /**
+     * Persists changes to the entity
+     */
+    public void doSaveEquipment(){
+        equipment = this.equipmentService.saveEquipment(this.equipment);
+    }
+
+    /**
+     * Deletes an {@link Equipment} if possible
+     */
+    public void doDeleteEquipment(){
+        try{
+            this.equipmentService.deleteEquipment(equipment);
+        } catch (EquipmentDeletionException e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", e.getMessage())
+            );
+        }
+
+        this.equipment = null;
+    }
+
+    /**
+     * Reloads a persisted entity
+     */
+    public void doReloadComment(){
+        comment = equipmentService.loadComment(comment.getId());
+    }
+
+    /**
+     * Persists changes to the entity
+     */
+    public void doSaveComment(){
+        comment = this.equipmentService.saveComment(this.comment);
+    }
+
+    /**
+     * Deletes an {@link EquipmentComment}
+     */
+    public void doDeleteComment(){
+        equipmentService.deleteComment(comment);
+        comment = null;
+    }
+
+    /**
+     * Deletes an {@link EquipmentManual}
+     */
+    public void doDeleteManual(){
+        equipmentService.deleteManual(manual);
+        manual = null;
+    }
 
     public Integer getExpandedRowElementId() {
         return expandedRowElementId;
@@ -32,8 +93,6 @@ public class EquipmentDetailController {
     public void setExpandedRowElementId(Integer expandedRowElementId) {
         this.expandedRowElementId = expandedRowElementId;
     }
-
-    private Integer expandedRowElementId = 1;
 
     public void setEquipment(Equipment equipment){
         this.equipment = equipment;
@@ -58,56 +117,5 @@ public class EquipmentDetailController {
 
     public void setManual(EquipmentManual manual) {
         this.manual = manual;
-    }
-
-    public void doReloadEquipment(){
-        equipment = equipmentService.loadEquipment(equipment.getId());
-    }
-
-    public void doSaveEquipment(){
-        equipment = this.equipmentService.saveEquipment(this.equipment);
-    }
-
-    public void doDeleteEquipment(){
-        try{
-            this.equipmentService.deleteEquipment(equipment);
-        } catch (EquipmentDeletionException e){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                FacesMessage.SEVERITY_ERROR, "Error", e.getMessage())
-            );
-        }
-
-        this.equipment = null;
-    }
-
-    public void doReloadComment(){
-        comment = equipmentService.loadComment(comment.getId());
-    }
-
-    public void doSaveComment(){
-        comment = this.equipmentService.saveComment(this.comment);
-    }
-
-    public void doDeleteComment(){
-        equipmentService.deleteComment(comment);
-        comment = null;
-    }
-
-    public void doReloadManual(){
-        manual = equipmentService.loadManual(manual.getId());
-    }
-
-    public void doSaveManual(){
-        manual = this.equipmentService.saveManual(this.manual);
-    }
-
-    public void doDeleteManual(){
-        equipmentService.deleteManual(manual);
-        manual = null;
-    }
-
-    @Deprecated
-    public void redirectById(String url, String id) throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().redirect(url + "?id=" + id);
     }
 }

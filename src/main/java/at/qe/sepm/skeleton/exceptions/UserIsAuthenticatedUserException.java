@@ -1,4 +1,4 @@
-package at.qe.sepm.skeleton.services;
+package at.qe.sepm.skeleton.exceptions;
 
 public class UserIsAuthenticatedUserException extends UserDeletionException {
 

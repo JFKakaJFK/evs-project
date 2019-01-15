@@ -6,6 +6,9 @@ import at.qe.sepm.skeleton.model.User;
 
 import java.util.Collection;
 
+/**
+ * Repository for managing {@link EquipmentGroup} entities.
+ */
 public interface EquipmentGroupRepository extends AbstractRepository<EquipmentGroup, Integer> {
 
     public Collection<EquipmentGroup> findAllByUser(User user);

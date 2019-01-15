@@ -12,6 +12,9 @@ import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for managing {@link EquipmentGroup} entities
+ */
 @Component
 @Scope("view")
 public class EquipmentGroupDetailController {

@@ -10,11 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * Controller for the user list view.
- *
- * This class is part of the skeleton project provided for students of the
- * course "Softwaredevelopment and Project Management" offered by the University
- * of Innsbruck.
+ * Controller for providing collections of {@link EquipmentGroup}s
  */
 @Component
 @Scope("view")

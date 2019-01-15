@@ -1,5 +1,6 @@
 package at.qe.sepm.skeleton.model;
 
+import at.qe.sepm.skeleton.configs.ReservationProperties;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.data.domain.Persistable;
@@ -20,6 +21,10 @@ public class Equipment implements Persistable<Integer> {
     @GeneratedValue
     private Integer id;
 
+    // TODO relocate to separate config properties
+    @Transient
+    private static final long BUFFER = 30 * 60 * 1000;
+
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -28,9 +33,6 @@ public class Equipment implements Persistable<Integer> {
     private String labLocation;
 
     private boolean locked;
-
-    @Transient
-    private EquipmentState state;
 
     @Column(nullable = false)
     private Long maxDurationMilliseconds;
@@ -49,13 +51,14 @@ public class Equipment implements Persistable<Integer> {
 
     @Fetch(FetchMode.SELECT)
     @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<EquipmentReservation> reservations = new ArrayList<>();
+    private List<EquipmentReservation> reservations = new ArrayList<>();
 
     /**
-     * Returns an EquipmentState depending on the start and end Date
-     * @param start
-     * @param end
-     * @return
+     * Returns an {@link EquipmentState} depending on the start and end Date
+     *
+     * @param start of the enquiry
+     * @param end of the enquiry
+     * @return {@link EquipmentState} for the period
      */
     public EquipmentState getState(Date start, Date end){
         if(locked){
@@ -69,6 +72,11 @@ public class Equipment implements Persistable<Integer> {
         }
     }
 
+    /**
+     * Finds the reservation responsible if the {@link Equipment} is {@link EquipmentState#OVERDUE}
+     *
+     * @return {@link EquipmentReservation} or null if the {@link Equipment} is not {@link EquipmentState#OVERDUE}
+     */
     public EquipmentReservation getOverdueReservation(){
         for(EquipmentReservation reservation: reservations){
             if(reservation.getEquipment().getId().equals(this.getId())){
@@ -81,7 +89,7 @@ public class Equipment implements Persistable<Integer> {
     }
 
     /**
-     * returns wheter the the time frame from start to end is within the maximal reservation duration
+     * Returns whether the the time frame from start to end is within the maximal reservation duration
      *
      * @param startDate
      * @param endDate
@@ -101,11 +109,11 @@ public class Equipment implements Persistable<Integer> {
      */
     // TODO available if reservation blocking availability is completed
     public boolean isAvailable(Date startDate, Date endDate){
-        // check all reservations, if any between  start & end return false
-        // TODO maybe check if it was returned? not relevant for distant reservations though
         for(EquipmentReservation reservation: this.reservations){
+            // TODO outer if should be redundant
             if(reservation.getEquipment().getId().equals(this.getId())){
-                if(!(reservation.getEndDate().getTime() < startDate.getTime() || endDate.getTime() < (reservation.getStartDate().getTime()) /*+ TODO schonfrist*/)){
+                if(!(reservation.getEndDate().getTime() < (startDate.getTime() - BUFFER)
+                        || (endDate.getTime() + BUFFER) < reservation.getStartDate().getTime())){
                     return false;
                 }
             }
@@ -195,8 +203,13 @@ public class Equipment implements Persistable<Integer> {
 
     /* Getters & Setters */
 
+    /**
+     * Returns the maximal reservation duration in the format DDTage hh:mmStd.
+     *
+     * @return formatted string
+     */
     public String getMaxDurationFormatted(){
-        return String.format("%dDays, %dHours, %dMinutes",
+        return String.format("%dTage %d:%dStd.",
             TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds),
             TimeUnit.MILLISECONDS.toHours(maxDurationMilliseconds) -
                 TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds)),
@@ -205,6 +218,11 @@ public class Equipment implements Persistable<Integer> {
         );
     }
 
+    /**
+     * Returns the maximal reservation duration as string
+     *
+     * @return DD:hh:mm
+     */
     public String getMaxDuration(){
         return String.format("%2d:2%d:%2d",
             TimeUnit.MILLISECONDS.toDays(maxDurationMilliseconds),
@@ -215,6 +233,11 @@ public class Equipment implements Persistable<Integer> {
         );
     }
 
+    /**
+     * Parses a string with the format DD:hh:mm and sets the maximal reservation duration
+     *
+     * @param duration
+     */
     public void setMaxDuration(String duration){
         Scanner sc = new Scanner(duration).useDelimiter(":");
         long millis = 0;
@@ -273,10 +296,6 @@ public class Equipment implements Persistable<Integer> {
 
     public EquipmentState getState() {
         return getState(new Date(), new Date());
-    }
-
-    public void setState(EquipmentState state) {
-        this.state = state;
     }
 
     public Long getMaxDurationMilliseconds() {

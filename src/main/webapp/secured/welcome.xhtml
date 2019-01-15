@@ -28,7 +28,9 @@
                         id="reservationTable"
                         var="reservation"
                         value="#{reservationListController.allUserReservations}"
-                    >
+                        rowIndexVar="index"
+                        rowStyleClass="#{reservation.completed ? 'completed' : ''}"
+                    ><!-- style completed rows differently -->
                         <p:column headerText="Equipment">
                             <h:outputText value="#{reservation.equipment.name}"/>
                         </p:column>
@@ -87,7 +89,7 @@
                                     <p:commandButton
                                         value="Confirm retunation"
                                         action="#{reservationListController.doEquipmentReturn}"
-                                        update="@form"
+                                        update="@form reservationForm"
                                     >
                                         <p:confirm header="Confirmation" message="Are you sure that you want to confirm the returnation of the selected equipments? You cannot undo this operation." icon="ui-icon-alert" />
                                     </p:commandButton>

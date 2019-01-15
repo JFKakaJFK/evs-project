@@ -7,10 +7,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
+/**
+ * A bean for checking whether to display a session expired message
+ */
 @Controller
 @Scope("request")
 public class LoginBean {
 
+    /**
+     * Checks the url for an "expired" get parameter
+     */
     public void checkURL() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         if (params.containsKey("expired")) {
