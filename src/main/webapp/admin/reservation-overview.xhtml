@@ -6,7 +6,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
-  
+
   <ui:define name ="content">
     <h:form>
         <p:growl id="msgs" showDetail="true" />
@@ -28,7 +28,9 @@
                         filteredValue="#{reservationListController.filteredReservationsReturn}"
                         rowKey="#{reservation.id}"
                         style="margin-bottom:0"
-                    >
+                        rowIndexVar="index"
+                        rowStyleClass="#{reservation.completed ? 'completed' : ''}"
+                    ><!-- style completed rows differently -->
                         <f:facet name="header">
                             <div>
                                 <p:outputPanel style="text-align: left;float: left">
@@ -103,4 +105,3 @@
         </h:form>
      </ui:define>
 </ui:composition>
- 
