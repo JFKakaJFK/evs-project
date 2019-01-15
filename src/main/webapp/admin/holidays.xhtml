@@ -11,13 +11,13 @@
         <p:growl id="msgs" showDetail="true" />
 
             <p:dataTable id="holidayTable" var="holiday" value="#{holidaysListController.all}">
-                <p:column headerText="holiday name">
+                <p:column headerText="Feiertag">
                     <h:outputText value="#{holiday.name}"/>
                 </p:column>
-                <p:column headerText="start Day">
+                <p:column headerText="Anfangsdatum">
                     <h:outputText value="#{holiday.startDate}"/>
                 </p:column>
-                <p:column headerText="end Day">
+                <p:column headerText="Enddatum">
                     <h:outputText value="#{holiday.endDate}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
@@ -26,36 +26,36 @@
                     </p:commandButton>
                 </p:column>
                 <f:facet name="footer">
-                    <p:commandButton value="Neuen Feiertag hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick"/>
+                    <p:commandButton value="Neuer Feiertag hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick"/>
                 </f:facet>
             </p:dataTable>
 
-            <p:dialog header="Edit Holidays" id="holidaysEditDialog" widgetVar="holidaysEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog header="Feiertage bearbeiten" id="holidaysEditDialog" widgetVar="holidaysEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="openingHoursData" rendered="#{not empty holidaysDetailController.holidays}">
                     <h:panelGrid columns="3" cellpadding="5">
-                        <p:outputLabel for="name" value="Holiday Name: " />
+                        <p:outputLabel for="name" value="Feiertag: " />
                         <p:inputText id="name" value="#{holidaysDetailController.holidays.name}"/>
-                        <p:outputLabel for="startDate" value="Start Day:" />
+                        <p:outputLabel for="startDate" value="Anfangsdatum:" />
                         <p:calendar id="startDate" value="#{holidaysDetailController.holidays.startDate}" />
-                        <p:outputLabel for="endDate" value="Start Day:" />
+                        <p:outputLabel for="endDate" value="Enddatum:" />
                         <p:calendar id="endDate" value="#{holidaysDetailController.holidays.endDate}" />
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3">
-                        <p:commandButton value="Save" action="#{holidaysDetailController.doSaveDate()}" oncomplete="PF('holidaysEditDialog').hide()" update=":holidays:holidayTable"/>
-                        <p:commandButton value="Reload" action="#{holidaysDetailController.doReloadDate()}" update=":holidays:holidaysEditDialog"/>
-                        <p:commandButton value="Abort" onclick="PF('holidaysEditDialog').hide()"/>
+                        <p:commandButton value="Speichern" action="#{holidaysDetailController.doSaveDate()}" oncomplete="PF('holidaysEditDialog').hide()" update=":holidays:holidayTable"/>
+                        <p:commandButton value="neu Laden" action="#{holidaysDetailController.doReloadDate()}" update=":holidays:holidaysEditDialog"/>
+                        <p:commandButton value="Abbrechen" onclick="PF('holidaysEditDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
 
             <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
                 <p:panelGrid id="display" columns="2" columnClasses="label,value">
-                    <h:outputText value="Start Date:" />
+                    <h:outputText value="Anfangsdatum:" />
                     <h:outputText value="#{holidaysController.startDate}">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </h:outputText>
-                    <h:outputText value="End Date:" />
+                    <h:outputText value="Enddatum:" />
                     <h:outputText value="#{holidaysController.endDate}">
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </h:outputText>
@@ -68,9 +68,9 @@
                         <h:panelGrid columns="2">
                             <p:outputLabel for="addName" value="Name: "/>
                             <p:inputText id="addName" value="#{addHolidaysBean.name}" required="true"/>
-                            <p:outputLabel for="addStartDate" value="Start Date: "/>
+                            <p:outputLabel for="addStartDate" value="Anfangsdatum: "/>
                             <p:calendar id="addStartDate" value="#{addHolidaysBean.startDate}" required="true"/>
-                            <p:outputLabel for="addEndDate" value="End Date: "/>
+                            <p:outputLabel for="addEndDate" value="Enddatum: "/>
                             <p:calendar id="addEndDate" value="#{addHolidaysBean.endDate}" required="true"/>
                         </h:panelGrid>
                         <p:separator/>
