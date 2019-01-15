@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+  
+  <ui:define name ="content">
+    <h:form>
+        <p:growl id="msgs" showDetail="true" />
+        <p:panel
+                id="adminReservationsPanel"
+                header="Ausgeliehene Laborgeräte"
+                style="margin-top: 20px"
+                rendered="#{sessionInfoBean.hasRole('ADMIN')}"
+            >
+                <h:form id="reservationReturnForm">
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+
+                    <p:dataTable
+                        widgetVar="reservationSelect"
+                        id="reservationEquipmentTable"
+                        var="reservation"
+                        value="#{reservationListController.defaultReservationsReturn}"
+                        selection="#{reservationListController.selectedReservationsReturn}"
+                        filteredValue="#{reservationListController.filteredReservationsReturn}"
+                        rowKey="#{reservation.id}"
+                        style="margin-bottom:0"
+                    >
+                        <f:facet name="header">
+                            <div>
+                                <p:outputPanel style="text-align: left;float: left">
+                                    <p:inputText
+                                        id="globalFilter"
+                                        onkeyup="PF('reservationSelect').filter()"
+                                        style="width:250px" placeholder="Suche nach Reservierung"/>
+                                </p:outputPanel>
+
+                                <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
+                                    <p:commandButton
+                                        value="Rückgabe bestätigen"
+                                        action="#{reservationListController.doEquipmentReturn}"
+                                        update="@form"
+                                    >
+                                        <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie die Rückgabe der ausgewählen Laborgeräte bestätigen wollen? Sie können diesen Vorgang nicht rückgängig machen." icon="ui-icon-alert" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                                        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:outputPanel>
+                                <div style="clear: both"></div>
+                            </div>
+                        </f:facet>
+
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+                        <p:column
+                            headerText="Laborgerät"
+                            filterBy="#{reservation.equipment.name}"
+                            filterStyle="display: none"
+                            filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{reservation.equipment.name}" />
+                        </p:column>
+
+                        <p:column
+                            headerText="C-Kennung"
+                            filterBy="#{reservation.user.username} #{reservation.user.cNumber}"
+                            filterStyle="display:none;"
+                            filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{reservation.user.cNumber}"/>
+                        </p:column>
+
+                        <p:column
+                            headerText="Name"
+                            filterBy="#{reservation.user.firstName} #{reservation.user.lastName}"
+                            filterStyle="display: none"
+                            filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{reservation.user.firstName} #{reservation.user.lastName}"/>
+                        </p:column>
+
+                        <p:column headerText="Rückgabedatum">
+                            <h:outputText value="#{reservation.endDate}"/>
+                        </p:column>
+
+                        <p:column
+                            headerText="Status"
+                            filterBy="#{reservation.user.cNumber} #{reservation.user.username}"
+                            filterStyle="display: none"
+                            filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{reservation.equipment.state}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+        </h:form>
+     </ui:define>
+</ui:composition>
+ 
