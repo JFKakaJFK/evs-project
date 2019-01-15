@@ -46,7 +46,7 @@ public class AddEquipmentReservationController {
            equipmentReservation.setStartDate(this.startDate);
            equipmentReservation.setEndDate(this.endDate);
            equipmentReservation.setCreateDate(this.createDate);
-           msg = "Reservation added successfully";
+           msg = "Reservierung wurde erfolgreich hinzugefügt!";
            FacesContext.getCurrentInstance().getExternalContext().redirect("reservations.xhtml?addedSuccessfully");
             }
 
