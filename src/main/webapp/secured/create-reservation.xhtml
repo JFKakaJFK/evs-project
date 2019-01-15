@@ -11,17 +11,17 @@
         <h:form id="newReservation">
             <p:growl id="growl" showDetail="true" sticky="true" />
 
-            <p:panel id="newReservationPanel" header="New Reservation">
+            <p:panel id="newReservationPanel" header="Reservierung hinzufügen">
                 <div class="ui-g">
                     <div class="ui-g-4">
-                        <p:outputLabel for="lendingDatetime" value="Lending date: " />
+                        <p:outputLabel for="lendingDatetime" value="Ausleihdatum: " />
                         <p:calendar id="lendingDatetime" value="#{newReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" >
                             <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update="@form" />
                         </p:calendar>
                     </div>
 
                     <div class="ui-g-4">
-                        <p:outputLabel for="returnDatetime" value="Return date: " />
+                        <p:outputLabel for="returnDatetime" value="Rückgabedatum: " />
                         <p:calendar id="returnDatetime" value="#{newReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" >
                             <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update="@form" />
                         </p:calendar>
@@ -29,7 +29,7 @@
 
                     <div class="ui-g-4">
                         <p:commandButton
-                            value="Show Opening Hours"
+                            value="Öffnungszeiten anzeigen"
                             onclick="PF('openingDialog').show();"
                         />
                     </div>
@@ -51,12 +51,12 @@
                     <f:facet name="header">
                         <div>
                             <p:outputPanel style="text-align: left;float: left">
-                                <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:250px" placeholder="Search for Equipments"/>
+                                <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:250px" placeholder="Suche nach Reservierung"/>
                             </p:outputPanel>
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
                                 <p:commandButton
-                                    value="Create new reservation"
+                                    value="Reservierung hinzufügen"
                                     action="#{newReservationController.addEquipmentReservation}"
                                     update="@form"
                                 />
@@ -64,7 +64,7 @@
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
                                 <p:commandButton
-                                    value="Clear all"
+                                    value="Alle löschen"
                                     update=":newReservation:newReservationPanel"
                                     process="@this"
                                     action="#{newReservationController.resetInputs}" />
@@ -75,19 +75,19 @@
 
                     <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
-                    <p:column headerText="Equipment" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
+                    <p:column headerText="Laborgerät" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{equipment.name}" />
                     </p:column>
 
-                    <p:column headerText="Lab" filterBy="#{equipment.labName}" filterStyle="display: none" filterMatchMode="contains">
+                    <p:column headerText="Labor" filterBy="#{equipment.labName}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{equipment.labName}" />
                     </p:column>
 
-                    <p:column headerText="Lab Location" filterBy="#{equipment.labLocation}" filterStyle="display: none" filterMatchMode="contains">
+                    <p:column headerText="Labor Standort" filterBy="#{equipment.labLocation}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{equipment.labLocation}" />
                     </p:column>
 
-                    <p:column headerText="Max. duration" filterBy="#{equipment.maxDurationMilliseconds}" filterStyle="display: none" filterMatchMode="contains">
+                    <p:column headerText="Max. Ausleihdauer" filterBy="#{equipment.maxDurationMilliseconds}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{equipment.maxDurationFormatted}" />
                     </p:column>
 
@@ -120,17 +120,17 @@
             </p:dialog>
 
             <!-- DIALOG Opening Hours -->
-            <p:dialog id="openingDialog" header="Opening Hours" widgetVar="openingDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog id="openingDialog" header="Öffnungszeiten" widgetVar="openingDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="openingPanel" style="text-align:center;width: 750px;">
                     <p:dataTable
                         value="#{newReservationController.openingHours}"
                         var="opening"
                     >
-                        <p:column headerText="Weekday">
+                        <p:column headerText="Wochentag">
                             <h:outputText value="#{opening.day}" />
                         </p:column>
 
-                        <p:column headerText="Open">
+                        <p:column headerText="Geöffnet">
                             <h:outputText value="#{opening.startTime} - #{opening.endTime}" />
                         </p:column>
 
