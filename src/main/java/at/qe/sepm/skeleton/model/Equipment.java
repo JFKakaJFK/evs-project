@@ -21,12 +21,6 @@ public class Equipment implements Persistable<Integer> {
     @GeneratedValue
     private Integer id;
 
-    // TODO relocate to separate config properties
-    @Transient
-    private static final long BUFFER = 30 * 60 * 1000;
-    @Transient
-    private static final int BUFFER_TIME = 2 * 24 * 60 * 60 * 1000;
-
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -117,13 +111,13 @@ public class Equipment implements Persistable<Integer> {
      */
     private boolean isAvailable(Date startDate, Date endDate){
         for(EquipmentReservation reservation: this.reservations){
-            boolean reservationEndsBeforeStartDate = (reservation.getEndDate().getTime() + BUFFER) < startDate.getTime();
-            boolean reservationStartsAfterEndDate = (endDate.getTime() + BUFFER) < reservation.getStartDate().getTime();
+            boolean reservationEndsBeforeStartDate = (reservation.getEndDate().getTime() + ReservationProperties.getNextReservationBuffer()) < startDate.getTime();
+            boolean reservationStartsAfterEndDate = (endDate.getTime() + ReservationProperties.getNextReservationBuffer()) < reservation.getStartDate().getTime();
             if (!(reservationEndsBeforeStartDate || reservationStartsAfterEndDate)){
                 return false;
             }
             if(reservation.isOverdue()){
-                if(!((reservation.getEndDateOverdue().getTime() + BUFFER_TIME) < startDate.getTime())){
+                if(!((reservation.getEndDateOverdue().getTime() + ReservationProperties.getOverdueBuffer()) < startDate.getTime())){
                     return false;
                 }
             }
