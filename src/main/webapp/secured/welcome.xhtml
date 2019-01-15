@@ -17,7 +17,7 @@
                 <f:event type="preRenderComponent" listener="#{growlBean.showMessage('Reservierung wurde erfolgreich hinzugefügt!')}"/>
             </h:form>
 
-            <p:panel header="My Reservations">
+            <p:panel header="Meine Reservierungen">
                 <h:form id="reservationForm">
                     <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px">
                         <p:menuitem value="Laborgerät" url="create-reservation.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
@@ -85,11 +85,11 @@
 
                                 <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
                                     <p:commandButton
-                                        value="Bestätige Rückgabe"
+                                        value="Rückgabe bestätigen"
                                         action="#{reservationListController.doEquipmentReturn}"
                                         update="@form"
                                     >
-                                        <p:confirm header="Bestätigunh" message="Sind Sie sicher, dass Sie die Rückgabe der ausgewählen Laborgeräte bestätigen wollen? Sie können diesen Vorgang nicht rückgängig machen." icon="ui-icon-alert" />
+                                        <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie die Rückgabe der ausgewählen Laborgeräte bestätigen wollen? Sie können diesen Vorgang nicht rückgängig machen." icon="ui-icon-alert" />
                                     </p:commandButton>
 
                                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
