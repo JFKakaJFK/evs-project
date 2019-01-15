@@ -43,6 +43,7 @@ public class ReservationListController implements Serializable {
     private List<EquipmentReservation> defaultReservationsReturn;
     private List<EquipmentReservation> selectedReservationsReturn;
     private List<EquipmentReservation> filteredReservationsReturn;
+    private List<EquipmentReservation> allReservationsReturn;
 
     private boolean returnedSuccessfully = false;
 
@@ -53,6 +54,8 @@ public class ReservationListController implements Serializable {
         {
             this.defaultReservationsReturn = new ArrayList<>();
             this.defaultReservationsReturn.addAll(equipmentReservationService.getAllBorrowedEquipments());
+            this.allReservationsReturn= new ArrayList<>();
+            this.allReservationsReturn.addAll(equipmentReservationService.getAllEquipmentReservations());
         }
     }
 
@@ -66,6 +69,14 @@ public class ReservationListController implements Serializable {
 
     public List<EquipmentReservation> getDefaultReservationsReturn() {
         return defaultReservationsReturn;
+    }
+    
+    public List<EquipmentReservation> getAllReservationsReturn() {
+        return allReservationsReturn;
+    }
+
+    public void setAllReservationsReturn(List<EquipmentReservation> allReservationsReturn) {
+        this.allReservationsReturn = allReservationsReturn;
     }
 
     public List<EquipmentReservation> getFilteredReservationsReturn() {
