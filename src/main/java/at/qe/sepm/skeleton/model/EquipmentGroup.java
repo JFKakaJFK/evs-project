@@ -109,4 +109,17 @@ public class EquipmentGroup implements Persistable<Integer> {
     public boolean isNew() {
         return (null == user);
     }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof EquipmentGroup){
+            return this.id.equals(((EquipmentGroup) obj).getId());
+        }
+        return false;
+    }
 }

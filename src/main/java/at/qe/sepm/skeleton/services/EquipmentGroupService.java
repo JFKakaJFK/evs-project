@@ -1,8 +1,6 @@
 package at.qe.sepm.skeleton.services;
 
-import at.qe.sepm.skeleton.model.EquipmentGroup;
-import at.qe.sepm.skeleton.model.EquipmentState;
-import at.qe.sepm.skeleton.model.User;
+import at.qe.sepm.skeleton.model.*;
 import at.qe.sepm.skeleton.repositories.EquipmentGroupRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +44,8 @@ public class EquipmentGroupService {
      */
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public Collection<EquipmentGroup> getOwnGroupsFree(Date start, Date end){
+        // TODO Logik passt nicht
+        /*
         return equipmentGroupRepository.findAllByUser(getAuthenticatedUser()).stream()
             .filter(equipmentGroup -> equipmentGroup.getEquipments().stream()
                 .allMatch(equipment ->
@@ -53,6 +53,31 @@ public class EquipmentGroupService {
                     (equipment.getState(start, end) == EquipmentState.OVERDUE &&
                         (equipment.getOverdueReservation() == null) ? (false) : (start.getTime() > equipment.getOverdueReservation().getEndDateOverdue().getTime())))
             ).collect(Collectors.toList());
+           */
+
+        boolean groupisfree = true;
+        List<EquipmentGroup> own = new ArrayList<>(equipmentGroupRepository.findAllByUser(getAuthenticatedUser()));
+        List<EquipmentGroup> ownfree = new ArrayList<>();
+        for(EquipmentGroup g: own){
+            groupisfree = true;
+            for(Equipment e: g.getEquipments()){
+                if((e.getState(start, end) == EquipmentState.AVAILABLE)){
+                    continue;
+                }
+                EquipmentReservation r = e.getOverdueReservation();
+                if(r != null){
+                    if(r.getEndDateOverdue().before(start)){
+                        continue;
+                    }
+                }
+                groupisfree = false;
+                break;
+            }
+            if(groupisfree){
+                ownfree.add(g);
+            }
+        }
+        return ownfree;
     }
 
     /**
