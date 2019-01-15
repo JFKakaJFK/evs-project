@@ -167,7 +167,7 @@
                     <p:separator />
                     <h:panelGrid columns="2">
                         <p:commandButton value="Speichern" action="#{addEquipmentCommentBean.addComment()}" oncomplete="PF('addCommentDialog').hide()" update=":equipmentForm:equipmentTable"/>
-                        <p:commandButton value="Abbrechen" oncomplete="PF('addCommentDialog').hide()"/>
+                        <p:commandButton value="Abbrechen"  immediate="true" oncomplete="PF('addCommentDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>
@@ -191,7 +191,7 @@
                     <p:separator />
                     <h:panelGrid columns="2">
                         <p:commandButton value="Speichern" action="#{addEquipmentBean.addEquipment()}" oncomplete="PF('addEquipmentDialog').hide()" update=":equipmentForm:equipmentTable"/>
-                        <p:commandButton value="Abbrechen" oncomplete="PF('addEquipmentDialog').hide()"/>
+                        <p:commandButton value="Abbrechen"  immediate="true" oncomplete="PF('addEquipmentDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>
@@ -219,7 +219,7 @@
                         <p:commandButton value="Speichern" action="#{addManualBean.addManual}"
                                          oncomplete="PF('addManualDialog').hide()"
                                          update=":equipmentForm:equipmentTable" />
-                        <p:commandButton value="Abbrechen" action="#{addManualBean.abort}" oncomplete="PF('addManualDialog').hide()"/>
+                        <p:commandButton value="Abbrechen"  immediate="true" action="#{addManualBean.abort}" oncomplete="PF('addManualDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>

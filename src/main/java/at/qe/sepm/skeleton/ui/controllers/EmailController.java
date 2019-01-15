@@ -38,7 +38,7 @@ import java.util.Properties;
 
 
 @RestController //Using "@RestController" instead of simple "@Component" annotation 
-@Scope("notify")
+@Scope("request")
 
 public class EmailController {
 
@@ -46,7 +46,7 @@ public class EmailController {
 	private UserService userService;
 	
 	@RequestMapping(value = "/sendemail")
-	   public String sendEmail() {
+	   public String sendEmail() throws AddressException, MessagingException, IOException {
 	      return "Email wurde erfolgreich gesendet";
 	   }   
 	
@@ -59,18 +59,19 @@ public class EmailController {
 		   Properties props = new Properties();
 		   props.put("mail.smtp.auth", "true");
 		   props.put("mail.smtp.starttls.enable", "true"); 
-		   props.put("mail.smtp.host", "smtp.uibk.ac.at"); //connects to host. In this case uibk. 
+		   props.put("mail.smtp.host", "smtp.gmail.com"); //connects to host. In this case gmail. 
 		   props.put("mail.smtp.port", "25"); //port to connect to, I believe the default value is 25
+		   
 		   
 		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 		      protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication(userService.getAuthenticatedUser().getUsername(), userService.getAuthenticatedUser().getPassword()); //WARNING: Could be wrong 
+		         return new PasswordAuthentication("test.hilpold@gmail.com", "gavosa03"); //WARNING: Could be wrong 
 		      }
 		   });
 		   
 		   
 		   Message msg = new MimeMessage(session);
-		   msg.setFrom(new InternetAddress("test.hilpold@gmail.com", false));
+		   msg.setFrom(new InternetAddress("http://localhost:8080/sendemail", false));
 
 		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userService.getAuthenticatedUser().getEmail())); //sets recipients
 		   msg.setSubject("Buchung"); //
