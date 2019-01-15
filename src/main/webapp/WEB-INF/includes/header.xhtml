@@ -10,7 +10,7 @@
                 <p:menubar>
                     <p:submenu styleClass="dropdown" label="Reservierungen" rendered="#{sessionInfoBean.loggedIn}">
                         <p:menuitem value="Meine Reservierungen" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
-                        <p:menuitem value="Reservierungen Übersicht" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                        <p:menuitem value="Reservierungen Übersicht" url="/admin/reservation-overview.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
                     </p:submenu>
                     <p:submenu styleClass="dropdown" label="Laborgerätgruppen" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="Meine Gruppen" url="/secured/my-equipmentgroups.xhtml" />
