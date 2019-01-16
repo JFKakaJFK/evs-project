@@ -19,10 +19,6 @@
 
             <p:panel header="Meine Reservierungen">
                 <h:form id="reservationForm">
-                    <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary">
-                        <p:menuitem value="Laborgerät" url="create-reservation.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
-                        <p:menuitem value="Laborgerätgruppe" url="create-reservationGroup.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
-                    </p:menuButton>
 
                     <p:dataTable
                         id="reservationTable"
@@ -31,6 +27,12 @@
                         rowIndexVar="index"
                         rowStyleClass="#{reservation.completed ? 'completed' : ''}"
                     ><!-- style completed rows differently -->
+                        <f:facet name="header">
+                            <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary">
+                                <p:menuitem value="Laborgerät" url="create-reservation.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
+                                <p:menuitem value="Laborgerätgruppe" url="create-reservationGroup.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
+                            </p:menuButton>
+                        </f:facet>
 
                         <p:column headerText="Laborgerät">
                             <h:outputText value="#{reservation.equipment.name}"/>

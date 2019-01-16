@@ -4,8 +4,8 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway');
 
 :root {
-    --color-1: #3A95E8;
-    --color-2: #BBB;
+    --color-1: #3498DB;
+    --color-2: #2980B9;
 }
 
 /* change the fonts */
@@ -15,29 +15,12 @@
     text-shadow: none;
 }
 
-/* blurry bg image */
-/*
-#background {
-    z-index: -10000;
-    background: url("/resources/images/bg-alt.jpg");
-    background-size: cover;
-    filter: blur(10px);
-    -webkit-filter: blur(10px);
-    height: 110vh;
-    width: 110%;
-    position: fixed;
-    top: -5vh;
-    left: -5%;
-    overflow: hidden;
-}
-*/
-
 /* dynamic footer */
 #page {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    background: #EEE;
+    background: #ECF0F1;
 }
 
 /**/
@@ -62,9 +45,13 @@
     box-sizing: border-box;
 }
 
+#header .ui-submenu-link {
+    color: #ECF0F1;
+}
+
 #header ul > li > .ui-state-hover {
     background: initial;
-    color: initial;
+    color: #ECF0F1;
 }
 
 #header ul ul > li > .ui-state-hover {
@@ -145,6 +132,7 @@
     padding: 25px;
     text-align: right;
     background: var(--color-2);
+    color: #ECF0F1;
 }
 
 /* color columns of completed reservations */
