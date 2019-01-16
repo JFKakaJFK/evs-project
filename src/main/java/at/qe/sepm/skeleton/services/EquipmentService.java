@@ -6,8 +6,6 @@ import at.qe.sepm.skeleton.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 public class EquipmentService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private EquipmentRepository equipmentRepository;
@@ -129,15 +127,16 @@ public class EquipmentService {
         for (EquipmentGroup group: equipmentGroups) {
             // delete group if there are too few equipments left
             if(group.getEquipments().size() < 3){
-                User u = group.getUser();
-                u.removeEquipmentGroup(group);
-                userRepository.save(u);
+                User u = userService.loadUser(group.getUser().getUsername());
+                u.getEquipmentGroups().remove(group);
+                userService.saveUser(u);
                 // TODO: log group deletion
             } else {
                 group.getEquipments().remove(equipment);
-                userRepository.save(group.getUser());
+                userService.saveUser(group.getUser());
             }
         }
+        System.out.println("werg");
         return equipmentRepository.save(equipment);
     }
 
@@ -157,12 +156,12 @@ public class EquipmentService {
                 storageService.deleteFile(manual.getFilename());
             }
         } catch (IOException e){
-            logger.warn("FAILED to delete manual on delete equipment action");
+            logger.warn("FAILED to delete manual on delete equipment " + equipment.getId() + " [" + equipment.getName() + "] action");
         } finally {
             equipment = deleteAllGroupsFromEquipment(equipment);
             equipmentRepository.delete(equipment);
 
-            logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + getAuthenticatedUser().getEmail() + ")");
+            logger.warn("DELETED Equipment: " + equipment.getName() + " (by " + userService.getAuthenticatedUser().getEmail() + ")");
         }
     }
 
@@ -223,15 +222,5 @@ public class EquipmentService {
         Equipment e = manual.getEquipment();
         e.removeManual(manual);
         equipmentRepository.save(e);
-    }
-
-    /**
-     * Returns the currently authenticated User
-     *
-     * @return
-     */
-    private User getAuthenticatedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findFirstByUsername(auth.getName());
     }
 }

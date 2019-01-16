@@ -117,6 +117,9 @@ public class Equipment implements Persistable<Integer> {
      */
     private boolean isAvailable(Date startDate, Date endDate){
         for(EquipmentReservation reservation: this.reservations){
+            if(reservation.isCompleted()){
+                continue;
+            }
             boolean reservationEndsBeforeStartDate = (reservation.getEndDate().getTime() + BUFFER) < startDate.getTime();
             boolean reservationStartsAfterEndDate = (endDate.getTime() + BUFFER) < reservation.getStartDate().getTime();
             if (!(reservationEndsBeforeStartDate || reservationStartsAfterEndDate)){
