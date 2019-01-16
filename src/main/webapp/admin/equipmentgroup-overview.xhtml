@@ -21,6 +21,9 @@
                     <p:column headerText="Geräte">
                         <h:outputText value="#{group.equipmentAsString}"/>
                     </p:column>
+                    <p:column headerText="Benutzer">
+                        <h:outputText value="#{group.user.username}"/>
+                    </p:column>
                     <p:column style="width:100px;text-align: center">
                         <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
                             <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />

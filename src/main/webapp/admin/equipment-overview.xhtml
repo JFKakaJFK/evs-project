@@ -202,13 +202,15 @@
                         <p:outputLabel for="manualDesc" value="Name: "/>
                         <p:inputText id="manualDesc" value="#{addManualBean.desc}"/>
                         <p:outputLabel for="fileUpload" value="Bedienungsanleitung: "/>
-                        <!-- sizelimit should be 10MB -->
-                        <!-- TODO more attributes e.g. custom messages in german? -->
+                        <!-- sizelimit should be  10MB -->
                         <p:fileUpload id="fileUpload" fileUploadListener="#{addManualBean.handleFileUpload}" multiple="false"
-                                      mode="advanced"
+                                      mode="advanced" required="true"
                                       update=":equipmentForm:messages" auto="true" sizeLimit="10000000"
                                       allowTypes="/(\.|\/)(txt|md|pdf|html|jpe?g|png)$/"
-                                      styleClass="fileupload"/>
+                                      styleClass="fileupload" requiredMessage="Es muss eine Datei hochgeladen werden."
+                                      validatorMessage="Dieses Dateiformat ist nicht erlaubt" invalidSizeMessage="Diese Datei ist zu groß"
+                                      invalidFileMessage="Dieses Dateiformat ist nicht erlaubt"
+                        />
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="2">
