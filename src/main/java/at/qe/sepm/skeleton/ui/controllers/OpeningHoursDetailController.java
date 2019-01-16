@@ -29,6 +29,7 @@ public class OpeningHoursDetailController {
      *
      * @param openingHours
      */
+    // TODO add verification, else message
     public void setOpeningHours(OpeningHours openingHours) {
         this.openingHours = openingHours;
         doReloadHours();
@@ -60,6 +61,8 @@ public class OpeningHoursDetailController {
     /**
      * Action to delete the currently displayed user.
      */
+    // TODO is this even needed?
+    @Deprecated
     public void doDeleteHours() {
         this.openingHoursService.deleteOpeningHour(openingHours);
         openingHours = null;

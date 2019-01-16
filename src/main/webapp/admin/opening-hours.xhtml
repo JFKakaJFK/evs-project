@@ -8,7 +8,7 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
         <h:form id="openingTimes">
-        <p:growl id="msgs" showDetail="true" />
+            <p:growl id="msgs" showDetail="true" />
 
             <p:dataTable id="hoursTable" var="day" value="#{openingHoursListController.openingHours}">
                 <p:column headerText="Tag">
@@ -27,7 +27,7 @@
                     <h:outputText value="#{day.endTime}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":openingTimes:openingHoursEditDialog" oncomplete="PF('openingHoursEditDialog').show()" icon="ui-icon-note" title="Bearbeiten">
+                    <p:commandButton update=":openingTimes:openingHoursEditDialog" oncomplete="PF('openingHoursEditDialog').show()" icon="ui-icon-note" title="Bearbeiten" styleClass="btn-secondary">
                         <f:setPropertyActionListener value="#{day}" target="#{openingHoursDetailController.openingHours}" />
                     </p:commandButton>
                 </p:column>
@@ -47,29 +47,12 @@
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3">
-                        <p:commandButton value="Speichern" action="#{openingHoursDetailController.doSaveHours()}" oncomplete="PF('openingHoursEditDialog').hide()" update=":openingTimes:hoursTable"/>
-                        <p:commandButton value="neu Laden" action="#{openingHoursDetailController.doReloadHours()}" update=":openingTimes:openingHoursData"/>
-                        <p:commandButton value="Abbrechen" onclick="PF('openingHoursEditDialog').hide()"/>
+                        <p:commandButton value="Speichern" action="#{openingHoursDetailController.doSaveHours()}" oncomplete="PF('openingHoursEditDialog').hide()" update=":openingTimes:hoursTable" styleClass="btn-primary"/>
+                        <p:commandButton value="neu Laden" action="#{openingHoursDetailController.doReloadHours()}" update=":openingTimes:openingHoursData" styleClass="btn-secondary"/>
+                        <p:commandButton value="Abbrechen" onclick="PF('openingHoursEditDialog').hide()" styleClass="btn-secondary"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
-
-        <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
-            <p:panelGrid id="display" columns="2" columnClasses="label,value">
-                <h:outputText value="Öffnet um:" />
-                <h:outputText value="#{openingHoursController.startTime}">
-                </h:outputText>
-                <h:outputText value="Pause von:" />
-                <h:outputText value="#{openingHoursController.startPause}">
-                </h:outputText>
-                <h:outputText value="Pause bis:" />
-                <h:outputText value="#{openingHoursController.endPause}">
-                </h:outputText>
-                <h:outputText value="Schließt um:" />
-                <h:outputText value="#{openingHoursController.endTime}">
-                </h:outputText>
-            </p:panelGrid>
-        </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>

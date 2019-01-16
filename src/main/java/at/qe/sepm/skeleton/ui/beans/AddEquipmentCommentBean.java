@@ -4,15 +4,15 @@ import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentComment;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Component;
+
+import javax.annotation.ManagedBean;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  * Bean for adding a new {@link EquipmentComment}
  */
-@Component
-@Scope("request")
+@ManagedBean
 public class AddEquipmentCommentBean {
 
     @Autowired
@@ -31,6 +31,9 @@ public class AddEquipmentCommentBean {
         comment.setMessage(message);
         equipment.addComment(comment);
         equipmentService.saveComment(comment);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+            FacesMessage.SEVERITY_INFO, "Success", "Bemerkung erfolgreich gespeichert.")
+        );
     }
 
     public String getTitle() {

@@ -118,6 +118,9 @@ public class UserDetailController {
             );
         } else {
             user = this.userService.saveUser(user);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_INFO, "Success", "Der Benutzer wurde erfolgreich gespeichert.")
+            );
         }
     }
 
@@ -133,6 +136,9 @@ public class UserDetailController {
             );
         }
         user = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+            FacesMessage.SEVERITY_INFO, "Success", "Der Benutzer wurde erfolgreich gelöscht.")
+        );
     }
 
 }

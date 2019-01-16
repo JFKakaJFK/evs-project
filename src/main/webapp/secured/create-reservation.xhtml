@@ -31,6 +31,7 @@
                         <p:commandButton
                             value="Öffnungszeiten anzeigen"
                             onclick="PF('openingDialog').show();"
+                            styleClass="btn-secondary"
                         />
                     </div>
                 </div>
@@ -59,15 +60,17 @@
                                     value="Reservierung hinzufügen"
                                     action="#{newReservationController.addEquipmentReservation}"
                                     update="@form"
+                                    styleClass="btn-primary"
                                 />
                             </p:outputPanel>
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
                                 <p:commandButton
-                                    value="Alle löschen"
+                                    value="Eingabe zurücksetzen"
                                     update=":newReservation:newReservationPanel"
                                     process="@this"
-                                    action="#{newReservationController.resetInputs}" />
+                                    action="#{newReservationController.resetInputs}"
+                                    styleClass="btn-secondary"/>
                             </p:outputPanel>
                             <div style="clear: both"></div>
                         </div>
@@ -91,13 +94,14 @@
                         <h:outputText value="#{equipment.maxDurationFormatted}" />
                     </p:column>
 
-                    <p:column style="width:32px;text-align: center">
+                    <p:column style="width:40px;text-align: center">
                         <p:commandButton
                             icon="pi pi-search"
                             title="View"
                             update=":newReservation:equipmentDialog"
                             oncomplete="PF('equipmentDialog').show()"
                             action="#{newReservationController.calendarAction}"
+                            styleClass="btn-secondary"
                         >
                             <f:param name="detailEquipment" value="#{equipment.id}" />
 

@@ -32,6 +32,7 @@
                         <p:commandButton
                             value="Öffnungszeiten anzeigen"
                             onclick="PF('openingDialog').show();"
+                            styleClass="btn-secondary"
                         />
                     </div>
                 </div>
@@ -59,15 +60,17 @@
                                     value="neue Reservierung erstellen"
                                     action="#{newGroupReservationController.addGroupReservation}"
                                     update="@form"
+                                    styleClass="btn-primary"
                                 />
                             </p:outputPanel>
 
                             <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
                                 <p:commandButton
-                                    value="Alle löschen"
+                                    value="Eingabe zurücksetzen"
                                     update=":newReservation:newReservationPanel"
                                     process="@this"
                                     action="#{newGroupReservationController.resetInputs}"
+                                    styleClass="btn-secondary"
                                 />
                             </p:outputPanel>
                             <div style="clear: both"></div>
@@ -84,13 +87,14 @@
                         <h:outputText value="#{group.equipmentAsString}" />
                     </p:column>
 
-                    <p:column style="width:32px;text-align: center">
+                    <p:column style="width:40px;text-align: center">
                         <p:commandButton
                             icon="pi pi-search"
                             title="Ansicht"
                             update=":newReservation:groupDialog"
                             oncomplete="PF('groupDialog').show()"
                             action="#{newGroupReservationController.calendarAction}"
+                            styleClass="btn-secondary"
                         >
                             <f:param name="detailGroup" value="#{group.id}" />
 

@@ -14,6 +14,10 @@
             </p:messages>
 
             <p:dataTable id="equipmentGroupTable" var="group" value="#{equipmentGroupListController.allEquipmentGroupsByUser}" emptyMessage="Sie haben noch keine Gerätegruppen">
+                <f:facet name="header">
+                    <p:commandButton update=":addEquipmentGroupDialog" oncomplete="PF('addEquipmentGroupDialog').show()" icon="ui-icon-plusthick" title="Add" value="Neue Gruppe erstellen" styleClass="btn-primary" />
+                </f:facet>
+
                 <p:column headerText="Name">
                     <h:outputText value="#{group.name}"/>
                 </p:column>
@@ -21,25 +25,20 @@
                     <h:outputText value="#{group.equipmentAsString}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit">
+                    <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
                         <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
                     </p:commandButton>
-                    <p:commandButton action="#{equipmentGroupDetailController.doDeleteGroup}" icon="ui-icon-trash" title="Delete" update=":equipmentGroupForm:equipmentGroupTable">
+                    <p:commandButton action="#{equipmentGroupDetailController.doDeleteGroup}" icon="ui-icon-trash" title="Delete" update=":equipmentGroupForm:equipmentGroupTable" styleClass="btn-danger">
                         <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
                         <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie diese Gruppe löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
                     </p:commandButton>
                 </p:column>
 
-                <f:facet name="footer">
-                    <p:commandButton update=":addEquipmentGroupDialog" oncomplete="PF('addEquipmentGroupDialog').show()" icon="ui-icon-plusthick" title="Add" value="Neue Gruppe erstellen" />
-                </f:facet>
-
-
             </p:dataTable>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
-                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check" />
+                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
             </p:confirmDialog>
 
         </h:form>
@@ -78,9 +77,9 @@
                     </p:dataTable>
 
                     <h:panelGrid columns="3">
-                        <p:commandButton value="Speichern" action="#{equipmentGroupDetailController.doSaveGroup}" oncomplete="PF('equipmentGroupEditDialog').hide()" update=":equipmentGroupForm"/>
-                        <p:commandButton value="Neu Laden" action="#{equipmentGroupDetailController.doReloadGroup}" update=":editForm"/>
-                        <p:commandButton value="Abbrechen" oncomplete="PF('equipmentGroupEditDialog').hide()"/>
+                        <p:commandButton value="Speichern" action="#{equipmentGroupDetailController.doSaveGroup}" oncomplete="PF('equipmentGroupEditDialog').hide()" update=":equipmentGroupForm" styleClass="btn-primary"/>
+                        <p:commandButton value="Neu Laden" action="#{equipmentGroupDetailController.doReloadGroup}" update=":editForm" styleClass="btn-secondary"/>
+                        <p:commandButton value="Abbrechen" oncomplete="PF('equipmentGroupEditDialog').hide()" styleClass="btn-secondary"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>
@@ -120,8 +119,8 @@
                     </p:dataTable>
 
                     <h:panelGrid columns="3">
-                        <p:commandButton value="Speichern" action="#{addEquipmentGroupBean.addEquipmentGroup}" oncomplete="PF('addEquipmentGroupDialog').hide()" update=":equipmentGroupForm"/>
-                        <p:commandButton value="Zurück" oncomplete="PF('addEquipmentGroupDialog').hide()" immediate="true"/>
+                        <p:commandButton value="Speichern" action="#{addEquipmentGroupBean.addEquipmentGroup}" oncomplete="PF('addEquipmentGroupDialog').hide()" update=":equipmentGroupForm" styleClass="btn-primary"/>
+                        <p:commandButton value="Zurück" oncomplete="PF('addEquipmentGroupDialog').hide()" immediate="true" styleClass="btn-secondary"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>

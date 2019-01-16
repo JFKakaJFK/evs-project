@@ -19,7 +19,7 @@
 
             <p:panel header="Meine Reservierungen">
                 <h:form id="reservationForm">
-                    <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px">
+                    <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary">
                         <p:menuitem value="Laborgerät" url="create-reservation.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
                         <p:menuitem value="Laborgerätgruppe" url="create-reservationGroup.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
                     </p:menuButton>
@@ -42,16 +42,11 @@
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
                         <p:column style="width:100px;text-align: center">
-                            <p:commandButton icon="ui-icon-note" title="Bedienungsanleitung"/>
-                            <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="ui-icon-trash" title="Löschen" rendered="#{reservation.deletable}" update="reservationTable">
+                            <p:commandButton icon="ui-icon-note" title="Bedienungsanleitung" styleClass="btn-secondary"/>
+                            <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="ui-icon-trash" title="Löschen" rendered="#{reservation.deletable}" update="reservationTable" styleClass="btn-danger">
                                 <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailController.equipmentReservation}" />
                                 <p:confirm header="Bestätigung" message="Sie sind sicher, dass Sie diese Reservierung löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
                             </p:commandButton>
-
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
-                                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
                         </p:column>
                     </p:dataTable>
                 </h:form>
@@ -81,26 +76,22 @@
                     ><!-- style overdue rows differently -->
                         <f:facet name="header">
                             <div>
-                                <p:outputPanel style="text-align: left;float: left">
+                                <p:outputPanel>
                                     <p:inputText
                                         id="globalFilter"
                                         onkeyup="PF('reservationSelect').filter()"
                                         style="width:250px" placeholder="Suche nach Reservierung"/>
                                 </p:outputPanel>
 
-                                <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
+                                <p:outputPanel>
                                     <p:commandButton
                                         value="Rückgabe bestätigen"
                                         action="#{reservationListController.doEquipmentReturn}"
                                         update="@form reservationForm"
+                                        styleClass="btn-primary"
                                     >
                                         <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie die Rückgabe der ausgewählen Laborgeräte bestätigen wollen? Sie können diesen Vorgang nicht rückgängig machen." icon="ui-icon-alert" />
                                     </p:commandButton>
-
-                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
-                                        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                        <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                    </p:confirmDialog>
                                 </p:outputPanel>
                                 <div style="clear: both"></div>
                             </div>
@@ -148,6 +139,11 @@
                             <h:outputText value="#{reservation.state}" />
                         </p:column>
                     </p:dataTable>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check" />
+                        <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
+                    </p:confirmDialog>
                 </h:form>
             </p:panel>
         </h:panelGroup>

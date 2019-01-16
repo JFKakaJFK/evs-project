@@ -27,6 +27,7 @@ public class HolidaysDetailController {
      *
      * @param holidays
      */
+    // TODO add verification startdate before enddate, else message
     public void setHolidays(Holidays holidays) {
         this.holidays = holidays;
         doReloadDate();
@@ -41,6 +42,7 @@ public class HolidaysDetailController {
         return holidays;
     }
 
+    // TODO user -> holiday in jdoc?
     /**
      * Action to force a reload of the currently displayed user.
      */
@@ -59,7 +61,10 @@ public class HolidaysDetailController {
      * Action to delete the currently displayed user.
      */
     public void doDeleteDate() {
+        // TODO geht nicht??
         this.holidaysService.deleteHoliday(holidays);
         holidays = null;
+        System.out.println("called");
+        // TODO log
     }
 }

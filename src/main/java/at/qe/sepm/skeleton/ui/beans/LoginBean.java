@@ -22,5 +22,8 @@ public class LoginBean {
         if (params.containsKey("expired")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ihre Sitzung ist abgelaufen.\n Bitte melden Sie sich erneut an."));
         }
+        if (params.containsKey("error")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ihr Benutzername oder Passwort stimmt nicht."));
+        }
     }
 }

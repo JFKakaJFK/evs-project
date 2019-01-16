@@ -39,6 +39,9 @@ public class EquipmentDetailController {
      */
     public void doSaveEquipment(){
         equipment = this.equipmentService.saveEquipment(this.equipment);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+            FacesMessage.SEVERITY_INFO, "Success", "Gerät erfolgreich gespeichert.")
+        );
     }
 
     /**
@@ -54,6 +57,9 @@ public class EquipmentDetailController {
         }
 
         this.equipment = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+            FacesMessage.SEVERITY_INFO, "Success", "Gerät erfolgreich gelöscht.")
+        );
     }
 
     /**
@@ -68,6 +74,9 @@ public class EquipmentDetailController {
      */
     public void doSaveComment(){
         comment = this.equipmentService.saveComment(this.comment);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+            FacesMessage.SEVERITY_INFO, "Success", "Bemerkung erfolgreich gespeichert.")
+        );
     }
 
     /**
@@ -76,6 +85,9 @@ public class EquipmentDetailController {
     public void doDeleteComment(){
         equipmentService.deleteComment(comment);
         comment = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+            FacesMessage.SEVERITY_INFO, "Success", "Bemerkung erfolgreich gelöscht.")
+        );
     }
 
     /**
@@ -84,6 +96,9 @@ public class EquipmentDetailController {
     public void doDeleteManual(){
         equipmentService.deleteManual(manual);
         manual = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+            FacesMessage.SEVERITY_INFO, "Success", "Bedienungsanleitung erfolgreich gelöscht.")
+        );
     }
 
     public Integer getExpandedRowElementId() {

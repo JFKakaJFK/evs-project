@@ -43,8 +43,6 @@ public class OpeningHours implements Persistable<Long> {
     private Date updateDate;
     @Column(length = 100)
 
-    // TODO maybe add verification in setters?  (e.g. the pause needs to be within the opneing hours and so on..)
-
     public void setId(long id) {
         this.id = id;
     }

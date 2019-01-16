@@ -26,6 +26,7 @@
                     <p:outputPanel>
                         <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Suche"/>
                     </p:outputPanel>
+                    <p:commandButton value="Neuer User hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick" styleClass="btn-primary"/>
                 </f:facet>
                 <p:column headerText="Benutzername" sortBy="#{user.username}" filterBy="#{user.username}" filterStyle="display: none" filterMatchMode="contains">
                     <h:outputText value="#{user.username}" />
@@ -49,18 +50,14 @@
                     <h:selectBooleanCheckbox value="#{user.enabled}" disabled="true"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="ui-icon-note" title="Edit">
+                    <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
                     </p:commandButton>
-                    <p:commandButton action="#{userDetailController.doDeleteUser}" icon="ui-icon-trash" title="Delete" update=":userForm:usersTable">
+                    <p:commandButton action="#{userDetailController.doDeleteUser}" icon="ui-icon-trash" title="Delete" update=":userForm:usersTable" styleClass="btn-danger">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
                         <p:confirm header="Bestätigung" message="Bist du sicher dass dieser Benutzer gelöscht werden soll? Diese Operation ist unwiederrufbar." icon="ui-icon-alert" />
                     </p:commandButton>
                 </p:column>
-
-                <f:facet name="footer">
-                    <p:commandButton value="Neuer User hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick"/>
-                </f:facet>
             </p:dataTable>
 
             <p:dialog header="Benutzer bearbeiten" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
@@ -87,16 +84,16 @@
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3" style="text-align: center">
-                        <p:commandButton value="Speichern" action="#{userDetailController.doSaveUser()}" oncomplete="PF('userEditDialog').hide()" update=":userForm:usersTable"/>
-                        <p:commandButton value="Neu Laden" action="#{userDetailController.doReloadUser()}" update=":userForm:userData"/>
-                        <p:commandButton value="Abbrechen" onclick="PF('userEditDialog').hide()"/>
+                        <p:commandButton value="Speichern" action="#{userDetailController.doSaveUser()}" oncomplete="PF('userEditDialog').hide()" update=":userForm:usersTable" styleClass="btn-primary"/>
+                        <p:commandButton value="Neu Laden" action="#{userDetailController.doReloadUser()}" update=":userForm:userData" styleClass="btn-secondary"/>
+                        <p:commandButton value="Abbrechen" onclick="PF('userEditDialog').hide()" styleClass="btn-secondary"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
-                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check" />
+                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
             </p:confirmDialog>
 
         </h:form>
@@ -131,8 +128,8 @@
                     </h:panelGrid>
                     <p:separator/>
                     <h:panelGrid columns="3" style="text-align: center">
-                        <p:commandButton value="Benutzer hinzufügen" action="#{addUserBean.addUser}" oncomplete="PF('addDialog').hide()" update=":userForm:usersTable"/>
-                        <p:commandButton value="Abbrechen"  immediate="true" onclick="PF('addDialog').hide()" />
+                        <p:commandButton value="Benutzer hinzufügen" action="#{addUserBean.addUser}" oncomplete="PF('addDialog').hide()" update=":userForm:usersTable" styleClass="btn-primary"/>
+                        <p:commandButton value="Abbrechen"  immediate="true" onclick="PF('addDialog').hide()" styleClass="btn-secondary" />
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>

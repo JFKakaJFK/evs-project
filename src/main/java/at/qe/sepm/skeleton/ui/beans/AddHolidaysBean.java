@@ -20,6 +20,7 @@ public class AddHolidaysBean {
     private Date startDate;
     private Date endDate;
 
+    // TODO start before end? add verification, else message/growl
     public void addHolidays(){
         Holidays holidays = new Holidays();
 

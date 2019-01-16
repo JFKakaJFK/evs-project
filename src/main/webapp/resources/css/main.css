@@ -120,3 +120,81 @@
 .ui-dialog {
     max-width: 90%;
 }
+
+.btn-primary,
+.dropdown-primary .ui-button {
+    background-image: none !important;
+    background: var(--color-1) !important;
+    color: white !important;
+    border: 0 !important;
+    transition: .25s opacity ease-in-out;
+}
+
+.btn-danger {
+    background-image: none !important;
+    background: #f2dede !important;
+    color: #b94a48 !important;
+    box-sizing: border-box;
+    border: 1px solid hsla(0, 0%, 30%, .5) !important;
+    transition: .25s opacity ease-in-out;
+}
+
+.btn-secondary, .fileupload .ui-button {
+    background-image: none !important;
+    background: white !important;
+    box-sizing: border-box;
+    border: 1px solid hsla(0, 0%, 30%, .5) !important;
+    transition: .25s opacity ease-in-out;
+}
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-secondary:hover,
+.btn-secondary:focus,
+.fileupload .ui-button:hover,
+.fileupload .ui-button:focus{
+    opacity: .7 !important;
+    transition: .15s opacity ease-in-out;
+}
+
+.ui-datatable .ui-datatable-header {
+    text-align: left;
+}
+
+.ui-datatable .ui-datatable-header * {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.ui-dialog-titlebar * {
+    font-family: Raleway, 'sans-serif';
+}
+
+/* file upload */
+.fileupload {
+    max-width: 180px !important;
+}
+
+.fileupload .ui-fileupload-buttonbar {
+    padding: 0 !important;
+}
+
+.fileupload .ui-button {
+    margin: 0 !important;
+}
+
+.fileupload .ui-button-text {
+    padding: .3em .7em .3em 2em !important;
+}
+
+/* utility */
+.align-right {
+    float: right;
+}
+
+.align-right:after {
+    content: "";
+    clear: both;
+}

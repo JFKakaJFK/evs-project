@@ -5,16 +5,12 @@ import at.qe.sepm.skeleton.model.EquipmentManual;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import at.qe.sepm.skeleton.services.StorageService;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.ManagedBean;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.nio.file.Files;
 
 /**
  * Bean for add {@link EquipmentManual} functionality.
