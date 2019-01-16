@@ -61,7 +61,7 @@ public class Main extends SpringBootServletInitializer {
     @Bean
     CommandLineRunner init(StorageService storageService) {
         return (args) -> {
-            storageService.deleteAll();
+            // storageService.deleteAll(); // if enabled deletes all test manuals
             storageService.init();
         };
     }
