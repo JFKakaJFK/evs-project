@@ -4,6 +4,7 @@ import at.qe.sepm.skeleton.exceptions.ReservationInProgressException;
 import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.User;
+import at.qe.sepm.skeleton.repositories.EquipmentRepository;
 import at.qe.sepm.skeleton.repositories.EquipmentReservationRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class EquipmentReservationService {
     private EquipmentReservationRepository equipmentReservationRepository;
 
     @Autowired
-    private EquipmentService equipmentService;
+    private EquipmentRepository equipmentRepository;
 
     /**
      * Retuns all Reservations where the equipment state is BOOKED
@@ -106,7 +107,7 @@ public class EquipmentReservationService {
         if(reservation.isDeletable()){
             Equipment e = reservation.getEquipment();
             e.removeReservation(reservation);
-            equipmentService.saveEquipment(e);
+            equipmentRepository.save(e);
         } else {
             throw new ReservationInProgressException("Der Benutzer hat derzeit noch Geräte ausgeliehen und kann erst gelöscht werden nachdem er diese zurückgebracht hat.");
         }
