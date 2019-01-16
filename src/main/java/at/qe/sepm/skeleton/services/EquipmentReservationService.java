@@ -37,7 +37,7 @@ public class EquipmentReservationService {
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<EquipmentReservation> getAllBorrowedEquipments(){
         return equipmentReservationRepository.findAll().stream()
-            .filter(EquipmentReservation::isOverdue)
+            .filter(reservation -> !reservation.isCompleted() && reservation.getStartDate().before(new Date()))
             .collect(Collectors.toList());
     }
 
