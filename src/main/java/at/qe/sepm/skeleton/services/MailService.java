@@ -12,11 +12,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+
 
 import at.qe.sepm.skeleton.model.Email;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+
  
 @Service
 public class MailService {
