@@ -71,10 +71,9 @@
 - [x] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen. (@Melanie)
 - [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
 - [ ] growl/messages für alle delete/add aktionen? (@Andi)
-- [ ] `emptyMessage=""` bei den datatables anpassen? (@Irgendwer)
+- [ ] `emptyMessage=""` bei den datatables anpassen? (@Andi)
 - [ ] bei den datatables pagination, search & sort(siehe neue user overview) (@Andi)
-- [ ] bei datatables add button in header verschieben, damit dieser bei langen tables gut erreichbar ist (@Andi)
-- [ ] add & delete buttons einfärben (@Johannes)
+- [x] add & delete buttons einfärben (@Johannes)
 - [ ] TODOs im code finden und erledigen (@alle mit TODOs)
 
 ## Technische Dokumentation
