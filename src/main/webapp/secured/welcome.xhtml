@@ -76,7 +76,9 @@
                         filteredValue="#{reservationListController.filteredReservationsReturn}"
                         rowKey="#{reservation.id}"
                         style="margin-bottom:0"
-                    >
+                        rowIndexVar="index"
+                        rowStyleClass="#{reservation.overdue ? 'overdue' : ''}"
+                    ><!-- style overdue rows differently -->
                         <f:facet name="header">
                             <div>
                                 <p:outputPanel style="text-align: left;float: left">
