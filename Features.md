@@ -72,7 +72,8 @@
 - [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
 - [ ] growl/messages für alle delete/add aktionen? (@Andi)
 - [ ] `emptyMessage=""` bei den datatables anpassen? (@Andi)
-- [ ] bei den datatables pagination, search & sort(siehe neue user overview) (@Andi)
+- [ ] `scrollable="true" scrollHeight="500"` bei den datatables hinzufügen (@Andi)
+- [ ] bei den datatables pagination, search & sort?(siehe neue user overview) (@Andi)
 - [x] add & delete buttons einfärben (@Johannes)
 - [ ] TODOs im code finden und erledigen (@alle mit TODOs)
 
