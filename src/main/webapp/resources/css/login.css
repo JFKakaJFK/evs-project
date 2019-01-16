@@ -11,8 +11,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url('https://images.unsplash.com/photo-1503515091255-ab8063a1796d?ixlib=rb-1.2.1');
+    background: url("/resources/images/login-bg.jpg");
     background-size: cover;
+}
+
+#content-wrapper {
+    box-sizing: border-box;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 /* style and layout of the login form */

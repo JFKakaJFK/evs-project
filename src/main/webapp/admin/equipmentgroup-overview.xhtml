@@ -13,24 +13,26 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:dataTable id="equipmentGroupTable" var="group" value="#{equipmentGroupListController.allEquipmentGroups}">
-                <p:column headerText="Name">
-                    <h:outputText value="#{group.name}"/>
-                </p:column>
-                <p:column headerText="Geräte">
-                    <h:outputText value="#{group.equipmentAsString}"/>
-                </p:column>
-                <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
-                        <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
-                    </p:commandButton>
-                    <p:commandButton action="#{equipmentGroupDetailController.doDeleteGroup}" icon="ui-icon-trash" title="Delete" update=":equipmentGroupForm:equipmentGroupTable" styleClass="btn-danger">
-                        <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
-                        <p:confirm header="Bestätigung" message="Sind Sie sich sicher, dass sie diese Gruppe löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
-                    </p:commandButton>
-                </p:column>
+            <p:panel header="Alle Gruppen">
+                <p:dataTable id="equipmentGroupTable" var="group" value="#{equipmentGroupListController.allEquipmentGroups}">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{group.name}"/>
+                    </p:column>
+                    <p:column headerText="Geräte">
+                        <h:outputText value="#{group.equipmentAsString}"/>
+                    </p:column>
+                    <p:column style="width:100px;text-align: center">
+                        <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
+                            <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
+                        </p:commandButton>
+                        <p:commandButton action="#{equipmentGroupDetailController.doDeleteGroup}" icon="ui-icon-trash" title="Delete" update=":equipmentGroupForm:equipmentGroupTable" styleClass="btn-danger">
+                            <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
+                            <p:confirm header="Bestätigung" message="Sind Sie sich sicher, dass sie diese Gruppe löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
 
-            </p:dataTable>
+                </p:dataTable>
+            </p:panel>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
                 <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check"/>

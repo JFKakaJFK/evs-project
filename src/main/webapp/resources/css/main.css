@@ -5,7 +5,7 @@
 
 :root {
     --color-1: #3A95E8;
-    --color-2: hsla(0, 0%, 75%, .25);
+    --color-2: #BBB;
 }
 
 /* change the fonts */
@@ -15,11 +15,38 @@
     text-shadow: none;
 }
 
+/* blurry bg image */
+/*
+#background {
+    z-index: -10000;
+    background: url("/resources/images/bg-alt.jpg");
+    background-size: cover;
+    filter: blur(10px);
+    -webkit-filter: blur(10px);
+    height: 110vh;
+    width: 110%;
+    position: fixed;
+    top: -5vh;
+    left: -5%;
+    overflow: hidden;
+}
+*/
+
 /* dynamic footer */
 #page {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background: #EEE;
+}
+
+/**/
+#content-wrapper {
+    box-sizing: border-box;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 4px 4px 16px hsla(0, 0%, 0%, .15);
 }
 
 /* TODO */
@@ -65,18 +92,6 @@
     margin: 0;
 }
 
-#header button.ui-button {
-    border: 1px solid hsla(0, 0%, 40%, .5);
-    border-radius: 4px;
-    background-color: transparent;
-    background-image: none;
-}
-
-#header button.ui-button:hover {
-    background: var(--color-1);
-    color: white;
-}
-
 /* content not full-width */
 #content {
     box-sizing: border-box;
@@ -84,6 +99,44 @@
     max-width: 90%;
     margin: 0 auto;
     flex: 1;
+}
+
+.ui-panel,
+.ui-panel .ui-panel-content {
+    padding: 0;
+}
+
+.ui-panel .ui-panel-title {
+    font-family: Raleway, 'sans-serif';
+    font-weight: 400;
+}
+
+.ui-panel .ui-panel-title {
+    font-size: 1.8rem;
+}
+
+.ui-panel .ui-panel .ui-panel-title {
+    font-size: 1.3rem;
+}
+
+.ui-panel .ui-panel .ui-panel .ui-panel-title {
+    font-size: 1.2rem;
+}
+
+.ui-expanded-row-content td {
+    padding: 0 !important;
+}
+
+.ui-expanded-row-content .ui-panel {
+    border: 0;
+}
+
+.ui-expanded-row-content .ui-panel .ui-panel-content {
+    padding: 10px;
+}
+
+.ui-expanded-row-content .ui-panel .ui-panel {
+    border: 1px solid #DDD;
 }
 
 /* footer */
@@ -121,6 +174,7 @@
     max-width: 90%;
 }
 
+/* buttons */
 .btn-primary,
 .dropdown-primary .ui-button {
     background-image: none !important;
@@ -155,8 +209,14 @@
 .btn-secondary:focus,
 .fileupload .ui-button:hover,
 .fileupload .ui-button:focus{
-    opacity: .7 !important;
+    opacity: .7;
     transition: .15s opacity ease-in-out;
+}
+
+#header button.ui-button:hover {
+    opacity: 1;
+    background: var(--color-1) !important;
+    color: white;
 }
 
 .ui-datatable .ui-datatable-header {

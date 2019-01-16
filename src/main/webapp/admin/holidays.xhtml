@@ -10,29 +10,31 @@
         <h:form id="holidays">
             <p:growl id="msgs" showDetail="true" />
 
-            <p:dataTable id="holidayTable" var="holiday" value="#{holidaysListController.all}">
-                <f:facet name="header">
-                    <p:commandButton value="Neuer Feiertag hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick" styleClass="btn-primary"/>
-                </f:facet>
-                <p:column headerText="Feiertag">
-                    <h:outputText value="#{holiday.name}"/>
-                </p:column>
-                <p:column headerText="Anfangsdatum">
-                    <h:outputText value="#{holiday.startDate}"/>
-                </p:column>
-                <p:column headerText="Enddatum">
-                    <h:outputText value="#{holiday.endDate}"/>
-                </p:column>
-                <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":holidays:holidaysEditDialog" oncomplete="PF('holidaysEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
-                        <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
-                    </p:commandButton>
-                    <p:commandButton action="#{holidaysDetailController.doDeleteDate}" icon="ui-icon-trash" title="Delete" update=":holidays:holidayTable" styleClass="btn-danger">
-                        <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
-                        <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie diesen Urlaub entfernen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
+            <p:panel header="Feiertage">
+                <p:dataTable id="holidayTable" var="holiday" value="#{holidaysListController.all}">
+                    <f:facet name="header">
+                        <p:commandButton value="Neuer Feiertag hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick" styleClass="btn-primary"/>
+                    </f:facet>
+                    <p:column headerText="Feiertag">
+                        <h:outputText value="#{holiday.name}"/>
+                    </p:column>
+                    <p:column headerText="Anfangsdatum">
+                        <h:outputText value="#{holiday.startDate}"/>
+                    </p:column>
+                    <p:column headerText="Enddatum">
+                        <h:outputText value="#{holiday.endDate}"/>
+                    </p:column>
+                    <p:column style="width:100px;text-align: center">
+                        <p:commandButton update=":holidays:holidaysEditDialog" oncomplete="PF('holidaysEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
+                            <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
+                        </p:commandButton>
+                        <p:commandButton action="#{holidaysDetailController.doDeleteDate}" icon="ui-icon-trash" title="Delete" update=":holidays:holidayTable" styleClass="btn-danger">
+                            <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
+                            <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie diesen Urlaub entfernen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
                 <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger"/>

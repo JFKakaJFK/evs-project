@@ -23,8 +23,8 @@
                         <p:menuitem value="Feiertage" url="/admin/holidays.xhtml"/>
                     </p:submenu>
                     <f:facet name="options">
-                        <p:commandButton value="Login" rendered="#{!sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/login.xhtml')}" />
-                        <p:commandButton value="Logout" rendered="#{sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/logout')}" />
+                        <p:commandButton value="Login" rendered="#{!sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/login.xhtml')}" styleClass="btn-secondary"/>
+                        <p:commandButton value="Logout" rendered="#{sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/logout')}" styleClass="btn-secondary"/>
                     </f:facet>
                 </p:menubar>
             </h:form>

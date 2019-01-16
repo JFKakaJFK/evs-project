@@ -13,52 +13,54 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:dataTable id="usersTable" widgetVar="usersTable"
-                         var="user" value="#{userListController.users}"
-                         emptyMessage="Noch keine Benutzer im System"
-                         rows="15" paginator="true"
-                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="10,15,20,25"
-                         rowKey="#{user.username}"
-                         filteredValue="#{userDetailController.filteredUsers}"
-            >
-                <f:facet name="header">
-                    <p:outputPanel>
-                        <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Suche"/>
-                    </p:outputPanel>
-                    <p:commandButton value="Neuer User hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick" styleClass="btn-primary"/>
-                </f:facet>
-                <p:column headerText="Benutzername" sortBy="#{user.username}" filterBy="#{user.username}" filterStyle="display: none" filterMatchMode="contains">
-                    <h:outputText value="#{user.username}" />
-                </p:column>
-                <p:column headerText="Vorname" sortBy="#{user.firstName}" filterBy="#{user.firstName}" filterStyle="display: none" filterMatchMode="contains">
-                    <h:outputText value="#{user.firstName}"/>
-                </p:column>
-                <p:column headerText="Nachname" sortBy="#{user.lastName}" filterBy="#{user.lastName}" filterStyle="display: none" filterMatchMode="contains">
-                    <h:outputText value="#{user.lastName}"/>
-                </p:column>
-                <p:column headerText="C-Kennung" sortBy="#{user.cNumber}" sortable="true" filterBy="#{user.cNumber}" filterStyle="display: none" filterMatchMode="contains">
-                    <h:outputText value="#{user.cNumber}" />
-                </p:column>
-                <p:column headerText="E-Mail" sortBy="#{user.email}" sortable="true" filterBy="#{user.email}" filterStyle="display: none" filterMatchMode="contains">
-                    <h:outputText value="#{user.email}"/>
-                </p:column>
-                <p:column headerText="Rechte" sortBy="#{user.rights}" sortable="true" filterBy="#{user.rights}" filterStyle="display: none" filterMatchMode="contains">
-                    <h:outputText value="#{user.rights}" />
-                </p:column>
-                <p:column headerText="Aktiviert">
-                    <h:selectBooleanCheckbox value="#{user.enabled}" disabled="true"/>
-                </p:column>
-                <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
-                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
-                    </p:commandButton>
-                    <p:commandButton action="#{userDetailController.doDeleteUser}" icon="ui-icon-trash" title="Delete" update=":userForm:usersTable" styleClass="btn-danger">
-                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
-                        <p:confirm header="Bestätigung" message="Bist du sicher dass dieser Benutzer gelöscht werden soll? Diese Operation ist unwiederrufbar." icon="ui-icon-alert" />
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
+            <p:panel header="Benutzerübersicht">
+                <p:dataTable id="usersTable" widgetVar="usersTable"
+                             var="user" value="#{userListController.users}"
+                             emptyMessage="Noch keine Benutzer im System"
+                             rows="15" paginator="true"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20,25"
+                             rowKey="#{user.username}"
+                             filteredValue="#{userDetailController.filteredUsers}"
+                >
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Suche"/>
+                        </p:outputPanel>
+                        <p:commandButton value="Neuer User hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick" styleClass="btn-primary"/>
+                    </f:facet>
+                    <p:column headerText="Benutzername" sortBy="#{user.username}" filterBy="#{user.username}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{user.username}" />
+                    </p:column>
+                    <p:column headerText="Vorname" sortBy="#{user.firstName}" filterBy="#{user.firstName}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{user.firstName}"/>
+                    </p:column>
+                    <p:column headerText="Nachname" sortBy="#{user.lastName}" filterBy="#{user.lastName}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{user.lastName}"/>
+                    </p:column>
+                    <p:column headerText="C-Kennung" sortBy="#{user.cNumber}" sortable="true" filterBy="#{user.cNumber}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{user.cNumber}" />
+                    </p:column>
+                    <p:column headerText="E-Mail" sortBy="#{user.email}" sortable="true" filterBy="#{user.email}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{user.email}"/>
+                    </p:column>
+                    <p:column headerText="Rechte" sortBy="#{user.rights}" sortable="true" filterBy="#{user.rights}" filterStyle="display: none" filterMatchMode="contains">
+                        <h:outputText value="#{user.rights}" />
+                    </p:column>
+                    <p:column headerText="Aktiviert">
+                        <h:selectBooleanCheckbox value="#{user.enabled}" disabled="true"/>
+                    </p:column>
+                    <p:column style="width:100px;text-align: center">
+                        <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
+                            <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
+                        </p:commandButton>
+                        <p:commandButton action="#{userDetailController.doDeleteUser}" icon="ui-icon-trash" title="Delete" update=":userForm:usersTable" styleClass="btn-danger">
+                            <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
+                            <p:confirm header="Bestätigung" message="Bist du sicher dass dieser Benutzer gelöscht werden soll? Diese Operation ist unwiederrufbar." icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
 
             <p:dialog header="Benutzer bearbeiten" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
 

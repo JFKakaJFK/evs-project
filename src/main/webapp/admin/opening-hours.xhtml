@@ -10,28 +10,30 @@
         <h:form id="openingTimes">
             <p:growl id="msgs" showDetail="true" />
 
-            <p:dataTable id="hoursTable" var="day" value="#{openingHoursListController.openingHours}">
-                <p:column headerText="Tag">
-                    <h:outputText value="#{day.day}"/>
-                </p:column>
-                <p:column headerText="Öffnet um">
-                    <h:outputText value="#{day.startTime}"/>
-                </p:column>
-                <p:column headerText="Pause von">
-                    <h:outputText value="#{day.startPause}"/>
-                </p:column>
-                <p:column headerText="Pause bis">
-                    <h:outputText value="#{day.endPause}"/>
-                </p:column>
-                <p:column headerText="Schließt um">
-                    <h:outputText value="#{day.endTime}"/>
-                </p:column>
-                <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":openingTimes:openingHoursEditDialog" oncomplete="PF('openingHoursEditDialog').show()" icon="ui-icon-note" title="Bearbeiten" styleClass="btn-secondary">
-                        <f:setPropertyActionListener value="#{day}" target="#{openingHoursDetailController.openingHours}" />
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
+            <p:panel header="Öffnungszeiten">
+                <p:dataTable id="hoursTable" var="day" value="#{openingHoursListController.openingHours}">
+                    <p:column headerText="Tag">
+                        <h:outputText value="#{day.day}"/>
+                    </p:column>
+                    <p:column headerText="Öffnet um">
+                        <h:outputText value="#{day.startTime}"/>
+                    </p:column>
+                    <p:column headerText="Pause von">
+                        <h:outputText value="#{day.startPause}"/>
+                    </p:column>
+                    <p:column headerText="Pause bis">
+                        <h:outputText value="#{day.endPause}"/>
+                    </p:column>
+                    <p:column headerText="Schließt um">
+                        <h:outputText value="#{day.endTime}"/>
+                    </p:column>
+                    <p:column style="width:100px;text-align: center">
+                        <p:commandButton update=":openingTimes:openingHoursEditDialog" oncomplete="PF('openingHoursEditDialog').show()" icon="ui-icon-note" title="Bearbeiten" styleClass="btn-secondary">
+                            <f:setPropertyActionListener value="#{day}" target="#{openingHoursDetailController.openingHours}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
 
             <p:dialog header="Öffnungszeiten Bearbeiten" id="openingHoursEditDialog" widgetVar="openingHoursEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="openingHoursData" rendered="#{not empty openingHoursDetailController.openingHours}">
