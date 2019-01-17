@@ -16,11 +16,10 @@
                         <p:menuitem value="Meine Gruppen" url="/secured/my-equipmentgroups.xhtml" />
                         <p:menuitem value="Gruppen Übersicht" url="/admin/equipmentgroup-overview.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
                     </p:submenu>
-                    <p:submenu styleClass="dropdown" label="Admin Untermenü" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
-                        <p:menuitem value="Benutzer Verwalten" url="/admin/users.xhtml"/>
-                        <p:menuitem value="Laborgeräte Übersicht" url="/admin/equipment-overview.xhtml"/>
+                    <p:submenu styleClass="dropdown" label="Verwalten" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                        <p:menuitem value="Benutzer" url="/admin/users.xhtml"/>
+                        <p:menuitem value="Laborgeräte" url="/admin/equipment-overview.xhtml"/>
                         <p:menuitem value="Öffnungszeiten" url="/admin/opening-hours.xhtml"/>
-                        <p:menuitem value="Feiertage" url="/admin/holidays.xhtml"/>
                     </p:submenu>
                     <f:facet name="options">
                         <p:commandButton value="Login" rendered="#{!sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/login.xhtml')}" styleClass="btn-secondary"/>
