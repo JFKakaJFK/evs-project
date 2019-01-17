@@ -1,5 +1,6 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
+import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
@@ -28,9 +29,6 @@ public class ReservationListController implements Serializable {
 	private EquipmentReservationService equipmentReservationService;
 
 	@Autowired
-    private EquipmentService equipmentService;
-
-	@Autowired
     private UserService userService;
 
 	@Autowired
@@ -41,6 +39,9 @@ public class ReservationListController implements Serializable {
     private List<EquipmentReservation> filteredReservationsReturn;
     private List<EquipmentReservation> allReservationsReturn;
 
+    private Equipment equipmentManual;
+
+    @Deprecated
     private boolean returnedSuccessfully = false;
 
     @PostConstruct
@@ -102,6 +103,19 @@ public class ReservationListController implements Serializable {
         return equipmentReservationService.getAllByUser(authUser);
     }
 
+    public Equipment getEquipmentManual() {
+        return equipmentManual;
+    }
+
+    public void setEquipmentManual(Equipment equipmentManual) {
+        this.equipmentManual = equipmentManual;
+    }
+
+    /**
+     * Set for each reservation in ReservationListController#selectedReservationsReturn the attribute completed 'true'
+     * removes all returned reservations in ReservationListController#defaultReservationsReturn and
+     * ReservationListController#filteredReservationsReturn
+     */
     public void doEquipmentReturn()
     {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -117,20 +131,25 @@ public class ReservationListController implements Serializable {
             this.defaultReservationsReturn.clear();
             this.defaultReservationsReturn.addAll(this.equipmentReservationService.getAllBorrowedEquipments());
 
+            this.filteredReservationsReturn.clear();
+            this.filteredReservationsReturn.addAll(this.equipmentReservationService.getAllBorrowedEquipments());
+
+            //Equipments successfully returned
             context.addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_INFO,
-                "Equipment returnation",
-                selectedReservationsReturn.size()+" equipments returned successfully"
+                "Rückgabe",
+                selectedReservationsReturn.size()+" Geräte erfolgreich zurückgegeben."
             ));
         }
 
         else
         {
             //no equipment selected
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Equipment returnation", "Please select at least one equipment"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Rückgabe", "Bitte min. 1 Gerät auswählen"));
         }
     }
 
+    @Deprecated
     public void checkURL() {
         Iterator<String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterNames();
         if(params.hasNext()) {

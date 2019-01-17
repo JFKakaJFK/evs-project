@@ -44,13 +44,27 @@
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
                         <p:column style="width:100px;text-align: center">
-                            <p:commandButton icon="ui-icon-note" title="Bedienungsanleitung" styleClass="btn-secondary"/>
+                            <p:commandButton icon="ui-icon-note" title="Bedienungsanleitung" styleClass="btn-secondary" oncomplete="PF('equipmentManualsDialog').show()" update="@form">
+                                <f:setPropertyActionListener value="#{reservation.equipment}" target="#{reservationListController.equipmentManual}"/>
+                            </p:commandButton>
                             <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="ui-icon-trash" title="Löschen" rendered="#{reservation.deletable}" update="reservationTable" styleClass="btn-danger">
                                 <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailController.equipmentReservation}" />
-                                <p:confirm header="Bestätigung" message="Sie sind sicher, dass Sie diese Reservierung löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
+                                <p:confirm header="Bestätigung" message="Sie sind sicher, dass Sie diese Reservierung löschen wollen? Dieser Vorgang kann ncht rückgängig gemacht werden." icon="ui-icon-alert" />
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
+
+                    <p:dialog header="Bedienungsanleitungen von #{reservationListController.equipmentManual.name}" widgetVar="equipmentManualsDialog" modal="true" height="300" width="650" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:repeat value="#{reservationListController.equipmentManual.manuals}" var="manual">
+                            <p:panel header="#{manual.name}" style="margin-bottom: 10px">
+                                <h:outputText value="#{manual.desc}" style="line-height: 2;padding-left: 10px"/>
+
+                                <f:facet name="actions">
+                                    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" actionListener="#{equipmentManualDownloadBean.download(manual)}" styleClass="btn-secondary"/>
+                                </f:facet>
+                            </p:panel>
+                        </p:repeat>
+                    </p:dialog>
                 </h:form>
             </p:panel>
 
