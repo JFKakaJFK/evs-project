@@ -40,7 +40,7 @@ public class EquipmentService {
     @Autowired
     private StorageService storageService;
 
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EquipmentService.class);
 
     /**
      * Method retrieves and returns all Equipments
@@ -136,7 +136,6 @@ public class EquipmentService {
                 userService.saveUser(group.getUser());
             }
         }
-        System.out.println("werg");
         return equipmentRepository.save(equipment);
     }
 

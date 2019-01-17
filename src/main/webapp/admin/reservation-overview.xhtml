@@ -98,16 +98,7 @@
                             filterStyle="display: none"
                             filterMatchMode="contains"
                         >
-                            <!--
-                            TODO bitte nicht equipmentstatus anzeigen, da die reservierung zb schon abgeschlossen(gerät zurúckgebracht)
-                            sein kann, das equipment aber derzeit ausgeliehen/úberfällig sein kann, das aber nichts mit diesr reservierung zu tun hat.
-
-                            besser wäre es reservation.state anzuzeigen
-
-                            -->
-                            <!--
-                            <h:outputText value="#{reservation.equipment.state}" />
-                            -->
+                            <h:outputText value="#{reservation.state}" />
                         </p:column>
                     </p:dataTable>
                 </h:form>
