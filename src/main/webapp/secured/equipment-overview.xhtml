@@ -39,11 +39,11 @@
                     <p:column headerText="Status">
                         <h:outputText value="#{equipment.state}"/>
                     </p:column>
-                    <p:column style="width:100px;text-align: center">
-                        <p:commandButton update=":equipmentForm:equipmentEditDialog" oncomplete="PF('equipmentEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
+                    <p:column style="width:100px;text-align: center" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                        <p:commandButton update=":equipmentForm:equipmentEditDialog" oncomplete="PF('equipmentEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                             <f:setPropertyActionListener value="#{equipment}" target="#{equipmentDetailController.equipment}" />
                         </p:commandButton>
-                        <p:commandButton action="#{equipmentDetailController.doDeleteEquipment}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable" styleClass="btn-danger">
+                        <p:commandButton action="#{equipmentDetailController.doDeleteEquipment}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable" styleClass="btn-danger" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                             <f:setPropertyActionListener value="#{equipment}" target="#{equipmentDetailController.equipment}" />
                             <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie dieses Gerät entfernen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
                         </p:commandButton>

@@ -12,12 +12,16 @@
                     <p:menuitem value="&#xb7;" disabled="ture" styleClass="ui-menu-seperator-mod"/>
                     <p:menuitem value="Meine Laborgerätegruppen" url="/secured/my-equipmentgroups.xhtml" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}" styleClass="ui-menu-link-mod" />
                     <p:menuitem value="&#xb7;" disabled="ture" styleClass="ui-menu-seperator-mod"/>
+                    <p:menuitem value="Laborgeräte" styleClass="ui-menu-link-mod" url="/secured/equipment-overview.xhtml" rendered="#{!sessionInfoBean.hasRole('ADMIN')}"/>
                     <p:submenu styleClass="dropdown" label="Verwalten" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="Reservierungen" url="/admin/reservation-overview.xhtml" />
-                        <p:menuitem value="Laborgeräte" url="/admin/equipment-overview.xhtml"/>
+                        <p:separator />
+                        <p:menuitem value="Laborgeräte" url="/secured/equipment-overview.xhtml"/>
+                        <p:separator />
                         <p:menuitem value="Laborgerätegruppen" url="/admin/equipmentgroup-overview.xhtml"/>
                         <p:separator />
                         <p:menuitem value="Benutzer" url="/admin/users.xhtml"/>
+                        <p:separator />
                         <p:menuitem value="Öffnungszeiten" url="/admin/opening-hours.xhtml"/>
                     </p:submenu>
                     <f:facet name="options">

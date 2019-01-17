@@ -84,6 +84,15 @@
     margin: 0;
 }
 
+/* icon color */
+.ui-icon-triangle-1-s {
+    filter: brightness(100);
+}
+
+.ui-icon-check {
+    filter: brightness(0);
+}
+
 /* content not full-width */
 #content {
     box-sizing: border-box;
