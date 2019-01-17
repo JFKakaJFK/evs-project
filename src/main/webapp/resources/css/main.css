@@ -44,7 +44,13 @@
     box-sizing: border-box;
 }
 
-#header .ui-submenu-link {
+#header .ui-submenu-link, #header .ui-menu-link-mod {
+    color: #ECF0F1;
+}
+
+#header .ui-menu-seperator-mod
+{
+    cursor: default!important;
     color: #ECF0F1;
 }
 
