@@ -46,7 +46,7 @@ public class EquipmentGroupService {
     public Collection<EquipmentGroup> getOwnGroupsFree(Date start, Date end){
         return equipmentGroupRepository.findAllByUser(getAuthenticatedUser()).stream()
             .filter(equipmentGroup -> equipmentGroup.getEquipments().stream()
-                .allMatch(equipment -> equipment.getState(start, end) == EquipmentState.AVAILABLE))
+                .allMatch(equipment -> equipment.getFutureState(start, end) == EquipmentState.AVAILABLE))
             .collect(Collectors.toList());
     }
 

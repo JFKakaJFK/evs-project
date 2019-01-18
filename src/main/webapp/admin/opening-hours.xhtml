@@ -1,14 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
-        <h:form id="openingTimes">
-            <p:growl id="msgs" showDetail="true" />
+        <h:form id="form">
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate />
+            </p:messages>
 
             <p:panel header="Öffnungszeiten">
                 <p:dataTable id="hoursTable" var="day" value="#{openingHoursListController.openingHours}">
@@ -28,14 +30,47 @@
                         <h:outputText value="#{day.endTime}"/>
                     </p:column>
                     <p:column style="width:100px;text-align: center">
-                        <p:commandButton update=":openingTimes:openingHoursEditDialog" oncomplete="PF('openingHoursEditDialog').show()" icon="ui-icon-note" title="Bearbeiten" styleClass="btn-secondary">
+                        <p:commandButton update=":eO" oncomplete="PF('openingHoursEditDialog').show()" icon="ui-icon-note" title="Bearbeiten" styleClass="btn-secondary">
                             <f:setPropertyActionListener value="#{day}" target="#{openingHoursDetailController.openingHours}" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </p:panel>
 
-            <p:dialog header="Öffnungszeiten Bearbeiten" id="openingHoursEditDialog" widgetVar="openingHoursEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:panel header="Feiertage" style="margin-top: 30px">
+                <p:dataTable id="holidayTable" var="holiday" value="#{holidaysListController.all}">
+                    <f:facet name="header">
+                        <p:commandButton value="Neuer Feiertag hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick" styleClass="btn-primary"/>
+                    </f:facet>
+                    <p:column headerText="Feiertag">
+                        <h:outputText value="#{holiday.name}"/>
+                    </p:column>
+                    <p:column headerText="Anfangsdatum">
+                        <h:outputText value="#{holiday.startDate}"/>
+                    </p:column>
+                    <p:column headerText="Enddatum">
+                        <h:outputText value="#{holiday.endDate}"/>
+                    </p:column>
+                    <p:column style="width:100px;text-align: center">
+                        <p:commandButton update="eH" oncomplete="PF('holidaysEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary" rendered="#{holiday.editable}">
+                            <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
+                        </p:commandButton>
+                        <p:commandButton action="#{holidaysDetailController.doDeleteDate}" icon="ui-icon-trash" title="Delete" update=":form:holidayTable" styleClass="btn-danger">
+                            <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
+                            <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie diesen Urlaub entfernen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger"/>
+                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" />
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog header="Öffnungszeiten Bearbeiten" id="openingHoursEditDialog" widgetVar="openingHoursEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form id="eO">
                 <p:outputPanel id="openingHoursData" rendered="#{not empty openingHoursDetailController.openingHours}">
                     <h:panelGrid columns="4" cellpadding="5">
                         <p:outputLabel for="startTime" value="Geöffnet von:" />
@@ -49,12 +84,54 @@
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3">
-                        <p:commandButton value="Speichern" action="#{openingHoursDetailController.doSaveHours()}" oncomplete="PF('openingHoursEditDialog').hide()" update=":openingTimes:hoursTable" styleClass="btn-primary"/>
-                        <p:commandButton value="neu Laden" action="#{openingHoursDetailController.doReloadHours()}" update=":openingTimes:openingHoursData" styleClass="btn-secondary"/>
+                        <p:commandButton value="Speichern" action="#{openingHoursDetailController.doSaveHours()}" oncomplete="PF('openingHoursEditDialog').hide()" update=":form" styleClass="btn-primary"/>
+                        <p:commandButton value="Neu Laden" action="#{openingHoursDetailController.doReloadHours()}" update=":eO" styleClass="btn-secondary"/>
                         <p:commandButton value="Abbrechen" onclick="PF('openingHoursEditDialog').hide()" styleClass="btn-secondary"/>
                     </h:panelGrid>
                 </p:outputPanel>
-            </p:dialog>
-        </h:form>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Feiertage bearbeiten" id="holidaysEditDialog" widgetVar="holidaysEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form id="eH">
+                <p:outputPanel id="holidaysData" rendered="#{not empty holidaysDetailController.holidays}">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="name" value="Feiertag: " />
+                        <p:inputText id="name" value="#{holidaysDetailController.holidays.name}"/>
+                        <p:outputLabel for="startDate" value="Anfangsdatum:" />
+                        <p:calendar id="startDate" value="#{holidaysDetailController.holidays.startDate}" />
+                        <p:outputLabel for="endDate" value="Enddatum:" />
+                        <p:calendar id="endDate" value="#{holidaysDetailController.holidays.endDate}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Speichern" action="#{holidaysDetailController.doSaveDate()}" oncomplete="PF('holidaysEditDialog').hide()" update=":form" styleClass="btn-primary"/>
+                        <p:commandButton value="Neu Laden" action="#{holidaysDetailController.doReloadDate()}" update=":eH:holidaysData" styleClass="btn-secondary"/>
+                        <p:commandButton value="Abbrechen" onclick="PF('holidaysEditDialog').hide()" styleClass="btn-secondary"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Neuer Feiertag hinzufügen" id="addDialog" widgetVar="addDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form id="addHolidayForm">
+                <p:outputPanel>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="addName" value="Name: "/>
+                        <p:inputText id="addName" value="#{addHolidaysBean.name}" required="true"/>
+                        <p:outputLabel for="addStartDate" value="Anfangsdatum: "/>
+                        <p:calendar id="addStartDate" value="#{addHolidaysBean.startDate}" required="true"/>
+                        <p:outputLabel for="addEndDate" value="Enddatum: "/>
+                        <p:calendar id="addEndDate" value="#{addHolidaysBean.endDate}" required="true"/>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <h:panelGrid columns="3" style="text-align: center">
+                        <p:commandButton value="Feiertag hinzufügen" action="#{addHolidaysBean.addHolidays}" oncomplete="PF('addDialog').hide()" update=":form" styleClass="btn-primary"/>
+                        <p:commandButton value="Abbrechen"  immediate="true" onclick="PF('addDialog').hide()" styleClass="btn-secondary"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
     </ui:define>
 </ui:composition>

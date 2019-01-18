@@ -7,20 +7,22 @@
     <body>
         <ui:composition>
             <h:form>
-                <p:menubar>
-                    <p:submenu styleClass="dropdown" label="Reservierungen" rendered="#{sessionInfoBean.loggedIn}">
-                        <p:menuitem value="Meine Reservierungen" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
-                        <p:menuitem value="Reservierungen Übersicht" url="/admin/reservation-overview.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
-                    </p:submenu>
-                    <p:submenu styleClass="dropdown" label="Laborgerätgruppen" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}">
-                        <p:menuitem value="Meine Gruppen" url="/secured/my-equipmentgroups.xhtml" />
-                        <p:menuitem value="Gruppen Übersicht" url="/admin/equipmentgroup-overview.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
-                    </p:submenu>
-                    <p:submenu styleClass="dropdown" label="Admin Untermenü" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
-                        <p:menuitem value="Benutzer Verwalten" url="/admin/users.xhtml"/>
-                        <p:menuitem value="Laborgeräte Übersicht" url="/admin/equipment-overview.xhtml"/>
+                <p:menubar rendered="#{sessionInfoBean.loggedIn}">
+                    <p:menuitem value="Meine Reservierungen" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.hasRole('STUDENT')}" styleClass="ui-menu-link-mod"/>
+                    <p:menuitem value="&#xb7;" disabled="ture" styleClass="ui-menu-seperator-mod"/>
+                    <p:menuitem value="Meine Laborgerätegruppen" url="/secured/my-equipmentgroups.xhtml" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}" styleClass="ui-menu-link-mod" />
+                    <p:menuitem value="&#xb7;" disabled="ture" styleClass="ui-menu-seperator-mod"/>
+                    <p:menuitem value="Laborgeräte" styleClass="ui-menu-link-mod" url="/secured/equipment-overview.xhtml" rendered="#{!sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:submenu styleClass="dropdown" label="Verwalten" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                        <p:menuitem value="Reservierungen" url="/admin/reservation-overview.xhtml" />
+                        <p:separator />
+                        <p:menuitem value="Laborgeräte" url="/secured/equipment-overview.xhtml"/>
+                        <p:separator />
+                        <p:menuitem value="Laborgerätegruppen" url="/admin/equipmentgroup-overview.xhtml"/>
+                        <p:separator />
+                        <p:menuitem value="Benutzer" url="/admin/users.xhtml"/>
+                        <p:separator />
                         <p:menuitem value="Öffnungszeiten" url="/admin/opening-hours.xhtml"/>
-                        <p:menuitem value="Feiertage" url="/admin/holidays.xhtml"/>
                     </p:submenu>
                     <f:facet name="options">
                         <p:commandButton value="Login" rendered="#{!sessionInfoBean.loggedIn}" action="#{facesContext.externalContext.redirect('/login.xhtml')}" styleClass="btn-secondary"/>

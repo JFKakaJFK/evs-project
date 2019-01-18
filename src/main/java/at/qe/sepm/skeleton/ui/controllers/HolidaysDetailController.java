@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import java.util.Date;
+
 @Controller
 @Scope("view")
 public class HolidaysDetailController {
@@ -13,7 +17,6 @@ public class HolidaysDetailController {
     @Autowired
     private HolidaysService holidaysService;
 
-    // TODO maybe: holidays view edit dialog does sometimes not open(not rendered when holidays is empty)?
     /**
      * Attribute to cache the currently displayed openingHours
      */
@@ -27,7 +30,6 @@ public class HolidaysDetailController {
      *
      * @param holidays
      */
-    // TODO add verification startdate before enddate, else message
     public void setHolidays(Holidays holidays) {
         this.holidays = holidays;
         doReloadDate();
@@ -42,29 +44,37 @@ public class HolidaysDetailController {
         return holidays;
     }
 
-    // TODO user -> holiday in jdoc?
     /**
-     * Action to force a reload of the currently displayed user.
+     * Action to force a reload of the currently displayed holiday.
      */
     public void doReloadDate() {
         holidays = holidaysService.loadHoliday(holidays.getName());
     }
 
     /**
-     * Action to save the currently displayed user.
+     * Action to save the currently displayed holiday.
      */
     public void doSaveDate() {
-        holidays = this.holidaysService.saveHoliday(holidays);
+        if(holidays.getStartDate().before(holidays.getEndDate()) && holidays.getStartDate().after(new Date())){
+            holidays = this.holidaysService.saveHoliday(holidays);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_INFO, "Success", "Feiertag erfolgreich angepasst.")
+            );
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", "Der eingegebe Feiertag ist ungülitg.")
+            );
+        }
     }
 
     /**
-     * Action to delete the currently displayed user.
+     * Action to delete the currently displayed holiday.
      */
     public void doDeleteDate() {
-        // TODO geht nicht??
         this.holidaysService.deleteHoliday(holidays);
         holidays = null;
-        System.out.println("called");
-        // TODO log
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+            FacesMessage.SEVERITY_INFO, "Success", "Feiertag erfolgreich gelöscht.")
+        );
     }
 }

@@ -44,7 +44,13 @@
     box-sizing: border-box;
 }
 
-#header .ui-submenu-link {
+#header .ui-submenu-link, #header .ui-menu-link-mod {
+    color: #ECF0F1;
+}
+
+#header .ui-menu-seperator-mod
+{
+    cursor: default!important;
     color: #ECF0F1;
 }
 
@@ -76,6 +82,15 @@
 
 #header ul.ui-menu-list li {
     margin: 0;
+}
+
+/* icon color */
+.ui-icon-triangle-1-s {
+    filter: brightness(100);
+}
+
+.ui-icon-check {
+    filter: brightness(0);
 }
 
 /* content not full-width */

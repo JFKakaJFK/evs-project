@@ -17,16 +17,8 @@ public class ReservationProperties {
         return overdueBuffer;
     }
 
-    public void setOverdueBuffer(long overdueBuffer) {
-        this.overdueBuffer = overdueBuffer;
-    }
-
     public static long getNextReservationBuffer() {
         return nextReservationBuffer;
-    }
-
-    public void setNextReservationBuffer(long nextReservationBuffer) {
-        this.nextReservationBuffer = nextReservationBuffer;
     }
 }
 

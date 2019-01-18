@@ -8,110 +8,79 @@
                 template="/WEB-INF/templates/main.xhtml">
 
   <ui:define name ="content">
-    <h:form>
-        <p:growl id="msgs" showDetail="true" />
-        <p:panel
-                id="adminReservationsPanel"
-                header="Ausgeliehene Laborgeräte"
-                style="margin-top: 20px"
-                rendered="#{sessionInfoBean.hasRole('ADMIN')}"
-            >
-                <h:form id="reservationReturnForm">
-                    <p:growl id="growl" showDetail="true" sticky="true" />
+      <h:form id="form">
+          <p:messages id="messages" showDetail="true" closable="true">
+              <p:autoUpdate />
+          </p:messages>
 
-                    <p:dataTable
-                        widgetVar="reservationSelect"
-                        id="reservationEquipmentTable"
-                        var="reservation"
-                        value="#{reservationListController.allReservationsReturn}"
-                        selection="#{reservationListController.selectedReservationsReturn}"
-                        filteredValue="#{reservationListController.filteredReservationsReturn}"
-                        rowKey="#{reservation.id}"
-                        style="margin-bottom:0"
-                        rowIndexVar="index"
-                        rowStyleClass="#{reservation.completed ? 'completed' : ''}"
-                    ><!-- style completed rows differently -->
-                        <f:facet name="header">
-                            <div>
-                                <p:outputPanel style="text-align: left;float: left">
-                                    <p:inputText
-                                        id="globalFilter"
-                                        onkeyup="PF('reservationSelect').filter()"
-                                        style="width:250px" placeholder="Suche nach Reservierung"/>
-                                </p:outputPanel>
+          <p:panel header="Alle Laborgerät Buchungen"
+            style="margin-top: 20px"
+            rendered="#{sessionInfoBean.hasRole('ADMIN')}"
+          >
+              <p:dataTable widgetVar="reservationSelect" id="reservationEquipmentTable"
+                var="reservation" value="#{reservationListController.allReservationsReturn}"
+                selection="#{reservationListController.selectedReservationsReturn}"
+                filteredValue="#{reservationListController.filteredReservationsReturn}"
+                rowKey="#{reservation.id}" rowIndexVar="index"
+                rowStyleClass="#{reservation.completed ? 'completed' : (reservation.overdue ? 'overdue' : '')}"
+              ><!-- style completed and overdue rows differently -->
 
-                                <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
-                                    <p:commandButton
-                                        value="Rückgabe bestätigen"
-                                        action="#{reservationListController.doEquipmentReturn}"
-                                        update="@form"
-                                    >
-                                        <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie die Rückgabe der ausgewählen Laborgeräte bestätigen wollen? Sie können diesen Vorgang nicht rückgängig machen." icon="ui-icon-alert" />
-                                    </p:commandButton>
+                  <f:facet name="header">
+                      <p:inputText id="globalFilter" onkeyup="PF('reservationSelect').filter()"
+                        style="width:250px" placeholder="Suche nach Reservierung"/>
 
-                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
-                                        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                        <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                    </p:confirmDialog>
-                                </p:outputPanel>
-                                <div style="clear: both"></div>
-                            </div>
-                        </f:facet>
+                      <p:commandButton value="Rückgabe bestätigen"
+                        action="#{reservationListController.doEquipmentReturn}"
+                        update="@form :form"
+                        styleClass="btn-primary">
+                          <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie die Rückgabe der ausgewählen Laborgeräte bestätigen wollen? Sie können diesen Vorgang nicht rückgängig machen." icon="ui-icon-alert" />
+                      </p:commandButton>
+                </f:facet>
 
-                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
-                        <p:column
-                            headerText="Laborgerät"
-                            filterBy="#{reservation.equipment.name}"
-                            filterStyle="display: none"
-                            filterMatchMode="contains"
-                        >
-                            <h:outputText value="#{reservation.equipment.name}" />
-                        </p:column>
+                <p:column headerText="Laborgerät"
+                    filterBy="#{reservation.equipment.name}"
+                    filterStyle="display: none"
+                    filterMatchMode="contains"
+                    sortBy="#{reservation.equipment.name}" >
+                    <h:outputText value="#{reservation.equipment.name}" />
+                </p:column>
 
-                        <p:column
-                            headerText="C-Kennung"
-                            filterBy="#{reservation.user.username} #{reservation.user.cNumber}"
-                            filterStyle="display:none;"
-                            filterMatchMode="contains"
-                        >
-                            <h:outputText value="#{reservation.user.cNumber}"/>
-                        </p:column>
+                <p:column headerText="C-Kennung"
+                    filterBy="#{reservation.user.username} #{reservation.user.cNumber}"
+                    filterStyle="display:none;"
+                    filterMatchMode="contains"
+                    sortBy="#{reservation.user.cNumber}">
+                    <h:outputText value="#{reservation.user.cNumber}"/>
+                </p:column>
 
-                        <p:column
-                            headerText="Name"
-                            filterBy="#{reservation.user.firstName} #{reservation.user.lastName}"
-                            filterStyle="display: none"
-                            filterMatchMode="contains"
-                        >
-                            <h:outputText value="#{reservation.user.firstName} #{reservation.user.lastName}"/>
-                        </p:column>
+                <p:column headerText="Name"
+                    filterBy="#{reservation.user.firstName} #{reservation.user.lastName}"
+                    filterStyle="display: none"
+                    filterMatchMode="contains"
+                    sortBy="#{reservation.user.firstName}">
+                    <h:outputText value="#{reservation.user.firstName} #{reservation.user.lastName}"/>
+                </p:column>
 
-                        <p:column headerText="Rückgabedatum">
-                            <h:outputText value="#{reservation.endDate}"/>
-                        </p:column>
+                <p:column headerText="Rückgabedatum" sortBy="#{reservation.endDate}">
+                    <h:outputText value="#{reservation.endDate}"/>
+                </p:column>
 
+                <p:column headerText="Status"
+                    filterBy="#{reservation.user.cNumber} #{reservation.user.username}"
+                    filterStyle="display: none"
+                    filterMatchMode="contains"
+                    sortBy="#{reservation.state}">
+                    <h:outputText value="#{reservation.state}" />
+                </p:column>
+              </p:dataTable>
+          </p:panel>
 
-                        <p:column
-                            headerText="Status"
-                            filterBy="#{reservation.user.cNumber} #{reservation.user.username}"
-                            filterStyle="display: none"
-                            filterMatchMode="contains"
-                        >
-                            <!--
-                            TODO bitte nicht equipmentstatus anzeigen, da die reservierung zb schon abgeschlossen(gerät zurúckgebracht)
-                            sein kann, das equipment aber derzeit ausgeliehen/úberfällig sein kann, das aber nichts mit diesr reservierung zu tun hat.
-
-                            besser wäre es reservation.state anzuzeigen
-
-                            -->
-                            <!--
-                            <h:outputText value="#{reservation.equipment.state}" />
-                            -->
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-            </p:panel>
-        </h:form>
-     </ui:define>
+          <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+              <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-primary" icon="ui-icon-check" />
+              <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
+          </p:confirmDialog>
+      </h:form>
+  </ui:define>
 </ui:composition>

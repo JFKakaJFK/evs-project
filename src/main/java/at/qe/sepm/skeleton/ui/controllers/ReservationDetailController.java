@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import java.util.List;
 
 @Component
@@ -48,8 +50,13 @@ public class ReservationDetailController {
         {
             try {
                 this.equipmentReservationService.deleteReservation(equipmentReservation);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, "Success", "Reservierung erfolgreich gelöscht.")
+                );
             } catch (ReservationInProgressException e){
-                // TODO growl/message (e.getMessage())
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Error", "Eine aktive Reservierung kann nicht gelöscht werden.")
+                );
             }
             equipmentReservation = null;
         }

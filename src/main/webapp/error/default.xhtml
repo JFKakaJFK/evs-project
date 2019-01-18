@@ -6,11 +6,12 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <h:outputStylesheet name="css/error.css" />
 
         <h:form>
             <p:panel header="Tut uns Leid">
-                <h:outputText>Da ist etwas schiefgelaufen</h:outputText>
-                <p:commandButton value="Zurük zur Startseite" action="#{facesContext.externalContext.redirect('/secured/welcome.xhtml')}" icon="ui-icon-home" styleClass="btn-primary"/>
+                <p>Da ist etwas schiefgelaufen</p>
+                <p:commandButton value="Zurük zur Startseite" action="#{facesContext.externalContext.redirect('/secured/welcome.xhtml')}" styleClass="btn-primary"/>
             </p:panel>
         </h:form>
 

@@ -40,7 +40,7 @@ public class EquipmentService {
     @Autowired
     private StorageService storageService;
 
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EquipmentService.class);
 
     /**
      * Method retrieves and returns all Equipments
@@ -95,7 +95,7 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllFreeEquipments(Date startDate, Date endDate){
         return equipmentRepository.findAll().stream()
-            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE)
+            .filter(equipment -> equipment.getFutureState(startDate, endDate) == EquipmentState.AVAILABLE)
             .collect(Collectors.toList());
     }
 
@@ -123,20 +123,32 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('ADMIN')")
     private Equipment deleteAllGroupsFromEquipment(Equipment equipment){
         List<EquipmentGroup> equipmentGroups = new ArrayList<>(equipmentGroupRepository.findAllByEquipmentsContains(equipment));
+        List<User> affectedUsers = new ArrayList<>();
         // Detach ManyToMany(Equipment)
         for (EquipmentGroup group: equipmentGroups) {
             // delete group if there are too few equipments left
+
             if(group.getEquipments().size() < 3){
+                group.getEquipments().clear();
                 User u = userService.loadUser(group.getUser().getUsername());
+                affectedUsers.add(u);
                 u.getEquipmentGroups().remove(group);
                 userService.saveUser(u);
-                // TODO: log group deletion
+
+                logger.warn("DELETED Group: " + group + " (by " + userService.getAuthenticatedUser().getEmail() + ")");
             } else {
                 group.getEquipments().remove(equipment);
                 userService.saveUser(group.getUser());
+                logger.warn("DELETED Equipment " + equipment + " from group " + group + " (by " + userService.getAuthenticatedUser().getEmail() + ")");
             }
         }
-        System.out.println("werg");
+        for(User u: affectedUsers){
+            u.setEquipmentGroups(u.getEquipmentGroups().stream()
+                .filter(g -> g.getEquipments().size() > 1)
+                .collect(Collectors.toList())
+            );
+            userService.saveUser(u);
+        }
         return equipmentRepository.save(equipment);
     }
 

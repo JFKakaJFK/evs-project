@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import java.util.Date;
 
 @Component
@@ -20,15 +22,24 @@ public class AddHolidaysBean {
     private Date startDate;
     private Date endDate;
 
-    // TODO start before end? add verification, else message/growl
     public void addHolidays(){
-        Holidays holidays = new Holidays();
+        if(startDate.before(endDate) && startDate.after(new Date())){
+            Holidays holidays = new Holidays();
 
-        holidays.setName(name);
-        holidays.setEndDate(endDate);
-        holidays.setStartDate(startDate);
+            holidays.setName(name);
+            holidays.setEndDate(endDate);
+            holidays.setStartDate(startDate);
 
-        holidaysService.saveHoliday(holidays);
+            holidaysService.saveHoliday(holidays);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_INFO, "Success", "Feiertag erfolgreich angepasst.")
+            );
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", "Der eingegebe Feiertag ist ungülitg.")
+            );
+        }
     }
 
     public String getName() {

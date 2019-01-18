@@ -92,9 +92,13 @@ public class Holidays implements Persistable<Long> {
         this.updateDate = updateDate;
     }
 
+    public boolean getEditable(){
+        return startDate.after(new Date());
+    }
+
     @Override
     public Long getId() {
-        return null;
+        return id;
     }
 
     @Override
