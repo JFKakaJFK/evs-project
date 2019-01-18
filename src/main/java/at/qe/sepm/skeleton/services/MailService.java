@@ -56,7 +56,7 @@ public class MailService {
         javaMailSender.send(message);
     }
 
-
+    @Deprecated
     public void sendEmail(String from, String to, String subject, String content) throws Exception {
     	SimpleMailMessage message = new SimpleMailMessage(); 
     	message.setFrom("test.hilpold@gmail.com");
@@ -71,7 +71,8 @@ public class MailService {
         
         
     }
-    
+
+    @Deprecated
     @Bean //Should send test Email
     public SimpleMailMessage templateSimpleMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
