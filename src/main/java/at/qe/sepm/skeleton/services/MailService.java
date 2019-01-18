@@ -1,5 +1,6 @@
 package at.qe.sepm.skeleton.services;
 
+import at.qe.sepm.skeleton.configs.EmailProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.Properties;
 
-@Component
 @Service
 public class MailService {
 
@@ -21,21 +21,21 @@ public class MailService {
 
     JavaMailSenderImpl javaMailSender;
 
-	@PostConstruct
-    public void Init()
+    @Autowired
+    public MailService(EmailProperties emailProperties)
     {
         this.javaMailSender = new JavaMailSenderImpl();
 
-        javaMailSender.setHost("smtp.gmail.com");
-        javaMailSender.setUsername("evs2.uibk@gmail.com");
-        javaMailSender.setPassword("evs2!uibk2019");
-        //javaMailSender.setPort(587);
-        javaMailSender.setProtocol("smtp");
+        javaMailSender.setHost(emailProperties.getHost());
+        javaMailSender.setUsername(emailProperties.getUsername());
+        javaMailSender.setPassword(emailProperties.getPassword());
+        javaMailSender.setPort(emailProperties.getPort());
+        javaMailSender.setProtocol(emailProperties.getProtocol());
 
         // create java mail properties
         Properties mailProperties = new Properties();
-        mailProperties.put("mail.smtp.auth", true);
-        mailProperties.put("mail.smtp.starttls.enable", true);
+        mailProperties.put("mail.smtp.auth", emailProperties.isMailAuth());
+        mailProperties.put("mail.smtp.starttls.enable", emailProperties.isMailTls());
 
         // set java mail properties
         javaMailSender.setJavaMailProperties(mailProperties);
