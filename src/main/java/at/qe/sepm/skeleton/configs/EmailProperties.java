@@ -1,9 +1,11 @@
 package at.qe.sepm.skeleton.configs;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
+@Component
 @ConfigurationProperties("email")
 public class EmailProperties {
     private String host = "smtp.gmail.com";
