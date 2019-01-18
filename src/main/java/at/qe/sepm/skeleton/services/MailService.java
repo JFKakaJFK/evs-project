@@ -1,6 +1,8 @@
 package at.qe.sepm.skeleton.services;
 
 import at.qe.sepm.skeleton.configs.EmailProperties;
+import at.qe.sepm.skeleton.model.Mail;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
@@ -15,14 +17,16 @@ import java.util.Properties;
 
 @Service
 public class MailService {
+    @Autowired
+    private EmailProperties emailProperties;
 
 	@Autowired
     private JavaMailSender sender;
 
     JavaMailSenderImpl javaMailSender;
 
-    @Autowired
-    public MailService(EmailProperties emailProperties)
+    @PostConstruct
+    public void Init()
     {
         this.javaMailSender = new JavaMailSenderImpl();
 
@@ -41,17 +45,17 @@ public class MailService {
         javaMailSender.setJavaMailProperties(mailProperties);
     }
 
-
-	public void newMailSender(String email_to, String email_subject, String email_content)
+    public void sendMail(Mail mail)
     {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setSubject(email_subject);
-        message.setText(email_content);
-        message.setTo(email_to);
-        message.setFrom("evs2.uibk@gmail.com");
+        message.setSubject(mail.getSubject());
+        message.setText(mail.getContent());
+        message.setTo(mail.getEmail());
+        message.setFrom(emailProperties.getEmail());
 
         javaMailSender.send(message);
     }
+
 
     public void sendEmail(String from, String to, String subject, String content) throws Exception {
     	SimpleMailMessage message = new SimpleMailMessage(); 

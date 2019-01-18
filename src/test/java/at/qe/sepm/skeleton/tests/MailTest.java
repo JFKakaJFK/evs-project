@@ -1,5 +1,6 @@
 package at.qe.sepm.skeleton.tests;
 
+import at.qe.sepm.skeleton.model.Mail;
 import at.qe.sepm.skeleton.services.MailService;
 import at.qe.sepm.skeleton.services.UserService;
 import org.junit.Test;
@@ -19,6 +20,7 @@ public class MailTest {
     @Test
     public void testSendMail()
     {
-        mailService.newMailSender("christopher@kelter.at", "Test", "Test");
+        Mail mail = new Mail("christopher@kelter.at", "Test Subject", "Test Content");
+        mailService.sendMail(mail);
     }
 }

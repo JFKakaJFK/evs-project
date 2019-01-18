@@ -11,6 +11,7 @@ public class EmailProperties {
     private String host = "smtp.gmail.com";
     private String username = "evs2.uibk@gmail.com";
     private String password = "evs2!uibk2019";
+    private String email = "evs2.uibk@gmail.com";
     private int port = 587;
     private String protocol = "smtp";
     private boolean mailAuth = true;
@@ -70,5 +71,13 @@ public class EmailProperties {
 
     public void setMailTls(boolean mailTls) {
         this.mailTls = mailTls;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
