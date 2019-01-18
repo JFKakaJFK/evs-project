@@ -90,7 +90,7 @@
             </p:confirmDialog>
 
             <p:dialog header="Feiertage bearbeiten" id="holidaysEditDialog" widgetVar="holidaysEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="openingHoursData" rendered="#{not empty holidaysDetailController.holidays}">
+                <p:outputPanel id="holidaysData" rendered="#{not empty holidaysDetailController.holidays}">
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:outputLabel for="name" value="Feiertag: " />
                         <p:inputText id="name" value="#{holidaysDetailController.holidays.name}"/>

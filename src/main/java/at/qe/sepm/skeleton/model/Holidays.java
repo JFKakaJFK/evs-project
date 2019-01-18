@@ -94,7 +94,7 @@ public class Holidays implements Persistable<Long> {
 
     @Override
     public Long getId() {
-        return null;
+        return id;
     }
 
     @Override
