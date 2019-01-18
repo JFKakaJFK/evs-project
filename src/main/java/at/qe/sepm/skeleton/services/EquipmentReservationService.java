@@ -7,6 +7,7 @@ import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.repositories.EquipmentRepository;
 import at.qe.sepm.skeleton.repositories.EquipmentReservationRepository;
 import at.qe.sepm.skeleton.repositories.UserRepository;
+import org.primefaces.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +39,27 @@ public class EquipmentReservationService {
     public Collection<EquipmentReservation> getAllBorrowedEquipments(){
         return equipmentReservationRepository.findAll().stream()
             .filter(reservation -> !reservation.isCompleted() && reservation.getStartDate().before(new Date()))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns all overdue reservations
+     */
+    public Collection<EquipmentReservation> getAllOverdue(){
+        return equipmentReservationRepository.findAllByCompleted(false).stream()
+            .filter(reservation -> reservation.getEndDate().after(new Date()))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns all reservations which are booked for more than 3 days and should end within 24 hours
+     */
+    public Collection<EquipmentReservation> getAllLongReservationsEndingSoon(){
+        long day = 24 * 60 * 60 * 1000;
+        return equipmentReservationRepository.findAllByCompleted(false).stream()
+            .filter(reservation -> !reservation.isOverdue()
+                && (reservation.getEndDate().getTime() - reservation.getStartDate().getTime()) > 3 * day
+                && (reservation.getEndDate().getTime() - new Date().getTime() < day))
             .collect(Collectors.toList());
     }
 

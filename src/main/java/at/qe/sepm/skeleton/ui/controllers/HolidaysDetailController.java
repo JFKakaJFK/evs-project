@@ -76,6 +76,5 @@ public class HolidaysDetailController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
             FacesMessage.SEVERITY_INFO, "Success", "Feiertag erfolgreich gelöscht.")
         );
-        // TODO log
     }
 }

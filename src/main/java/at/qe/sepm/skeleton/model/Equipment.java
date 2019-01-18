@@ -21,12 +21,6 @@ public class Equipment implements Persistable<Integer> {
     @GeneratedValue
     private Integer id;
 
-    // TODO relocate to separate config properties
-    @Transient
-    private static final long BUFFER = 30 * 60 * 1000;
-    @Transient
-    private static final int BUFFER_TIME = 2 * 24 * 60 * 60 * 1000;
-
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -74,8 +68,7 @@ public class Equipment implements Persistable<Integer> {
      * @param end of the enquiry
      * @return {@link EquipmentState} for the period
      */
-    // TODO maybe rename one of the getState methods
-    public EquipmentState getState(Date start, Date end){
+    public EquipmentState getFutureState(Date start, Date end){
         if(locked){
             return EquipmentState.LOCKED;
         } else if(isAvailable(start, end)){
@@ -88,12 +81,11 @@ public class Equipment implements Persistable<Integer> {
     }
 
     /**
-     * Returns an {@link EquipmentState} depending on the current date, in contrast to the other getState method, this
+     * Returns an {@link EquipmentState} depending on the current date, in contrast to the other getFutureState method, this
      * method will NOT set currently {@link EquipmentState#OVERDUE} to {@link EquipmentState#AVAILABLE} in the future.
      *
      * @return
      */
-    // TODO maybe rename one of the getState methods
     public EquipmentState getState() {
         Date now = new Date();
         if(locked){
@@ -120,13 +112,13 @@ public class Equipment implements Persistable<Integer> {
             if(reservation.isCompleted()){
                 continue;
             }
-            boolean reservationEndsBeforeStartDate = (reservation.getEndDate().getTime() + BUFFER) < startDate.getTime();
-            boolean reservationStartsAfterEndDate = (endDate.getTime() + BUFFER) < reservation.getStartDate().getTime();
+            boolean reservationEndsBeforeStartDate = (reservation.getEndDate().getTime() + ReservationProperties.getNextReservationBuffer()) < startDate.getTime();
+            boolean reservationStartsAfterEndDate = (endDate.getTime() + ReservationProperties.getNextReservationBuffer()) < reservation.getStartDate().getTime();
             if (!(reservationEndsBeforeStartDate || reservationStartsAfterEndDate)){
                 return false;
             }
             if(reservation.isOverdue()){
-                if(!((reservation.getEndDateOverdue().getTime() + BUFFER_TIME) < startDate.getTime())){
+                if(!((reservation.getEndDateOverdue().getTime() + ReservationProperties.getOverdueBuffer()) < startDate.getTime())){
                     return false;
                 }
             }

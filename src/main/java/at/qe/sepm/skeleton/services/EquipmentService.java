@@ -95,7 +95,7 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('STUDENT')")
     public Collection<Equipment> getAllFreeEquipments(Date startDate, Date endDate){
         return equipmentRepository.findAll().stream()
-            .filter(equipment -> equipment.getState(startDate, endDate) == EquipmentState.AVAILABLE)
+            .filter(equipment -> equipment.getFutureState(startDate, endDate) == EquipmentState.AVAILABLE)
             .collect(Collectors.toList());
     }
 

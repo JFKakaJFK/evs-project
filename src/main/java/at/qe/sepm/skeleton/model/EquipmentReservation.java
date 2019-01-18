@@ -1,11 +1,14 @@
 package at.qe.sepm.skeleton.model;
 
+import at.qe.sepm.skeleton.configs.ReservationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Entity for single equipment Reservations
@@ -14,10 +17,6 @@ import java.util.Set;
 public class EquipmentReservation implements Persistable<Integer> {
 
     private static final long serialVersionUID = 1L;
-
-    // TODO relocate to reservation properties
-    @Transient
-    private static final int BUFFER_TIME = 2;
 
     @Id
     @GeneratedValue
@@ -77,7 +76,7 @@ public class EquipmentReservation implements Persistable<Integer> {
         if (isOverdue()){
             Calendar c = Calendar.getInstance();
             c.setTime(new Date());
-            c.add(Calendar.DATE, BUFFER_TIME);
+            c.add(Calendar.DATE, (int) TimeUnit.MILLISECONDS.toDays(ReservationProperties.getOverdueBuffer()));
             return c.getTime();
         } else {
             return endDate;
