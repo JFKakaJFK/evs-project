@@ -45,7 +45,7 @@ public class EquipmentReservationService {
     /**
      * Returns all overdue reservations
      */
-    public Collection<EquipmentReservation> getAllOverdueReservationss(){
+    public Collection<EquipmentReservation> getAllOverdueReservations(){
         return equipmentReservationRepository.findAllByCompleted(false).stream()
             .filter(reservation -> reservation.getEndDate().after(new Date()))
             .collect(Collectors.toList());
