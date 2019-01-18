@@ -111,8 +111,7 @@ public class UserDetailController {
      * Action to save the currently displayed user.
      */
     public void doSaveUser() {
-        // TODO: test if the current user can lock him/herself
-        if(sessionInfoBean.getCurrentUser() == user && !user.isEnabled()){
+        if(sessionInfoBean.getCurrentUser().equals(user) && !user.isEnabled()){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_ERROR, "Error", "Du kannst dich nicht selbst sperren.")
             );

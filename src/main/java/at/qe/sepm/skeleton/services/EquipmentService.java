@@ -123,17 +123,27 @@ public class EquipmentService {
     @PreAuthorize("hasAuthority('ADMIN')")
     private Equipment deleteAllGroupsFromEquipment(Equipment equipment){
         List<EquipmentGroup> equipmentGroups = new ArrayList<>(equipmentGroupRepository.findAllByEquipmentsContains(equipment));
+        List<EquipmentGroup> delete = new ArrayList<>();
         // Detach ManyToMany(Equipment)
         for (EquipmentGroup group: equipmentGroups) {
             // delete group if there are too few equipments left
+
             if(group.getEquipments().size() < 3){
+                group.getEquipments().clear();
                 User u = userService.loadUser(group.getUser().getUsername());
                 u.getEquipmentGroups().remove(group);
+                if(u.getEquipmentGroups().contains(group)){
+                    System.out.println("WTFFFF");
+                    u.getEquipmentGroups().remove(group);
+                }
+                //group.setUser(null);
                 userService.saveUser(u);
-                // TODO: log group deletion
+
+                logger.warn("DELETED Group: " + group + " (by " + userService.getAuthenticatedUser().getEmail() + ")");
             } else {
                 group.getEquipments().remove(equipment);
                 userService.saveUser(group.getUser());
+                logger.warn("DELETED Equipment " + equipment + " from group " + group + " (by " + userService.getAuthenticatedUser().getEmail() + ")");
             }
         }
         return equipmentRepository.save(equipment);

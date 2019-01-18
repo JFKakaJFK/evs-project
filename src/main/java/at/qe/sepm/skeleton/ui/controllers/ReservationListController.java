@@ -130,6 +130,8 @@ public class ReservationListController implements Serializable {
 
             this.defaultReservationsReturn.clear();
             this.defaultReservationsReturn.addAll(this.equipmentReservationService.getAllBorrowedEquipments());
+            this.allReservationsReturn.clear();
+            this.allReservationsReturn.addAll(this.equipmentReservationService.getAllEquipmentReservations());
 
             if(this.filteredReservationsReturn != null)
             {

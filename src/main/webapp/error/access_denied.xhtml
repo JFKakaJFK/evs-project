@@ -6,10 +6,12 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <h:outputStylesheet name="css/error.css" />
 
         <h:form>
-            <p:panel header="Zugriff verweigert">
-                You do not have access to the requested resource.
+            <p:panel header="Zugriff verweigert" styleClass="denied">
+                <p>Sie haben keinen Zugriff um diese Seite aufzurufen.</p>
+                <p:commandButton value="Zurük zur Startseite" action="#{facesContext.externalContext.redirect('/secured/welcome.xhtml')}" styleClass="btn-primary"/>
             </p:panel>
         </h:form>
 
