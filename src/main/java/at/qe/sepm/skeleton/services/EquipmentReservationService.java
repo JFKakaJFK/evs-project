@@ -52,12 +52,15 @@ public class EquipmentReservationService {
     }
 
     /**
-     * Returns all reservations which are booked for more than 3 days and should end within 24 hours
+     * Returns all reservations from {@link User} which are booked for more than 3 days and should end within 24 hours
+     *
+     * @param user
      */
-    public Collection<EquipmentReservation> getAllLongReservationsEndingSoon(){
+    public Collection<EquipmentReservation> getAllLongReservationsEndingSoonByUser(User user){
         long day = 24 * 60 * 60 * 1000;
         return equipmentReservationRepository.findAllByCompleted(false).stream()
-            .filter(reservation -> !reservation.isOverdue()
+            .filter(reservation -> reservation.getUser().equals(user)
+                && !reservation.isOverdue()
                 && (reservation.getEndDate().getTime() - reservation.getStartDate().getTime()) > 3 * day
                 && (reservation.getEndDate().getTime() - new Date().getTime() < day))
             .collect(Collectors.toList());
