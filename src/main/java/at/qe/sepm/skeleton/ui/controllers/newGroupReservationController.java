@@ -165,28 +165,33 @@ public class newGroupReservationController extends ReservationController impleme
         {
             showErrorMessage("Min. eine Gruppe muss ausgewählt werden.");
         }
-            msg = "Bitte wählen Sie mindestens eine Laborgruppe aus";
 
-        if(groupsAvailable() && validateDate() && withinOpeningHours())
+        else
         {
-
-            for(EquipmentGroup group : this.selectedGroups)
+            if(groupsAvailable() && validateDate() && withinOpeningHours())
             {
-                for(Equipment newEquipment : group.getEquipments())
+                List<Equipment> equipmentReservations = new ArrayList<>();
+                for(EquipmentGroup group : this.selectedGroups)
                 {
-                    addEquipmentToReservations(newEquipment);
+                    for(Equipment newEquipment : group.getEquipments())
+                    {
+                        addEquipmentToReservations(newEquipment);
+                        equipmentReservations.add(newEquipment);
+                    }
                 }
-            }
 
-            //redirect to welcome page
-            try
-            {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
-            }
+                sendEmail(equipmentReservations); //send email of reservation
 
-            catch (IOException e)
-            {
-                e.printStackTrace();
+                //redirect to welcome page
+                try
+                {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml?addedSuccessfully");
+                }
+
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }

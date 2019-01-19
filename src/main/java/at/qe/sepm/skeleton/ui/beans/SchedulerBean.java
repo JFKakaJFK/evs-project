@@ -77,9 +77,6 @@ public class SchedulerBean {
                     "}" +
                     "</style>"
             );
-
-
-
             emailContent.append("<table>");
             emailContent.append("<thead>");
             emailContent.append("<tr>");
@@ -96,6 +93,8 @@ public class SchedulerBean {
                 emailContent.append("<td>" + simpleDateFormat.format(reservation.getEndDate()) + "</td>");
                 emailContent.append("</tr>");
 
+                reservation.setOverdueMailSent(true);
+                equipmentReservationService.saveReservation(reservation);
             }
             emailContent.append("</tbody>");
             emailContent.append("</table>");
@@ -129,7 +128,8 @@ public class SchedulerBean {
             for(EquipmentReservation reservation : reservations)
             {
                 emailContent.append("<li>" + reservation.getEquipment().getName() + "</li>");
-
+                reservation.setReminderMailSent(true);
+                equipmentReservationService.saveReservation(reservation);
             }
             emailContent.append("</ul>");
 

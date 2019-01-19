@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -194,7 +195,7 @@ public class ReservationController {
         emailContent.append("</html>");
 
         //Create Mail
-        Mail mail = new Mail(user.getEmail(), "Eerinnerung Buchungen", emailContent.toString());
+        Mail mail = new Mail(user.getEmail(), "Neue Reservierung", emailContent.toString());
         mailService.sendMail(mail); //send mail
     }
 }

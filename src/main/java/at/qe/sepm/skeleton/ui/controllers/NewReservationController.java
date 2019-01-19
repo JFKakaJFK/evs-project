@@ -184,6 +184,8 @@ public class NewReservationController extends ReservationController implements S
                 addEquipmentToReservations(newEquipment);
             }
 
+            sendEmail(this.selectedEquipments); //send email
+
             //redirect to welcome page
             try
             {
