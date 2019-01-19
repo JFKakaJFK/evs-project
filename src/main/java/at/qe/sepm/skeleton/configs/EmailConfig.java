@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import at.qe.sepm.skeleton.services.UserService;
 
+@Deprecated
 @Component
 @Configuration
 public class EmailConfig { //this is also a test method, feel free to carry out tests

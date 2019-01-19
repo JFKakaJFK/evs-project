@@ -45,7 +45,7 @@ public class UserService {
      *
      * @return
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')") for EMAIL
     public Collection<User> getAllUsers() {
         return userRepository.findAll();
     }
