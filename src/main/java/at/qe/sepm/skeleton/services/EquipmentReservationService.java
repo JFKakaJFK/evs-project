@@ -43,10 +43,12 @@ public class EquipmentReservationService {
     }
 
     /**
-     * Returns all overdue reservations
+     * Returns all overdue reservations bz the user
+     *
+     * @param user 
      */
-    public Collection<EquipmentReservation> getAllOverdueReservations(){
-        return equipmentReservationRepository.findAllByCompleted(false).stream()
+    public Collection<EquipmentReservation> getAllOverdueReservations(User user){
+        return equipmentReservationRepository.findAllByCompletedAndUser(false, user).stream()
             .filter(reservation -> reservation.getEndDate().after(new Date()))
             .collect(Collectors.toList());
     }
@@ -58,9 +60,8 @@ public class EquipmentReservationService {
      */
     public Collection<EquipmentReservation> getAllLongReservationsEndingSoonByUser(User user){
         long day = 24 * 60 * 60 * 1000;
-        return equipmentReservationRepository.findAllByCompleted(false).stream()
-            .filter(reservation -> reservation.getUser().equals(user)
-                && !reservation.isOverdue()
+        return equipmentReservationRepository.findAllByCompletedAndUser(false, user).stream()
+            .filter(reservation -> !reservation.isOverdue()
                 && (reservation.getEndDate().getTime() - reservation.getStartDate().getTime()) > 3 * day
                 && (reservation.getEndDate().getTime() - new Date().getTime() < day))
             .collect(Collectors.toList());

@@ -15,5 +15,5 @@ public interface EquipmentReservationRepository extends AbstractRepository<Equip
 
     List<EquipmentReservation> findAllByEquipment(Equipment equipment);
 
-    List<EquipmentReservation> findAllByCompleted(Boolean completed);
+    List<EquipmentReservation> findAllByCompletedAndUser(Boolean completed, User user);
 }
