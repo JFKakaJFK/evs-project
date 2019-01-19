@@ -1,9 +1,8 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
-import at.qe.sepm.skeleton.model.Equipment;
-import at.qe.sepm.skeleton.model.EquipmentReservation;
-import at.qe.sepm.skeleton.model.OpeningHours;
+import at.qe.sepm.skeleton.model.*;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
+import at.qe.sepm.skeleton.services.MailService;
 import at.qe.sepm.skeleton.services.OpeningHoursService;
 import at.qe.sepm.skeleton.services.UserService;
 import org.primefaces.model.DefaultScheduleEvent;
@@ -16,8 +15,15 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 public class ReservationController {
+    @Autowired
+    protected UserService userService;
+
+     @Autowired
+     private MailService mailService;
+
     protected boolean addedSuccessfully;
     protected Date lendingDate;
     protected Date returnDate;
@@ -30,9 +36,6 @@ public class ReservationController {
 
     @Autowired
     private EquipmentReservationService equipmentReservationService;
-
-    @Autowired
-    private UserService userService;
 
     public boolean isAddedSuccessfully() {
         return addedSuccessfully;
@@ -162,5 +165,36 @@ public class ReservationController {
     {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Neue Reservierung",  message) );
+    }
+
+    public void sendEmail(List<Equipment> equipments)
+    {
+        User user = userService.getAuthenticatedUser();
+
+        StringBuilder emailContent = new StringBuilder();
+        emailContent.append("<html>");
+        emailContent.append("<body>");
+
+        emailContent.append("Hallo "+user.getFirstName()+" "+user.getLastName()+"!<br><br>");
+        emailContent.append("Ihre gewünschten Laborgeräte wurden reserviert<br>");
+        emailContent.append("Zeitraum: "+ lendingDate + " bis " + returnDate+"<br><br>");
+
+        emailContent.append("Laborgeräte:<br>");
+        emailContent.append("<ul>");
+        for(Equipment equipment : equipments)
+        {
+            emailContent.append("<li>" + equipment.getName() + "</li>");
+
+        }
+        emailContent.append("</ul>");
+
+        emailContent.append("<p>Dies ist eine automatisch generierte Email, bitte nicht antworten!</p>");
+
+        emailContent.append("</body>");
+        emailContent.append("</html>");
+
+        //Create Mail
+        Mail mail = new Mail(user.getEmail(), "Eerinnerung Buchungen", emailContent.toString());
+        mailService.sendMail(mail); //send mail
     }
 }

@@ -1,6 +1,9 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.Equipment;
+import at.qe.sepm.skeleton.model.EquipmentReservation;
+import at.qe.sepm.skeleton.model.Mail;
+import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultScheduleModel;
