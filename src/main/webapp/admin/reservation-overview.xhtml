@@ -18,6 +18,7 @@
             rendered="#{sessionInfoBean.hasRole('ADMIN')}"
           >
               <p:dataTable widgetVar="reservationSelect" id="reservationEquipmentTable"
+                emptyMessage="Derzeit keine Reservierungen" 
                 var="reservation" value="#{reservationListController.allReservationsReturn}"
                 selection="#{reservationListController.selectedReservationsReturn}"
                 filteredValue="#{reservationListController.filteredReservationsReturn}"
