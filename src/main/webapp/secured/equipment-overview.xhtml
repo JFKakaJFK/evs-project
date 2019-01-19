@@ -17,7 +17,6 @@
                 <p:dataTable id="equipmentTable"
                              var="equipment" value="#{equipmentListController.equipment}"
                              rowExpandMode="single" rowKey="#{element.id}" expandedRow="#{element.id == equipmentDetailController.expandedRowElementId}"
-                             scrollable="true" scrollHeight="500"
                              rows="15" paginator="true"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="10,15,20,25"
