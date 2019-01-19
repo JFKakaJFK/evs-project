@@ -9,10 +9,13 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Service
@@ -47,18 +50,37 @@ public class MailService {
 
     public void sendMail(Mail mail)
     {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setSubject(mail.getSubject());
-        message.setText(mail.getContent());
-        message.setTo(mail.getEmail());
-        message.setFrom(emailProperties.getEmail());
+        try
+        {
+            MimeMessage mimeMessage = sender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
+            mimeMessage.setContent(mail.getContent(), "text/html");
+            helper.setTo(mail.getEmail());
+            helper.setSubject(mail.getSubject());
+            helper.setFrom(emailProperties.getEmail());
 
-        javaMailSender.send(message);
+            javaMailSender.send(mimeMessage);
+        }
+
+        catch (MailException e)
+        {
+            e.printStackTrace();
+        }
+
+        catch (MessagingException e)
+        {
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
 
     @Deprecated
     public void sendEmail(String from, String to, String subject, String content) throws Exception {
-    	SimpleMailMessage message = new SimpleMailMessage(); 
+    	SimpleMailMessage message = new SimpleMailMessage();
     	message.setFrom("test.hilpold@gmail.com");
         message.setTo("test.hilpold@gmail.com"); 
         message.setSubject("bla"); 

@@ -20,7 +20,7 @@ public class MailTest {
     @Test
     public void testSendMail()
     {
-        Mail mail = new Mail("christopher@kelter.at", "Test Subject", "Test Content");
+        Mail mail = new Mail("christopher@kelter.at", "Test Subject", "<b>Test Content</b>");
         mailService.sendMail(mail);
     }
 }
