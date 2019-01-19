@@ -23,6 +23,9 @@
                 filteredValue="#{reservationListController.filteredReservationsReturn}"
                 rowKey="#{reservation.id}" rowIndexVar="index"
                 rowStyleClass="#{reservation.completed ? 'completed' : (reservation.overdue ? 'overdue' : '')}"
+                rows="15" paginator="true"
+                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="10,15,20,25"
               ><!-- style completed and overdue rows differently -->
 
                   <f:facet name="header">
