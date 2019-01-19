@@ -26,6 +26,9 @@
                         value="#{reservationListController.allUserReservations}"
                         rowIndexVar="index"
                         rowStyleClass="#{reservation.completed ? 'completed' : ''}"
+                        rows="15" paginator="true"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="10,15,20,25"
                     ><!-- style completed rows differently -->
                         <f:facet name="header">
                             <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary">
@@ -89,6 +92,9 @@
                         style="margin-bottom:0"
                         rowIndexVar="index"
                         rowStyleClass="#{reservation.overdue ? 'overdue' : ''}"
+                        rows="15" paginator="true"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="10,15,20,25"
                     ><!-- style overdue rows differently -->
                         <f:facet name="header">
                             <div>
