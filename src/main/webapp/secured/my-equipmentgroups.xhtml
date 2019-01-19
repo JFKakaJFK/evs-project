@@ -14,7 +14,13 @@
             </p:messages>
 
             <p:panel header="Meine Gruppen">
-                <p:dataTable id="equipmentGroupTable" var="group" value="#{equipmentGroupListController.allEquipmentGroupsByUser}" emptyMessage="Sie haben noch keine Gerätegruppen">
+                <p:dataTable id="equipmentGroupTable" var="group" 
+                value="#{equipmentGroupListController.allEquipmentGroupsByUser}" 
+                emptyMessage="Sie haben noch keine Gerätegruppen"
+                rows="15" paginator="true"
+                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="10,15,20,25"
+                >
                     <f:facet name="header">
                         <p:commandButton update=":addEquipmentGroupDialog" oncomplete="PF('addEquipmentGroupDialog').show()" icon="ui-icon-plusthick" title="Add" value="Neue Gruppe erstellen" styleClass="btn-primary" />
                     </f:facet>
