@@ -71,9 +71,9 @@
 - [x] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen. (@Melanie)
 - [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
 - [ ] growl/messages für alle delete/add aktionen? (@Andi)
-- [ ] `emptyMessage=""` bei den datatables anpassen? (@Andi)
+- [x] `emptyMessage=""` bei den datatables anpassen? (@Andi)
 - [ ] `scrollable="true" scrollHeight="500"` bei den datatables hinzufügen (@Andi)
-- [ ] bei den datatables pagination, search & sort?(siehe neue user overview) (@Andi)
+- [x] bei den datatables pagination, search & sort?(siehe neue user overview) (@Andi)
 - [x] add & delete buttons einfärben (@Johannes)
 - [ ] TODOs im code finden und erledigen (@alle mit TODOs)
 
@@ -83,6 +83,11 @@
 System an, die am 21.01.2018 im Proseminar pr¨asentiert werden muss. Hierzu
 werden zwei bis drei Studierende ihres Teams zuf¨allig ausgew¨ahlt um die Inhalte
 zu pr¨asentieren.
+
+> Gruppe 2
+Geräteverwaltung (Rückgabe, Gruppen)
+Wie haben Sie das Projekt organisiert (Kommunikation, Branching in GIT, etc.)?
+
 
 - Feature File-Up/Download (@Johannes)
 
