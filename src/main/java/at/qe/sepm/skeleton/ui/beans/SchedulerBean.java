@@ -38,7 +38,7 @@ public class SchedulerBean {
                     (List<EquipmentReservation>) equipmentReservationService.getAllLongReservationsEndingSoonByUser(user)
                 );
                 sendEmailsOverdue(
-                    (List<EquipmentReservation>) equipmentReservationService.getAllOverdueReservations()
+                    (List<EquipmentReservation>) equipmentReservationService.getAllOverdueReservations(user)
                 );
             }
 

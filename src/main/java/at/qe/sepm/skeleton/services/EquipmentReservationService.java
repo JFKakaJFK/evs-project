@@ -49,7 +49,7 @@ public class EquipmentReservationService {
      */
     public Collection<EquipmentReservation> getAllOverdueReservations(User user){
         return equipmentReservationRepository.findAllByCompletedAndUser(false, user).stream()
-            .filter(EquipmentReservation::isOverdue)
+            .filter(reservation -> reservation.isOverdue() && !reservation.isOverdueMailSent())
             .collect(Collectors.toList());
     }
 
@@ -62,6 +62,7 @@ public class EquipmentReservationService {
         long day = 24 * 60 * 60 * 1000;
         return equipmentReservationRepository.findAllByCompletedAndUser(false, user).stream()
             .filter(reservation -> !reservation.isOverdue()
+                && !reservation.isReminderMailSent()
                 && (reservation.getEndDate().getTime() - reservation.getStartDate().getTime()) > 3 * day
                 && (reservation.getEndDate().getTime() - new Date().getTime() < day))
             .collect(Collectors.toList());

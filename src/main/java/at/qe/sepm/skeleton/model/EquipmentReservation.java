@@ -43,6 +43,12 @@ public class EquipmentReservation implements Persistable<Integer> {
     @Column(nullable = false)
     private boolean completed = false;
 
+    @Column(nullable = false)
+    private boolean reminderMailSent = false;
+
+    @Column(nullable = false)
+    private boolean overdueMailSent = false;
+
     /**
      * Returns the state of the reservation as string
      *
@@ -138,6 +144,22 @@ public class EquipmentReservation implements Persistable<Integer> {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isReminderMailSent() {
+        return reminderMailSent;
+    }
+
+    public void setReminderMailSent(boolean reminderMailSent) {
+        this.reminderMailSent = reminderMailSent;
+    }
+
+    public boolean isOverdueMailSent() {
+        return overdueMailSent;
+    }
+
+    public void setOverdueMailSent(boolean overdueMailSent) {
+        this.overdueMailSent = overdueMailSent;
     }
 
     @Override
