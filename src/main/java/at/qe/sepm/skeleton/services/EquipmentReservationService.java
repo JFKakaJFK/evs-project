@@ -49,7 +49,7 @@ public class EquipmentReservationService {
      */
     public Collection<EquipmentReservation> getAllOverdueReservations(User user){
         return equipmentReservationRepository.findAllByCompletedAndUser(false, user).stream()
-            .filter(reservation -> reservation.getEndDate().before(new Date()))
+            .filter(EquipmentReservation::isOverdue)
             .collect(Collectors.toList());
     }
 
