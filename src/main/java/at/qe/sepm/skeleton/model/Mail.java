@@ -5,6 +5,8 @@ public class Mail {
     private String subject;
     private String content;
 
+    public Mail(){}
+
     public Mail(String email, String subject, String content)
     {
         this.email = email;
