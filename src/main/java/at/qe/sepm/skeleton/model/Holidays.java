@@ -96,6 +96,10 @@ public class Holidays implements Persistable<Long> {
         return startDate.after(new Date());
     }
 
+    public boolean getCompleted(){
+        return endDate.before(new Date());
+    }
+
     @Override
     public Long getId() {
         return id;

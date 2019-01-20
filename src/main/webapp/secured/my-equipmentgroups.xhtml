@@ -14,8 +14,8 @@
             </p:messages>
 
             <p:panel header="Meine Gruppen">
-                <p:dataTable id="equipmentGroupTable" var="group" 
-                value="#{equipmentGroupListController.allEquipmentGroupsByUser}" 
+                <p:dataTable id="equipmentGroupTable" var="group"
+                value="#{equipmentGroupListController.allEquipmentGroupsByUser}"
                 emptyMessage="Sie haben noch keine Gerätegruppen"
                 rows="15" paginator="true"
                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -58,7 +58,7 @@
                         <p:outputLabel for="name" value="Gruppenname: " />
                         <p:inputText id="name" value="#{equipmentGroupDetailController.group.name}"/>
                     </h:panelGrid>
-
+                    <p:separator/>
                     <p:dataTable id="checkboxDT"
                                  widgetVar="equipmentSelect"
                                  var="equipment"
@@ -84,6 +84,8 @@
                         </p:column>
                     </p:dataTable>
 
+                    <p:separator/>
+
                     <h:panelGrid columns="3">
                         <p:commandButton value="Speichern" action="#{equipmentGroupDetailController.doSaveGroup}" oncomplete="PF('equipmentGroupEditDialog').hide()" update=":equipmentGroupForm" styleClass="btn-primary"/>
                         <p:commandButton value="Neu Laden" action="#{equipmentGroupDetailController.doReloadGroup}" update=":editForm" styleClass="btn-secondary"/>
@@ -100,6 +102,8 @@
                         <p:outputLabel for="groupname" value="Gruppenname: " />
                         <p:inputText id="groupname" value="#{addEquipmentGroupBean.name}" required="true"/>
                     </h:panelGrid>
+
+                    <p:separator/>
 
                     <p:dataTable id="addCheckboxDT"
                                  widgetVar="equipmentSelect"
@@ -125,6 +129,8 @@
                             <h:outputText value="#{equipment.labName}" />
                         </p:column>
                     </p:dataTable>
+
+                    <p:separator/>
 
                     <h:panelGrid columns="3">
                         <p:commandButton value="Speichern" action="#{addEquipmentGroupBean.addEquipmentGroup}" oncomplete="PF('addEquipmentGroupDialog').hide()" update=":equipmentGroupForm" styleClass="btn-primary"/>

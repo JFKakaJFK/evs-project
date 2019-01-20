@@ -46,6 +46,9 @@
                         <p:column headerText="Rückgabedatum">
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{reservation.state}"/>
+                        </p:column>
                         <p:column style="width:100px;text-align: center">
                             <p:commandButton icon="ui-icon-note" title="Bedienungsanleitung" styleClass="btn-secondary" oncomplete="PF('equipmentManualsDialog').show()" update="@form">
                                 <f:setPropertyActionListener value="#{reservation.equipment}" target="#{reservationListController.equipmentManual}"/>

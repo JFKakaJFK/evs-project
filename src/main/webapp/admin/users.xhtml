@@ -47,7 +47,7 @@
                     <p:column headerText="Rechte" sortBy="#{user.rights}" sortable="true" filterBy="#{user.rights}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{user.rights}" />
                     </p:column>
-                    <p:column headerText="Aktiviert">
+                    <p:column headerText="Aktiviert" style="width: 80px; text-align: center">
                         <h:selectBooleanCheckbox value="#{user.enabled}" disabled="true"/>
                     </p:column>
                     <p:column style="width:100px;text-align: center">

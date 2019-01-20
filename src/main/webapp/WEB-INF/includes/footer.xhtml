@@ -7,10 +7,10 @@
         <ui:composition>
             <div>
                 <ui:fragment rendered="#{sessionInfoBean.loggedIn}">
-                    Logged in as #{sessionInfoBean.currentUserName} [#{sessionInfoBean.currentUser.rights}]
+                    Eingeloggt als #{sessionInfoBean.currentUserName} [#{sessionInfoBean.currentUser.rights}]
                 </ui:fragment>
                 <ui:fragment rendered="#{!sessionInfoBean.loggedIn}">
-                    Not logged in
+                    Nicht eingeloggt
                 </ui:fragment>
             </div>
 
