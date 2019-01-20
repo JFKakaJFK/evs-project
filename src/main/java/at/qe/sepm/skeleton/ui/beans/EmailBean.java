@@ -6,11 +6,7 @@ import org.springframework.stereotype.Component;
 import at.qe.sepm.skeleton.configs.EmailConfig;
 import at.qe.sepm.skeleton.services.MailService;
 
-/**
- * Bean for mail services
- *
- * @author André Potocnik <andre.potocnik@student.uibk.ac.at>
- */
+
 @Component
 @Scope("request")
 
