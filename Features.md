@@ -4,8 +4,8 @@
 
 - [x] User entity und Service anpassen (@Chris)
 - [x] PasswordEncoder einfügen und testUser anpassen (@Chris)
-- [x] [addUserController](https://git.uibk.ac.at/csat2187/evs-projektarbeit/blob/master/src/main/java/at/qe/sepm/skeleton/ui/controllers/AddUserController.java) anpassen (@Markus @Melanie)
-- [x] [users.xhtml](https://git.uibk.ac.at/csat2187/evs-projektarbeit/blob/master/src/main/webapp/admin/users.xhtml) anpassen und [formular](https://git.uibk.ac.at/csat2187/evs-projektarbeit/blob/master/src/main/webapp/admin/create-user.xhtml) einfügen (@Andi)
+- [x] addUserController anpassen (@Markus @Melanie)
+- [x] users.xhtml anpassen und formular einfügen (@Andi)
 
 ### TODO/Notes
 
@@ -44,7 +44,7 @@
 - [x] AddEquipmentGroupReservationController (@Melanie @Markus)
 - [x] EquipmentGroupListController (@Melanie @Markus)
 - [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Chris)
-- [ ] view zur Einsicht aller Reservierungen(und löschen) **ADMIN** (@Melanie)
+- [x] view zur Einsicht aller Reservierungen(und löschen) **ADMIN** (@Melanie)
 - [x] view zur Einsicht aller ausgeliehenen und überfälligen Reservierungen(und Rckgabebestätigung) **ADMIN** (@Chris)
 - [x] view zur Einsicht(und löschen) aller eigenen Reservierungen und reservierung hinzufügen **STUDENT** (@Chris)
 
@@ -72,7 +72,7 @@
 - [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
 - [ ] growl/messages für alle delete/add aktionen? (@Andi)
 - [x] `emptyMessage=""` bei den datatables anpassen? (@Andi)
-- [ ] `scrollable="true" scrollHeight="500"` bei den datatables hinzufügen (@Andi)
+- [x] ~~`scrollable="true" scrollHeight="500"` bei den datatables hinzufügen (@Andi)~~
 - [x] bei den datatables pagination, search & sort?(siehe neue user overview) (@Andi)
 - [x] add & delete buttons einfärben (@Johannes)
 - [ ] TODOs im code finden und erledigen (@alle mit TODOs)
@@ -87,9 +87,6 @@ zu pr¨asentieren.
 > Gruppe 2
 Geräteverwaltung (Rückgabe, Gruppen)
 Wie haben Sie das Projekt organisiert (Kommunikation, Branching in GIT, etc.)?
-
-
-- Feature File-Up/Download (@Johannes)
 
 ## Live-Demo
 
