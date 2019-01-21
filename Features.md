@@ -15,7 +15,7 @@
 - [ ] TODO: zb sicheres passwort generieren und per mail schicken
 - [ ] BUG: user overview sortieren geht erst nachdem man in der suchleiste etwas gesucht hat(umstellung der List<> auf filteredUsers)
 
-## 2. Equipment management & Opening Hours - FAST FERTIG
+## 2. Equipment management & Opening Hours - FERTIG
 
 - [x] Equipment Entity und Service (@Johannes)
 - [x] testEquipments hinzufügen (@Johannes)
@@ -40,7 +40,7 @@
 - [x] testReservationen (@Johannes)
 - [x] ReservationListController (@Melanie @Markus)
 - [x] addReservationController (@Melanie @Markus)
-- [ ] Bestätigungsmails (@Markus)
+- [x] Bestätigungsmails (@Markus)
 - [x] AddEquipmentGroupReservationController (@Melanie @Markus)
 - [x] EquipmentGroupListController (@Melanie @Markus)
 - [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Chris)
