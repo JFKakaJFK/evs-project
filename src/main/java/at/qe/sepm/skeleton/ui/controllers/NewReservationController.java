@@ -92,6 +92,7 @@ public class NewReservationController extends ReservationController implements S
 
         //update calender infos
         addReservationsOfEquipmentToSchedule(detailEquipment);
+        addHolidaysToSchedular();
 
         return null;
     }

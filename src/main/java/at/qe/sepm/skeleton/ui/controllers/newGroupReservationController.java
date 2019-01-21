@@ -137,7 +137,7 @@ public class newGroupReservationController extends ReservationController impleme
         {
             addReservationsOfEquipmentToSchedule(equipment);
         }
-
+        addHolidaysToSchedular();
         return null;
     }
 
@@ -173,13 +173,20 @@ public class newGroupReservationController extends ReservationController impleme
                 List<Equipment> equipmentReservations = new ArrayList<>();
                 for(EquipmentGroup group : this.selectedGroups)
                 {
+                    /*
                     for(Equipment newEquipment : group.getEquipments())
                     {
                         addEquipmentToReservations(newEquipment);
                         equipmentReservations.add(newEquipment);
                     }
+                    */
+
+                    group.getEquipments().stream()
+                        .filter(p -> !equipmentReservations.contains(p))
+                        .forEach(p -> equipmentReservations.add(p));
                 }
 
+                equipmentReservations.stream().forEach(p -> addEquipmentToReservations(p)); //adds equipments to reservation
                 sendEmail(equipmentReservations); //send email of reservation
 
                 //redirect to welcome page

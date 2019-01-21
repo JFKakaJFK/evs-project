@@ -1,10 +1,7 @@
 package at.qe.sepm.skeleton.ui.controllers;
 
 import at.qe.sepm.skeleton.model.*;
-import at.qe.sepm.skeleton.services.EquipmentReservationService;
-import at.qe.sepm.skeleton.services.MailService;
-import at.qe.sepm.skeleton.services.OpeningHoursService;
-import at.qe.sepm.skeleton.services.UserService;
+import at.qe.sepm.skeleton.services.*;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,9 @@ public class ReservationController {
 
      @Autowired
      private MailService mailService;
+
+     @Autowired
+     private HolidaysService holidaysService;
 
     protected boolean addedSuccessfully;
     protected Date lendingDate;
@@ -170,6 +170,7 @@ public class ReservationController {
 
     public void sendEmail(List<Equipment> equipments)
     {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d.M.Y HH:mm");
         User user = userService.getAuthenticatedUser();
 
         StringBuilder emailContent = new StringBuilder();
@@ -178,7 +179,7 @@ public class ReservationController {
 
         emailContent.append("Hallo "+user.getFirstName()+" "+user.getLastName()+"!<br><br>");
         emailContent.append("Ihre gewünschten Laborgeräte wurden reserviert<br>");
-        emailContent.append("Zeitraum: "+ lendingDate + " bis " + returnDate+"<br><br>");
+        emailContent.append("Zeitraum: " + dateFormat.format(lendingDate) + " bis " + dateFormat.format(returnDate)+"<br><br>");
 
         emailContent.append("Laborgeräte:<br>");
         emailContent.append("<ul>");
@@ -197,5 +198,16 @@ public class ReservationController {
         //Create Mail
         Mail mail = new Mail(user.getEmail(), "Neue Reservierung", emailContent.toString());
         mailService.sendMail(mail); //send mail
+    }
+
+    /**
+     * Adds all holidays to calendar
+     */
+    public void addHolidaysToSchedular()
+    {
+        for(Holidays holidays : holidaysService.getAllHolidays())
+        {
+            scheduleModel.addEvent(new DefaultScheduleEvent(holidays.getName(), holidays.getStartDate(), holidays.getEndDate()));
+        }
     }
 }
