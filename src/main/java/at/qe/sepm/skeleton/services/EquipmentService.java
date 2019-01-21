@@ -168,7 +168,7 @@ public class EquipmentService {
                 storageService.deleteFile(manual.getFilename());
             }
         } catch (IOException e){
-            logger.warn("FAILED to delete manual on delete equipment " + equipment.getId() + " [" + equipment.getName() + "] action");
+            logger.error("FAILED to delete manual on delete equipment " + equipment.getId() + " [" + equipment.getName() + "] action");
         } finally {
             equipment = deleteAllGroupsFromEquipment(equipment);
             equipmentRepository.delete(equipment);

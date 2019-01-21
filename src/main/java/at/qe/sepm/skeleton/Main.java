@@ -1,12 +1,10 @@
 package at.qe.sepm.skeleton;
 
-import at.qe.sepm.skeleton.configs.CustomServletContextInitializer;
-import at.qe.sepm.skeleton.configs.ReservationProperties;
-import at.qe.sepm.skeleton.configs.StorageProperties;
-import at.qe.sepm.skeleton.configs.WebSecurityConfig;
+import at.qe.sepm.skeleton.configs.*;
 import at.qe.sepm.skeleton.services.StorageService;
 import at.qe.sepm.skeleton.utils.ViewScope;
 import java.util.HashMap;
+import java.util.Properties;
 import javax.faces.webapp.FacesServlet;
 
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -18,6 +16,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 /**
@@ -29,8 +30,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
  * of Innsbruck.
  */
 @SpringBootApplication
+@EnableScheduling
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties({ReservationProperties.class, StorageProperties.class})
+@EnableConfigurationProperties({ReservationProperties.class, StorageProperties.class, EmailProperties.class})
 public class Main extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
@@ -65,4 +67,10 @@ public class Main extends SpringBootServletInitializer {
             storageService.init();
         };
     }
+
+    @Bean
+    public JavaMailSender getEmailSender() {
+        return new JavaMailSenderImpl();
+    }
+
 }

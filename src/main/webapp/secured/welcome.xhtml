@@ -26,6 +26,9 @@
                         value="#{reservationListController.allUserReservations}"
                         rowIndexVar="index"
                         rowStyleClass="#{reservation.completed ? 'completed' : ''}"
+                        rows="15" paginator="true"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="10,15,20,25"
                     ><!-- style completed rows differently -->
                         <f:facet name="header">
                             <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary">
@@ -43,8 +46,11 @@
                         <p:column headerText="Rückgabedatum">
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{reservation.state}"/>
+                        </p:column>
                         <p:column style="width:100px;text-align: center">
-                            <p:commandButton icon="ui-icon-note" title="Bedienungsanleitung" styleClass="btn-secondary" oncomplete="PF('equipmentManualsDialog').show()" update="@form">
+                            <p:commandButton icon="ui-icon-note" title="Bedienungsanleitung" styleClass="btn-secondary" oncomplete="PF('equipmentManualsDialog').show()" update=":reservationForm:equipmentManualsDialog" disabled="#{reservation.equipment.manuals.size() == 0}">
                                 <f:setPropertyActionListener value="#{reservation.equipment}" target="#{reservationListController.equipmentManual}"/>
                             </p:commandButton>
                             <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="ui-icon-trash" title="Löschen" rendered="#{reservation.deletable}" update="reservationTable" styleClass="btn-danger">
@@ -54,7 +60,7 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:dialog header="Bedienungsanleitungen von #{reservationListController.equipmentManual.name}" widgetVar="equipmentManualsDialog" modal="true" height="300" width="650" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:dialog header="Bedienungsanleitungen von #{reservationListController.equipmentManual.name}" id="equipmentManualsDialog" widgetVar="equipmentManualsDialog" modal="true" height="300" width="650" showEffect="fade" hideEffect="fade" resizable="false">
                         <p:repeat value="#{reservationListController.equipmentManual.manuals}" var="manual">
                             <p:panel header="#{manual.name}" style="margin-bottom: 10px">
                                 <h:outputText value="#{manual.desc}" style="line-height: 2;padding-left: 10px"/>
@@ -65,6 +71,11 @@
                             </p:panel>
                         </p:repeat>
                     </p:dialog>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check" />
+                        <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
+                    </p:confirmDialog>
                 </h:form>
             </p:panel>
 
@@ -89,6 +100,9 @@
                         style="margin-bottom:0"
                         rowIndexVar="index"
                         rowStyleClass="#{reservation.overdue ? 'overdue' : ''}"
+                        rows="15" paginator="true"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="10,15,20,25"
                     ><!-- style overdue rows differently -->
                         <f:facet name="header">
                             <div>
@@ -156,10 +170,6 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
-                        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check" />
-                        <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
-                    </p:confirmDialog>
                 </h:form>
             </p:panel>
         </h:panelGroup>

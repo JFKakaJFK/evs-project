@@ -100,6 +100,26 @@ public class Equipment implements Persistable<Integer> {
     }
 
     /**
+     * Returns the current {@link Equipment#getState()} as german string
+     *
+     * @return
+     */
+    public String getStateAsString(){
+        switch (getState()){
+            case AVAILABLE:
+                return "VERFÜGBAR";
+            case OVERDUE:
+                return "ÜBERFÄLLIG";
+            case BOOKED:
+                return "GEBUCHT";
+            case LOCKED:
+                return "GESPERRT";
+            default:
+                return "UNBEKANNT";
+        }
+    }
+
+    /**
      * Returns whether a equipment is available in a timeframe, assuming
      *
      * Assumes that the endDate > Startdate for any given reservation

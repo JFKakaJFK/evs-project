@@ -9,9 +9,9 @@
             <h:form>
                 <p:menubar rendered="#{sessionInfoBean.loggedIn}">
                     <p:menuitem value="Meine Reservierungen" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.hasRole('STUDENT')}" styleClass="ui-menu-link-mod"/>
-                    <p:menuitem value="&#xb7;" disabled="ture" styleClass="ui-menu-seperator-mod"/>
+                    <p:menuitem value="&#xb7;" styleClass="ui-menu-seperator-mod"/>
                     <p:menuitem value="Meine Laborgerätegruppen" url="/secured/my-equipmentgroups.xhtml" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}" styleClass="ui-menu-link-mod" />
-                    <p:menuitem value="&#xb7;" disabled="ture" styleClass="ui-menu-seperator-mod"/>
+                    <p:menuitem value="&#xb7;" styleClass="ui-menu-seperator-mod" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
                     <p:menuitem value="Laborgeräte" styleClass="ui-menu-link-mod" url="/secured/equipment-overview.xhtml" rendered="#{!sessionInfoBean.hasRole('ADMIN')}"/>
                     <p:submenu styleClass="dropdown" label="Verwalten" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="Reservierungen" url="/admin/reservation-overview.xhtml" />

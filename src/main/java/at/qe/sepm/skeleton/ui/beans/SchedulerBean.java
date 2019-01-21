@@ -1,6 +1,5 @@
 package at.qe.sepm.skeleton.ui.beans;
 
-import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.Mail;
 import at.qe.sepm.skeleton.model.User;
@@ -11,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class SchedulerBean {
+
     @Autowired
     private EquipmentReservationService equipmentReservationService;
 
@@ -26,6 +25,7 @@ public class SchedulerBean {
     @Autowired
     private MailService mailService;
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(SchedulerBean.class);
 
     //execute all 5mins
     @Scheduled(fixedRate = 50000)
@@ -110,6 +110,8 @@ public class SchedulerBean {
                 Mail mailAdmin = new Mail(admin.getEmail(), "Überfällige Buchung (" + user.getcNumber() + ")", emailContentAdmin.toString());
                 mailService.sendMail(mailAdmin);
             }
+
+            logger.info("Sent email reminders");
         }
     }
 
@@ -148,6 +150,8 @@ public class SchedulerBean {
             //Create Mail
             Mail mail = new Mail(user.getEmail(), "Eerinnerung Buchungen", emailContent.toString());
             mailService.sendMail(mail); //send mail
+
+            logger.info("Sent email reminders");
         }
     }
 }

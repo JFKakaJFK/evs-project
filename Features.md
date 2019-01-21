@@ -15,7 +15,7 @@
 - [ ] TODO: zb sicheres passwort generieren und per mail schicken
 - [ ] BUG: user overview sortieren geht erst nachdem man in der suchleiste etwas gesucht hat(umstellung der List<> auf filteredUsers)
 
-## 2. Equipment management & Opening Hours - FAST FERTIG
+## 2. Equipment management & Opening Hours - FERTIG
 
 - [x] Equipment Entity und Service (@Johannes)
 - [x] testEquipments hinzufügen (@Johannes)
@@ -40,7 +40,7 @@
 - [x] testReservationen (@Johannes)
 - [x] ReservationListController (@Melanie @Markus)
 - [x] addReservationController (@Melanie @Markus)
-- [ ] Bestätigungsmails (@Markus)
+- [x] Bestätigungsmails (@Markus)
 - [x] AddEquipmentGroupReservationController (@Melanie @Markus)
 - [x] EquipmentGroupListController (@Melanie @Markus)
 - [x] view zur Einsicht, erstellen & löschen der eigenen Reservierungen **EMPLOYEE** (@Chris)
@@ -71,9 +71,9 @@
 - [x] bei allen zurück buttons bei denen die form validiert und bei leerem input gewarnt wird, beim zurück button `immediate="true"` attribut setzen. (@Melanie)
 - [ ] bei der löschung von entities loggen(siehe equipmentservice) (@Andi)
 - [ ] growl/messages für alle delete/add aktionen? (@Andi)
-- [ ] `emptyMessage=""` bei den datatables anpassen? (@Andi)
+- [x] `emptyMessage=""` bei den datatables anpassen? (@Andi)
 - [ ] `scrollable="true" scrollHeight="500"` bei den datatables hinzufügen (@Andi)
-- [ ] bei den datatables pagination, search & sort?(siehe neue user overview) (@Andi)
+- [x] bei den datatables pagination, search & sort?(siehe neue user overview) (@Andi)
 - [x] add & delete buttons einfärben (@Johannes)
 - [ ] TODOs im code finden und erledigen (@alle mit TODOs)
 
@@ -83,6 +83,11 @@
 System an, die am 21.01.2018 im Proseminar pr¨asentiert werden muss. Hierzu
 werden zwei bis drei Studierende ihres Teams zuf¨allig ausgew¨ahlt um die Inhalte
 zu pr¨asentieren.
+
+> Gruppe 2
+Geräteverwaltung (Rückgabe, Gruppen)
+Wie haben Sie das Projekt organisiert (Kommunikation, Branching in GIT, etc.)?
+
 
 - Feature File-Up/Download (@Johannes)
 

@@ -124,6 +124,10 @@
     font-size: 1.2rem;
 }
 
+.ui-panel .ui-panel-title .ui-button {
+    font-size: initial;
+}
+
 .ui-expanded-row-content td {
     padding: 0 !important;
 }
@@ -259,4 +263,10 @@
 .align-right:after {
     content: "";
     clear: both;
+}
+
+/* equipment detail page */
+.ui-datatable table table tbody td {
+    vertical-align: top;
+    border: 1px solid #DDD;
 }

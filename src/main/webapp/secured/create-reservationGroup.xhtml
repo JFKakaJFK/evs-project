@@ -17,14 +17,14 @@
                     <div class="ui-g-4">
                         <p:outputLabel for="lendingDatetime" value="Ausleidatum: " />
                         <p:calendar id="lendingDatetime" value="#{newGroupReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" >
-                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" />
+                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" immediate = "true" />
                         </p:calendar>
                     </div>
 
                     <div class="ui-g-4">
                         <p:outputLabel for="returnDatetime" value="Rückgabedatum: " />
                         <p:calendar id="returnDatetime" value="#{newGroupReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" >
-                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" />
+                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" immediate = "true" />
                         </p:calendar>
                     </div>
 

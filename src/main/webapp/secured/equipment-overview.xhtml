@@ -17,7 +17,10 @@
                 <p:dataTable id="equipmentTable"
                              var="equipment" value="#{equipmentListController.equipment}"
                              rowExpandMode="single" rowKey="#{element.id}" expandedRow="#{element.id == equipmentDetailController.expandedRowElementId}"
-                             scrollable="true" scrollHeight="500">
+                             rows="15" paginator="true"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20,25"
+                >
                     <f:facet name="header">
                         <p:commandButton value="Neues Gerät hinzufügen" update=":addEquipmentDialog" oncomplete="PF('addEquipmentDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary"/>
                     </f:facet>
@@ -37,7 +40,7 @@
                         <h:outputText value="#{equipment.maxDurationFormatted}"/>
                     </p:column>
                     <p:column headerText="Status">
-                        <h:outputText value="#{equipment.state}"/>
+                        <h:outputText value="#{equipment.stateAsString}"/>
                     </p:column>
                     <p:column style="width:100px;text-align: center" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:commandButton update=":equipmentForm:equipmentEditDialog" oncomplete="PF('equipmentEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
@@ -52,54 +55,54 @@
                     <p:rowExpansion>
 
                         <p:outputPanel id="expansion">
-                            <p:panel>
-                                <f:facet name="header">
-                                    Bedienungsanleitungen
-                                    <p:commandButton value="Bedienungsanleitung hinzufügen" update=":addManualDialog" oncomplete="PF('addManualDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary align-right">
-                                        <f:setPropertyActionListener value="#{equipment}" target="#{addManualBean.equipment}" />
-                                    </p:commandButton>
-                                </f:facet>
+                            <h:panelGrid columns="2">
+                                <p:panel>
+                                    <f:facet name="header">
+                                        Kommentare
+                                        <p:commandButton value="Neue Bemerkung" update=":addCommentDialog" oncomplete="PF('addCommentDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary align-right">
+                                            <f:setPropertyActionListener value="#{equipment}" target="#{addEquipmentCommentBean.equipment}" />
+                                        </p:commandButton>
+                                    </f:facet>
 
-                                <p:repeat value="#{equipment.manuals}" var="manual">
-                                    <p:panel header="#{manual.name}" style="margin-bottom: 10px">
-                                        <h:outputText value="#{manual.desc}"/>
+                                    <p:repeat id="commentTable" value="#{equipment.comments}" var="comment">
+                                        <p:panel header="#{comment.title}" style="margin-bottom:10px">
+                                            <h:outputText value="#{comment.message}"/>
+                                            <f:facet name="actions">
+                                                <p:commandButton update=":equipmentForm:commentEditDialog" oncomplete="PF('commentEditDialog').show()" icon="ui-icon-note" title="Edit"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-secondary">
+                                                    <f:setPropertyActionListener value="#{comment}" target="#{equipmentDetailController.comment}" />
+                                                </p:commandButton>
+                                                <p:commandButton action="#{equipmentDetailController.doDeleteComment}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
+                                                    <f:setPropertyActionListener value="#{comment}" target="#{equipmentDetailController.comment}" />
+                                                    <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie dieses Kommentar entfernen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
+                                                </p:commandButton>
+                                            </f:facet>
+                                        </p:panel>
+                                    </p:repeat>
+                                </p:panel>
 
-                                        <f:facet name="actions">
-                                            <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" actionListener="#{equipmentManualDownloadBean.download(manual)}" styleClass="btn-secondary"/>
-                                            <p:commandButton action="#{equipmentDetailController.doDeleteManual}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
-                                                <f:setPropertyActionListener value="#{manual}" target="#{equipmentDetailController.manual}" />
-                                                <p:confirm header="Confirmation" message="Sind Sie sicher, dass Sie die Bedienungsanleitung entfernen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
-                                            </p:commandButton>
-                                        </f:facet>
-                                    </p:panel>
-                                </p:repeat>
-                            </p:panel>
+                                <p:panel>
+                                    <f:facet name="header">
+                                        Bedienungsanleitungen
+                                        <p:commandButton value="Bedienungsanleitung hinzufügen" update=":addManualDialog" oncomplete="PF('addManualDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary align-right">
+                                            <f:setPropertyActionListener value="#{equipment}" target="#{addManualBean.equipment}" />
+                                        </p:commandButton>
+                                    </f:facet>
 
+                                    <p:repeat value="#{equipment.manuals}" var="manual">
+                                        <p:panel header="#{manual.name}" style="margin-bottom: 10px">
+                                            <h:outputText value="#{manual.desc}"/>
 
-                            <p:panel>
-
-                                <f:facet name="header">
-                                    Kommentare
-                                    <p:commandButton value="Neue Bemerkung" update=":addCommentDialog" oncomplete="PF('addCommentDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary align-right">
-                                        <f:setPropertyActionListener value="#{equipment}" target="#{addEquipmentCommentBean.equipment}" />
-                                    </p:commandButton>
-                                </f:facet>
-
-                                <p:repeat id="commentTable" value="#{equipment.comments}" var="comment">
-                                    <p:panel header="#{comment.title}" style="margin-bottom:10px">
-                                        <h:outputText value="#{comment.message}"/>
-                                        <f:facet name="actions">
-                                            <p:commandButton update=":equipmentForm:commentEditDialog" oncomplete="PF('commentEditDialog').show()" icon="ui-icon-note" title="Edit"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-secondary">
-                                                <f:setPropertyActionListener value="#{comment}" target="#{equipmentDetailController.comment}" />
-                                            </p:commandButton>
-                                            <p:commandButton action="#{equipmentDetailController.doDeleteComment}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
-                                                <f:setPropertyActionListener value="#{comment}" target="#{equipmentDetailController.comment}" />
-                                                <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie dieses Kommentar entfernen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
-                                            </p:commandButton>
-                                        </f:facet>
-                                    </p:panel>
-                                </p:repeat>
-                            </p:panel>
+                                            <f:facet name="actions">
+                                                <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" actionListener="#{equipmentManualDownloadBean.download(manual)}" styleClass="btn-secondary"/>
+                                                <p:commandButton action="#{equipmentDetailController.doDeleteManual}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
+                                                    <f:setPropertyActionListener value="#{manual}" target="#{equipmentDetailController.manual}" />
+                                                    <p:confirm header="Confirmation" message="Sind Sie sicher, dass Sie die Bedienungsanleitung entfernen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
+                                                </p:commandButton>
+                                            </f:facet>
+                                        </p:panel>
+                                    </p:repeat>
+                                </p:panel>
+                            </h:panelGrid>
                         </p:outputPanel>
                     </p:rowExpansion>
                 </p:dataTable>
@@ -119,6 +122,7 @@
                         <p:outputLabel for="locked" value="Sperren: " />
                         <p:selectBooleanCheckbox id="locked" value="#{equipmentDetailController.equipment.locked}"/>
                     </h:panelGrid>
+                    <p:separator/>
                     <h:panelGrid columns="3">
                         <p:commandButton value="Speichern" action="#{equipmentDetailController.doSaveEquipment()}" oncomplete="PF('equipmentEditDialog').hide()" update=":equipmentForm:equipmentTable" styleClass="btn-primary"/>
                         <p:commandButton value="Neu Laden" action="#{equipmentDetailController.doReloadEquipment()}" update=":equipmentForm:equipmentData" styleClass="btn-secondary"/>
@@ -135,6 +139,7 @@
                         <p:outputLabel for="msg" value="Nachricht: " />
                         <p:inputText id="msg" value="#{equipmentDetailController.comment.message}"/>
                     </h:panelGrid>
+                    <p:separator/>
                     <h:panelGrid columns="3">
                         <p:commandButton value="Speichern" action="#{equipmentDetailController.doSaveComment()}" oncomplete="PF('commentEditDialog').hide()" update=":equipmentForm:equipmentTable:expansion" styleClass="btn-primary"/>
                         <p:commandButton value="Neu Laden" action="#{equipmentDetailController.doReloadComment()}" update=":equipmentForm:commentData" styleClass="btn-secondary"/>

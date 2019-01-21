@@ -2,35 +2,35 @@ package at.qe.sepm.skeleton.services;
 
 import at.qe.sepm.skeleton.configs.EmailProperties;
 import at.qe.sepm.skeleton.model.Mail;
-import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Service
+@Scope("application")
 public class MailService {
+
     @Autowired
     private EmailProperties emailProperties;
 
 	@Autowired
     private JavaMailSender sender;
 
-    JavaMailSenderImpl javaMailSender;
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(MailService.class);
+
+    private JavaMailSenderImpl javaMailSender;
 
     @PostConstruct
     public void Init()
     {
+        System.setProperty("mail.mime.charset", "UTF-8");
         this.javaMailSender = new JavaMailSenderImpl();
 
         javaMailSender.setHost(emailProperties.getHost());
@@ -38,6 +38,7 @@ public class MailService {
         javaMailSender.setPassword(emailProperties.getPassword());
         javaMailSender.setPort(emailProperties.getPort());
         javaMailSender.setProtocol(emailProperties.getProtocol());
+        javaMailSender.setDefaultEncoding("UTF-8");
 
         // create java mail properties
         Properties mailProperties = new Properties();
@@ -54,7 +55,7 @@ public class MailService {
         {
             MimeMessage mimeMessage = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
-            mimeMessage.setContent(mail.getContent(), "text/html");
+            mimeMessage.setContent(mail.getContent(), "text/html; charset=UTF-8");
             helper.setTo(mail.getEmail());
             helper.setSubject(mail.getSubject());
             helper.setFrom(emailProperties.getEmail());
@@ -62,44 +63,11 @@ public class MailService {
             javaMailSender.send(mimeMessage);
         }
 
-        catch (MailException e)
+        catch (Exception e)
         {
-            e.printStackTrace();
+            logger.error("FAILED to send mail: " + e.getMessage());
         }
-
-        catch (MessagingException e)
-        {
-            e.printStackTrace();
-        }
-
-
-
-
 
     }
 
-    @Deprecated
-    public void sendEmail(String from, String to, String subject, String content) throws Exception {
-    	SimpleMailMessage message = new SimpleMailMessage();
-    	message.setFrom("test.hilpold@gmail.com");
-        message.setTo("test.hilpold@gmail.com"); 
-        message.setSubject("bla"); 
-        message.setText("bla");
-        try {
-        	sender.send(message);
-        } catch (MailException e) {
-        	System.out.println(e.getMessage());
-        }
-        
-        
-    }
-
-    @Deprecated
-    @Bean //Should send test Email
-    public SimpleMailMessage templateSimpleMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setText(
-          "This is the test email template for your email:\n%s\n");
-        return message;
-    }
 }

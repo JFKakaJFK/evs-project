@@ -52,9 +52,9 @@ public class User implements Persistable<String> {
 
     public String getRights(){
         if(roles.contains(UserRole.ADMIN)){
-            return "ADMIN";
+            return "ADMINISTRATOR";
         } else if (roles.contains(UserRole.EMPLOYEE)){
-            return "EMPLOYEE";
+            return "MITARBEITER";
         } else {
             return "STUDENT";
         }

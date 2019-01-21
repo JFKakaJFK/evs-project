@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
-@Component
+// @Component
 @ConfigurationProperties("email")
 public class EmailProperties {
     private String host = "smtp.gmail.com";

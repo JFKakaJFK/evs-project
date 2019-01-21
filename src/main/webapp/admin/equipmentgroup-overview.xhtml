@@ -14,7 +14,14 @@
             </p:messages>
 
             <p:panel header="Alle Gruppen">
-                <p:dataTable id="equipmentGroupTable" var="group" value="#{equipmentGroupListController.allEquipmentGroups}">
+                <p:dataTable id="equipmentGroupTable" 
+                var="group" 
+                value="#{equipmentGroupListController.allEquipmentGroups}"
+                emptyMessage="Noch keine Equipment-Gruppen im System"
+                rows="15" paginator="true"
+                paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="10,15,20,25"
+                >
                     <p:column headerText="Name">
                         <h:outputText value="#{group.name}"/>
                     </p:column>
