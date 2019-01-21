@@ -10,6 +10,7 @@ import at.qe.sepm.skeleton.services.MailService;
 @Component
 @Scope("request")
 
+@Deprecated
 public class EmailBean { //This Bean class doesn't send anything either
 	
 	@Autowired
