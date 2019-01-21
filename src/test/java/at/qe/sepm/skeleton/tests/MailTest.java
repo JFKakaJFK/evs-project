@@ -39,7 +39,7 @@ public class MailTest {
     {
         User user = userService.loadUser("admin");
         user.setEmail("christopher@kelter.at");
-        schedulerBean.sendEmailsOverdue(user);
+        schedulerBean.sendEmailOverdue(user);
     }
 
     @Test
@@ -48,6 +48,6 @@ public class MailTest {
     {
         User user = userService.loadUser("admin");
         user.setEmail("christopher@kelter.at");
-        schedulerBean.sendEmailsBeforeOverdue(user);
+        schedulerBean.sendEmailBeforeOverdue(user);
     }
 }
