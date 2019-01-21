@@ -6,6 +6,7 @@ import at.qe.sepm.skeleton.exceptions.UserIsAuthenticatedUserException;
 import at.qe.sepm.skeleton.model.EquipmentGroup;
 import at.qe.sepm.skeleton.model.EquipmentReservation;
 import at.qe.sepm.skeleton.model.User;
+import at.qe.sepm.skeleton.model.UserRole;
 import at.qe.sepm.skeleton.repositories.UserRepository;
 
 import java.util.ArrayList;
@@ -48,6 +49,16 @@ public class UserService {
     //@PreAuthorize("hasAuthority('ADMIN')") for EMAIL
     public Collection<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    /**
+     * Returns a collection of all admin-users.
+     *
+     * @return
+     */
+    public Collection<User> getAllAdminUsers()
+    {
+        return userRepository.findByRole(UserRole.ADMIN);
     }
 
     /**

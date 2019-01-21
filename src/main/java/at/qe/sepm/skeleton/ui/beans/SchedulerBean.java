@@ -26,8 +26,6 @@ public class SchedulerBean {
     @Autowired
     private MailService mailService;
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d.M.Y");
-
 
     //execute all 5mins
     @Scheduled(fixedRate = 50000)
@@ -40,77 +38,86 @@ public class SchedulerBean {
         {
             for(User user : users)
             {
-                sendEmailsBeforeOverdue(user);
-                sendEmailsOverdue(user);
+                sendEmailBeforeOverdue(user);
+                sendEmailOverdue(user);
             }
 
 
         }
     }
 
-
-    public void sendEmailsOverdue(User user)
+    /**
+     * Sends Email to given user and all admins, if at least one equipment of the given user is overdue to return
+     * @param user
+     */
+    public void sendEmailOverdue(User user)
     {
         List<EquipmentReservation> reservations = new ArrayList<>();
         reservations.addAll(equipmentReservationService.getAllOverdueReservations(user));
 
         if(!reservations.isEmpty())
         {
-            StringBuilder emailContent = new StringBuilder();
-            emailContent.append("<html>");
-            emailContent.append("<body>");
+            String userName = user.getFirstName()+" "+user.getLastName();
+            StringBuilder emailHeader = new StringBuilder();
+            StringBuilder emailHeaderUser = new StringBuilder();
+            StringBuilder equipmentsOverdue = new StringBuilder();
+            StringBuilder emailFooter = new StringBuilder();
 
-            emailContent.append("Hallo "+user.getFirstName()+" "+user.getLastName()+"!<br><br>");
-            emailContent.append("Folgende Laborgeräte sind überfällig zur Rückgabe:<br>");
+            //header need for both user and admin
+            emailHeader.append("<html>");
+            emailHeader.append("<body>");
 
-            emailContent.append(
-                "<style>" +
-                    "table { " +
-                    "  text-align: left;" +
-                    "  border-collapse: collapse; " +
-                    "  width: 100%; " +
-                    "}" +
-                    "" +
-                    "td, th { " +
-                    "  border: 1px solid; " +
-                    "  padding: .5em; " +
-                    "}" +
-                    "</style>"
-            );
-            emailContent.append("<table>");
-            emailContent.append("<thead>");
-            emailContent.append("<tr>");
-            emailContent.append("<td>Laborgerät</td>");
-            emailContent.append("<td>Rückgabedatum</td>");
-            emailContent.append("</tr>");
-            emailContent.append("</thead>");
+            //header-part just for user
+            emailHeaderUser.append("Hallo "+ userName + "!<br><br>");
+            emailHeaderUser.append("Folgende Laborgeräte sind überfällig zur Rückgabe:<br>");
 
-            emailContent.append("<tbody>");
+            //list of equipments which are overdue (for both)
+            equipmentsOverdue.append("<ul>");
             for(EquipmentReservation reservation : reservations)
             {
-                emailContent.append("<tr>");
-                emailContent.append("<td>" + reservation.getEquipment().getName() + "</td>");
-                emailContent.append("<td>" + simpleDateFormat.format(reservation.getEndDate()) + "</td>");
-                emailContent.append("</tr>");
-
+                equipmentsOverdue.append("<li>" + reservation.getEquipment().getName() + "</li>");
                 reservation.setOverdueMailSent(true);
                 equipmentReservationService.saveReservation(reservation);
             }
-            emailContent.append("</tbody>");
-            emailContent.append("</table>");
+            equipmentsOverdue.append("</ul>");
 
-            emailContent.append("<p>Dies ist eine automatisch generierte Email, bitte nicht antworten!</p>");
+            //email Footer for both
+            emailFooter.append("<p>Dies ist eine automatisch generierte Email, bitte nicht antworten!</p>");
+            emailFooter.append("</body>");
+            emailFooter.append("</html>");
 
-            emailContent.append("</body>");
-            emailContent.append("</html>");
+            //send Email to User:
+            StringBuilder emailContentUser = new StringBuilder();
+            emailContentUser.append(emailHeader);
+            emailContentUser.append(emailHeaderUser);
+            emailContentUser.append(equipmentsOverdue);
+            emailContentUser.append(emailFooter);
 
-            //Create Mail
-            Mail mail = new Mail(user.getEmail(), "Überfällige Buchungen", emailContent.toString());
+            Mail mail = new Mail(user.getEmail(), "Überfällige Buchungen", emailContentUser.toString());
             mailService.sendMail(mail); //send mail
+
+            //Send Email to Admins
+            List<User> admins = (List<User>) userService.getAllAdminUsers();
+            for(User admin : admins)
+            {
+                StringBuilder emailContentAdmin = new StringBuilder();
+                emailContentAdmin.append(emailHeader);
+                emailContentAdmin.append("Hallo " + admin.getFirstName() + " " + admin.getLastName() + "!<br><br>");
+                emailContentAdmin.append("Folgende Laborgeräte von Benutzer " + userName + "(" + user.getcNumber() + ") sind überfällig zur Rückgabe:<br>");
+                emailContentAdmin.append(equipmentsOverdue);
+                emailContentAdmin.append(emailFooter);
+
+                Mail mailAdmin = new Mail(admin.getEmail(), "Überfällige Buchung (" + user.getcNumber() + ")", emailContentAdmin.toString());
+                mailService.sendMail(mailAdmin);
+            }
         }
     }
 
-    public void sendEmailsBeforeOverdue(User user)
+    /**
+     * Sends an reminder-Email to the given user, if reservations / booking duration is >= 3 days
+     * @param user
+     */
+    public void sendEmailBeforeOverdue(User user)
     {
         List<EquipmentReservation> reservations = new ArrayList<>();
         reservations.addAll(equipmentReservationService.getAllLongReservationsEndingSoonByUser(user));
