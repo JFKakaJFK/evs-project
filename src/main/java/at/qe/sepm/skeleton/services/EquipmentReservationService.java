@@ -131,7 +131,10 @@ public class EquipmentReservationService {
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #reservation.getUser().username")
     public void deleteReservation(EquipmentReservation reservation) throws ReservationInProgressException {
-        if(reservation.isDeletable()){
+    	if(reservation.getState() == "ZUKÜNFTIG") {
+    		deleteReservationWithEmail(reservation);
+    	}
+    	else if(reservation.isDeletable()){
             Equipment e = reservation.getEquipment();
             e.removeReservation(reservation);
             equipmentRepository.save(e);
@@ -140,4 +143,17 @@ public class EquipmentReservationService {
         }
         // TODO log reservation deleted by whom
     }
+    
+    
+    //added Code
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteReservationWithEmail (EquipmentReservation reservation) throws ReservationInProgressException{
+    	Equipment e = reservation.getEquipment();
+        Mail mail = new Mail(reservation.getUser().getEmail(), "Reservierung", "<b>Die Reservierung des Gerätes </b>" + e.getName() +  "<b>, welches Sie vom </b>" + reservation.getStartDate() + "<b> bis </b>" + reservation.getEndDate() + "<b> reserviert haben, musste leider gelöscht werden. Wir bitten um Ihr Vertändnis. </b> ");
+        e.removeReservation(reservation);
+        equipmentRepository.save(e);
+        mailService.sendMail(mail);
+    	}
+    
+    
 }
