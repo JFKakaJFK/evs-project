@@ -135,7 +135,7 @@ public class EquipmentReservationService {
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #reservation.getUser().username")
     public void deleteReservation(EquipmentReservation reservation) throws ReservationInProgressException {
-    	if(reservation.getState() == "ZUKÜNFTIG") {
+    	if((reservation.getState() == "ZUKÜNFTIG") && reservation.getUser().getRights()=="ADMINISTRATOR") {
     		deleteReservationWithEmail(reservation);
     	}
     	else if(reservation.isDeletable()){
