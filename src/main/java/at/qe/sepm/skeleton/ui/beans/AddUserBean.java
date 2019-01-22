@@ -3,6 +3,9 @@ package at.qe.sepm.skeleton.ui.beans;
 import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.model.UserRole;
 import at.qe.sepm.skeleton.services.UserService;
+
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +13,11 @@ import org.springframework.stereotype.Component;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -103,6 +111,51 @@ public class AddUserBean {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+    
+    public void handleFileUpload(FileUploadEvent event) {
+    	UploadedFile uploadedFile = event.getFile();
+    	
+    	try {
+      
+
+			InputStream contents = uploadedFile.getInputstream();
+			
+			BufferedReader buf = new BufferedReader(new InputStreamReader(contents));
+			String line;
+			while((line = buf.readLine()) != null) {
+				System.out.println("This is a line: " + line);
+				User user = new User();
+				String username = line.split(",")[0];
+				System.out.println(username);
+				String password = line.split(",")[1];
+			    String firstName = line.split(",")[2];
+			    String lastName = line.split(",")[3];
+			    String email = line.split(",")[4];
+			    String cNumber = line.split(",")[5];
+			    String roles = line.split(",")[6];
+
+				user.setUsername(username);
+				user.setPassword(passwordEncoder.encode(password));
+		        user.setFirstName(firstName);
+		        user.setLastName(lastName);
+		        user.setEmail(email);
+		        user.setcNumber(cNumber);
+		        user.setEnabled(true);
+		        user.setRoles(user.determineRoles(roles));
+
+		        userService.saveUser(user);
+		        
+			}
+			
+			
+		
+		} catch (IOException e) {
+			System.out.println("Error loading CSV");
+			e.printStackTrace();
+			
+		}
+    	
     }
 
     /* Getters & Setters */
