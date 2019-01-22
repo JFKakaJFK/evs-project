@@ -28,6 +28,7 @@
                             <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Suche"/>
                         </p:outputPanel>
                         <p:commandButton value="Neuer User hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick" styleClass="btn-primary"/>
+                        <p:commandButton value="Benutzer hochladen" oncomplete="PF('addCSV').show()" icon="ui-icon-plushtick" syleClass="btn-primary"/>
                     </f:facet>
                     <p:column headerText="Benutzername" sortBy="#{user.username}" filterBy="#{user.username}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{user.username}" />
@@ -136,5 +137,17 @@
                 </p:outputPanel>
             </h:form>
         </p:dialog>
+        <p:dialog header="CSV file hochladen" id="addCSV" widgetVar="addCSV" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+			<h:form id="fileUpload">
+				<p:fileUpload id="fileUpload" fileUploadListener="#{addUserBean.handleFileUpload}" multiple="false"
+                          mode="advanced" required="true"
+                          update=":userForm:messages" auto="true" sizeLimit="10000000"
+                          allowTypes="/(csv)$/"
+                          styleClass="fileupload" requiredMessage="Es muss eine Datei hochgeladen werden."
+                          validatorMessage="Dieses Dateiformat ist nicht erlaubt" invalidSizeMessage="Diese Datei ist zu groß"
+                          invalidFileMessage="Dieses Dateiformat ist nicht erlaubt"
+            />
+			</h:form>
+		</p:dialog>
     </ui:define>
 </ui:composition>
