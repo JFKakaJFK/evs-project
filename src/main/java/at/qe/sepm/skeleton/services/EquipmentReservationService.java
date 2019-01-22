@@ -32,6 +32,9 @@ public class EquipmentReservationService {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+        
+    @Autowired
+    private MailService mailService;
 
     /**
      * Retuns all Reservations where the equipment state is BOOKED
