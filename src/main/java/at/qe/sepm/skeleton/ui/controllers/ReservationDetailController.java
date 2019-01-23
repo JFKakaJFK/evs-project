@@ -2,6 +2,10 @@ package at.qe.sepm.skeleton.ui.controllers;
 
 
 import at.qe.sepm.skeleton.model.EquipmentReservation;
+import at.qe.sepm.skeleton.services.MailService;
+import at.qe.sepm.skeleton.model.Mail;
+import at.qe.sepm.skeleton.model.Equipment;
+import at.qe.sepm.skeleton.model.User;
 import at.qe.sepm.skeleton.services.EquipmentReservationService;
 import at.qe.sepm.skeleton.exceptions.ReservationInProgressException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,9 @@ public class ReservationDetailController {
 
     @Autowired
     private EquipmentReservationService equipmentReservationService;
+    
+    @Autowired
+    private MailService mailService;
 
     /**
      * Attribute to cache the currently displayed reservation
@@ -60,5 +67,16 @@ public class ReservationDetailController {
             }
             equipmentReservation = null;
         }
+    }
+    
+        
+    public void doDeleteReservationWithEmail() {
+         if(equipmentReservation.getState()=="ZUKÜNFTIG") {
+       		 Equipment e = equipmentReservation.getEquipment();
+       		 Mail mail = new Mail(equipmentReservation.getUser().getEmail(), "Reservierung", "<b>Die Reservierung des Gerätes </b>" + e.getName() +  "<b>, welches Sie vom </b>" + equipmentReservation.getStartDate() + "<b> bis </b>" + equipmentReservation.getEndDate() + "<b> reserviert haben, musste leider gelöscht werden. Wir bitten um Ihr Vertändnis. </b> ");
+             mailService.sendMail(mail);
+          	 }
+    
+ 		 doDeleteReservation();
     }
 }
