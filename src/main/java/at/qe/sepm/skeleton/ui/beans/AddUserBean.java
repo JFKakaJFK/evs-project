@@ -126,19 +126,26 @@ public class AddUserBean {
         try(BufferedReader buf = new BufferedReader(new InputStreamReader(Files.newInputStream(storageService.load(csv))))) {
 
             String line;
-            while((line = buf.readLine()) != null) {
-                String[] userData = line.split(",");
+            try {
+            	while((line = buf.readLine()) != null) {
+            		String[] userData = line.split(",");
 
-                username = userData[0];
-                password = userData[1];
-                firstName = userData[2];
-                lastName = userData[3];
-                email = userData[4];
-                cNumber = userData[5];
-                enabled = Boolean.valueOf(userData[6]);
-                role = userData[7];
+            		username = userData[0];
+            		password = userData[1];
+            		firstName = userData[2];
+            		lastName = userData[3];
+            		email = userData[4];
+            		cNumber = userData[5];
+            		enabled = Boolean.valueOf(userData[6]);
+            		role = userData[7];
 
-                addUser();
+            		addUser();
+            	}
+            } catch (ArrayIndexOutOfBoundsException a) {
+            	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_ERROR, "Error", "Bitte vergewissern Sie sich, "
+                        		+ "dass alle Werte gesetzt wurden")
+                    );
             }
 
         } catch (IOException e) {
