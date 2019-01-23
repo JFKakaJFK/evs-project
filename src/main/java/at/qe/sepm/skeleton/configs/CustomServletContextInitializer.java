@@ -25,6 +25,7 @@ public class CustomServletContextInitializer implements ServletContextInitialize
         sc.setInitParameter("primefaces.UPLOADER", "commons");
         sc.setInitParameter("primefaces.THEME", "bootstrap");
         sc.setInitParameter("javax.faces.FACELETS_SKIP_COMMENTS", "true");
+        sc.setInitParameter("primefaces.FONT_AWESOME", "true");
     }
 
     @Bean

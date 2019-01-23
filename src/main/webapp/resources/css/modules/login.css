@@ -1,0 +1,126 @@
+/* remove menubar and footer */
+#header, #footer {
+    display: none;
+}
+
+#page {
+    margin: 0;
+    width: 100%;
+}
+
+/* create the full-width/height background image and layout the login form */
+#content {
+    max-width: initial;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("/resources/images/login-bg.jpg");
+    background-size: cover;
+}
+
+/* style and layout of the login form */
+#page #content #login_form {
+    display: inline-block;
+    background: #fff;
+    padding: 40px;
+    box-shadow: 4px 4px 16px hsla(0, 0%, 0%, .25), 4px 4px 32px hsla(0, 0%, 0%, .15);
+    position: relative;
+    left: 50%;
+    transition: left .25s ease-in-out;
+}
+
+/* remove shift to the right on small screens */
+@media only screen and (max-width: 800px) {
+    #page #content #login_form {
+        left: 0;
+        transition: left .25s ease-in-out;
+    }
+}
+
+/* change the heading font */
+h2 {
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+/* style the input fields */
+input[type="text"]#username,
+input[type="password"]#password {
+    background-color: var(--bg-light);
+    width: 150px;
+    padding: 8px;
+}
+
+.flex-both {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.center {
+    text-align: center;
+}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--primary-bg);
+    -webkit-box-shadow: none;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* style the submit button */
+#submit {
+    margin-top: 30px;
+    width: 150px;
+    padding: 16px;
+    background: var(--primary-bg);
+    color: var(--primary-fg);
+    transition: all .15s ease-in-out;
+}
+
+#submit .ui-button-text {
+    font-weight: 400;
+}
+
+#submit:hover,
+#submit:active {
+    cursor: pointer;
+    opacity: .75%;
+    background: var(--bg-dark);
+    transition: all .15s ease-in-out;
+}
+
+/* style the session expired message */
+#messages {
+    width: 300px;
+    font-size: 1rem;
+}
+
+#messages ul {
+    margin: 0 4px;
+}
+
+.ui-messages-error {
+    border: 0;
+}
+
+.ui-messages-error-icon {
+    display: none;
+}
+
+.ui-messages-error-summary {
+    font-weight: 500;
+    margin: 0;
+}
+

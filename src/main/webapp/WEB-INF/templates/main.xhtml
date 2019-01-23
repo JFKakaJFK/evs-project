@@ -11,7 +11,12 @@
     </h:head>
 
     <h:body>
-        <h:outputStylesheet name="css/main.css"/>
+        <h:outputStylesheet name="main.css" library="css"/>
+        <h:outputStylesheet name="/reset/normalize.css" library="css"/>
+        <h:outputStylesheet name="/reset/pf.css" library="css"/>
+        <h:outputStylesheet name="/base/base.css" library="css"/>
+        <h:outputStylesheet name="/layout/layout.css" library="css"/>
+
         <div id="page">
 
             <div id="header">
@@ -24,9 +29,11 @@
                 </div>
             </div>
 
+            <!--
             <div id="footer">
                 <ui:include src="/WEB-INF/includes/footer.xhtml" />
             </div>
+            -->
 
         </div>
 

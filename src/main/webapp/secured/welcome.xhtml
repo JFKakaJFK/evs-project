@@ -32,8 +32,8 @@
                     ><!-- style completed rows differently -->
                         <f:facet name="header">
                             <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary">
-                                <p:menuitem value="Laborgerät" url="create-reservation.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
-                                <p:menuitem value="Laborgerätgruppe" url="create-reservationGroup.xhtml" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
+                                <p:menuitem value="Laborgerät" url="create-reservation.xhtml" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
+                                <p:menuitem value="Laborgerätgruppe" url="create-reservationGroup.xhtml" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
                             </p:menuButton>
                         </f:facet>
 
@@ -50,10 +50,10 @@
                             <h:outputText value="#{reservation.state}"/>
                         </p:column>
                         <p:column style="width:100px;text-align: center">
-                            <p:commandButton icon="ui-icon-note" title="Bedienungsanleitung" styleClass="btn-secondary" oncomplete="PF('equipmentManualsDialog').show()" update=":reservationForm:equipmentManualsDialog" disabled="#{reservation.equipment.manuals.size() == 0}">
+                            <p:commandButton icon="fa fa-files-o" title="Bedienungsanleitung" styleClass="btn-secondary" oncomplete="PF('equipmentManualsDialog').show()" update=":reservationForm:equipmentManualsDialog" disabled="#{reservation.equipment.manuals.size() == 0}">
                                 <f:setPropertyActionListener value="#{reservation.equipment}" target="#{reservationListController.equipmentManual}"/>
                             </p:commandButton>
-                            <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="ui-icon-trash" title="Löschen" rendered="#{reservation.deletable}" update="reservationTable" styleClass="btn-danger">
+                            <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="fa fa-trash" title="Löschen" rendered="#{reservation.deletable}" update="reservationTable" styleClass="btn-danger">
                                 <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailController.equipmentReservation}" />
                                 <p:confirm header="Bestätigung" message="Sie sind sicher, dass Sie diese Reservierung löschen wollen? Dieser Vorgang kann ncht rückgängig gemacht werden." icon="ui-icon-alert" />
                             </p:commandButton>

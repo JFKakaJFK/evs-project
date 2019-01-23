@@ -1,0 +1,88 @@
+#header {
+    background: var(--bg-dark);
+    color: var(--primary-fg);
+    padding: 50px 25px 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-detail {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 40px 0;
+}
+
+.user-detail p {
+    font-size: 1.3rem;
+    margin: 2px;
+}
+
+p.user-rights {
+    font-size: .8rem;
+}
+
+.user-detail .user-detail-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50% !important;
+    background-color: var(--bg-light);
+    color: var(--bg-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.user-detail-icon .fa-user {
+    font-size: 3rem;
+}
+
+#menu {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#menu p {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--bg-light) !important;
+    margin: 24px 0 8px 0;
+    font-weight: 400;
+}
+
+#menu a:link,
+#menu a:visited {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    margin-bottom: 4px;
+}
+
+#menu a:hover,
+#menu a:active {
+    text-decoration: underline;
+}
+
+#logout i {
+    margin-right: 16px;
+}
+
+#logout a:link,
+#logout a:visited {
+    color: inherit;
+    text-decoration: none;
+    padding: 8px 20px;
+    border-radius: 25px !important;
+    transition: all .15s ease-in-out;
+}
+
+#logout a:active,
+#logout a:hover {
+    background: var(--primary-bg);
+    text-decoration: none;
+    transition: all .15s ease-in-out;
+}
+

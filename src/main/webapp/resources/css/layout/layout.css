@@ -1,0 +1,27 @@
+html {
+    overflow: hidden;
+}
+
+#page {
+    width: calc(100% - 225px);
+    height: 100vh;
+    margin-left: 225px;
+    overflow: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#header {
+    position: fixed;
+    width: 225px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#content {
+    width: 90%;
+    height: 90%;
+    overflow: scroll;
+}

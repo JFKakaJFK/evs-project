@@ -1,0 +1,49 @@
+/* remove all bg images and borders */
+#page *:not(.ui-icon):not(#content),
+.ui-widget-content .ui-state-default {
+    background-image: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    text-shadow: none;
+    box-sizing: border-box;
+}
+
+/* display font awesome icons correctly */
+.ui-icon.fa {
+    text-indent: 0;
+    background-image:none;
+    font-size: initial;
+}
+
+/* color datatable ui icons */
+.ui-icon-check {
+    filter: brightness(0);
+}
+
+/* show datatable ui-icons correctly */
+.ui-datatable thead th,
+.ui-datatable tbody td {
+    padding: 0;
+}
+
+.ui-datatable .ui-chkbox .ui-chkbox-box.ui-widget {
+    /* TODO */
+    background: #CCC;
+}
+
+/* style the calendar view differently */
+.fc-event {
+    line-height: 5;
+}
+
+*:focus,
+*:hover,
+*:active {
+    outline: none !important;
+}
+
+.ui-messages-error {
+    color: var(--danger-fg);
+    background: var(--danger-bg);
+}
