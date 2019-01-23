@@ -29,21 +29,3 @@
     opacity: .7;
     transition: all .25s ease-in-out;
 }
-
-/* file upload */
-/*
-.fileupload {
-    max-width: 180px !important;
-}
-
-.fileupload .ui-fileupload-buttonbar {
-    padding: 0 !important;
-}
-
-.fileupload .ui-button {
-    margin: 0 !important;
-}
-
-.fileupload .ui-button-text {
-    padding: .3em .7em .3em 2em !important;
-}
