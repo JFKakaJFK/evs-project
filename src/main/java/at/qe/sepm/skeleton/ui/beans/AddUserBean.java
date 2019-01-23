@@ -145,11 +145,20 @@ public class AddUserBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_ERROR, "Error", "Fehler beim Benutzer hinzufügen")
             );
+        } finally {
+            try {
+                storageService.deleteFile(csv);
+            } catch (IOException e){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Error", "Fehler beim Benutzer hinzufügen")
+                );
+            }
+            csv = null;
         }
     }
 
     /**
-     * If the creation of a new {@link EquipmentManual} is aborted after uploading a file, delete the file
+     * If the creation of a new {@link User} is aborted after uploading a file, delete the file
      *
      * @throws IOException
      */

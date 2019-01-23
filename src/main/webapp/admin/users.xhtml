@@ -28,7 +28,7 @@
                             <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Suche"/>
                         </p:outputPanel>
                         <p:commandButton value="Neuer User hinzufügen" oncomplete="PF('addDialog').show()" icon="ui-icon-plusthick" styleClass="btn-primary"/>
-                        <p:commandButton value="Benutzer hochladen" oncomplete="PF('addCSV').show()" icon="ui-icon-plushtick" syleClass="btn-primary"/>
+                        <p:commandButton value="Benutzer per CSV-Datei importieren" oncomplete="PF('addCSV').show()" icon="ui-icon-plushtick" styleClass="btn-primary"/>
                     </f:facet>
                     <p:column headerText="Benutzername" sortBy="#{user.username}" filterBy="#{user.username}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{user.username}" />
@@ -138,23 +138,33 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="CSV file hochladen" id="addCSV" widgetVar="addCSV" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-			<h:form id="csvUpload">
-                <h:panelGrid columns="2">
-                    <h:outputLabel for="rights" value="CSV-Datei auswählen: "/>
-                    <p:fileUpload id="fileUpload" fileUploadListener="#{addUserBean.handleFileUpload}" multiple="false"
-                                  mode="advanced" required="true"
-                                  update=":userForm:messages" auto="true" sizeLimit="10000000"
-                                  allowTypes="/(csv)$/"
-                                  styleClass="fileupload" requiredMessage="Es muss eine Datei hochgeladen werden."
-                                  validatorMessage="Dieses Dateiformat ist nicht erlaubt" invalidSizeMessage="Diese Datei ist zu groß"
-                                  invalidFileMessage="Dieses Dateiformat ist nicht erlaubt"
-                    />
-                </h:panelGrid>
-                <p>
-                    Die Datei muss das Format "<code>Benutzername, Passwort, Vorname, Nachname, Email, C-Kennung, Aktiviert(true|false), Rolle(ADMIN|EMPLOYEE|STUDENT)</code>" haben,
-                    wobei die Felder "Aktiviert" und "Rolle" einen der geklammerten Werte annehmen muss.
-                </p>
+        <p:dialog header="Benutzer per CSV Datei hinzufügen" id="addCSV" widgetVar="addCSV" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+			<h:form id="csvUpload" style="width: 450px">
+                <p:growl id="growls" showDetail="true" />
+                <p:outputPanel>
+                    <p>
+                        Die Datei muss das Format "<code>Benutzername,Passwort,Vorname,Nachname,Email,C-Kennung,Aktiviert(true|false),Rolle(ADMIN|EMPLOYEE|STUDENT)</code>" haben,
+                        wobei die Felder "Aktiviert" und "Rolle" einen der geklammerten Werte annehmen müssen.
+                    </p>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="rights" value="CSV-Datei auswählen: "/>
+                        <p:fileUpload id="fileUpload" fileUploadListener="#{addUserBean.handleFileUpload}" multiple="false"
+                                      mode="advanced" required="true"
+                                      update=":userForm:messages" auto="true" sizeLimit="10000000"
+                                      allowTypes="/(csv)$/"
+                                      styleClass="fileupload" requiredMessage="Es muss eine Datei hochgeladen werden."
+                                      validatorMessage="Dieses Dateiformat ist nicht erlaubt" invalidSizeMessage="Diese Datei ist zu groß"
+                                      invalidFileMessage="Dieses Dateiformat ist nicht erlaubt"
+                        />
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Speichern" action="#{addUserBean.addUsersCSV}"
+                                         oncomplete="PF('addCSV').hide()"
+                                         update=":userForm:usersTable" styleClass="btn-primary"/>
+                        <p:commandButton value="Abbrechen"  immediate="true" action="#{addUserBean.abort}" oncomplete="PF('addCSV').hide()" styleClass="btn-secondary"/>
+                    </h:panelGrid>
+                </p:outputPanel>
 			</h:form>
 		</p:dialog>
     </ui:define>
