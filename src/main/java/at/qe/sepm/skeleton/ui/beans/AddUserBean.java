@@ -114,6 +114,7 @@ public class AddUserBean {
     }
     
     public void handleFileUpload(FileUploadEvent event) {
+    	String nameRegex = "^[A-Z]\\w*";
     	UploadedFile uploadedFile = event.getFile();
     	
     	try {
@@ -134,18 +135,33 @@ public class AddUserBean {
 			    String email = line.split(",")[4];
 			    String cNumber = line.split(",")[5];
 			    String roles = line.split(",")[6];
-
-				user.setUsername(username);
-				user.setPassword(passwordEncoder.encode(password));
-		        user.setFirstName(firstName);
-		        user.setLastName(lastName);
-		        user.setEmail(email);
-		        user.setcNumber(cNumber);
-		        user.setEnabled(true);
-		        user.setRoles(user.determineRoles(roles));
-
-		        userService.saveUser(user);
+			    
+			    Pattern patternN = Pattern.compile(nameRegex);
+		        Matcher matcherA = patternN.matcher(firstName);
+		        Matcher matcherB = patternN.matcher(lastName);
+		        Pattern patternE = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
+		        Matcher matcherE = patternE.matcher(email);
+		        String regexC = "^(c)...\\d\\d\\d\\d$";
+		        Pattern patternC = Pattern.compile(regexC);
+		        Matcher matcherC = patternC.matcher(cNumber);
+		        if(matcherE.matches() && matcherB.matches() && matcherC.matches() && matcherA.matches()) {
 		        
+
+		        	user.setUsername(username);
+		        	user.setPassword(passwordEncoder.encode(password));
+		        	user.setFirstName(firstName);
+		        	user.setLastName(lastName);
+		        	user.setEmail(email);
+		        	user.setcNumber(cNumber);
+		        	user.setEnabled(true);
+		        	user.setRoles(user.determineRoles(roles));
+
+		        	userService.saveUser(user);
+		        }
+		        
+		        else {
+		        	//TODO
+		        }
 			}
 			
 			
