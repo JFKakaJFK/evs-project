@@ -53,6 +53,7 @@ public class EquipmentGroupDetailController {
                 group.getEquipments().add(equipment);
             }
         }
+
         if(group.getEquipments().size() >= 2){
             group = this.groupService.saveEquipmentGroup(this.group);
             FacesContext.getCurrentInstance().addMessage(null,

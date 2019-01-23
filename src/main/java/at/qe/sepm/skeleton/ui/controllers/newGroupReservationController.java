@@ -209,7 +209,7 @@ public class newGroupReservationController extends ReservationController impleme
      */
     private boolean groupsAvailable()
     {
-        if(selectedGroups == null)
+        if(selectedGroups == null || lendingDate == null || returnDate == null)
         {
             return false;
         }
