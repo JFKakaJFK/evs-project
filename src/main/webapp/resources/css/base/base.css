@@ -9,19 +9,31 @@
     -webkit-font-smoothing: antialiased;
 }
 
+html,
+#page,
+.ui-panel-titlebar,
+#content {
+    overflow: hidden !important;
+}
+
+#content {
+    overflow-y: auto !important;
+    overflow-y: overlay;
+    overflow: -moz-scrollbars-none;
+}
 
 /* scrollbar */
 ::-webkit-scrollbar {
     display: none;
 }
 
-#content::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 8px;  /* Total width including `border-width` of scrollbar thumb */
     height: 0;
     background: var(--bg-light);
 }
 
-#page ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background-color: var(--bg-dark);
 }
 
