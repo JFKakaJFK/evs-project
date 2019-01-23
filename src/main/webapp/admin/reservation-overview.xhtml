@@ -78,8 +78,9 @@
                     sortBy="#{reservation.state}">
                     <h:outputText value="#{reservation.state}" />
                 </p:column>
+                
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton action="#{reservationDetailController.doDeleteReservation}" 
+                    <p:commandButton action="#{reservationDetailController.doDeleteReservationWithEmail}" 
                     icon="ui-icon-trash" title="Löschen" 
                     update="@form :form"
                     styleClass="btn-danger"
