@@ -28,13 +28,21 @@
 }
 
 .ui-datatable .ui-chkbox .ui-chkbox-box.ui-widget {
-    /* TODO */
-    background: #CCC;
+    background: var(--secondary-bg);
 }
 
 /* style the calendar view differently */
 .fc-event {
     line-height: 5;
+    background: var(--bg-med);
+}
+
+.fc-event .fc-title {
+    margin-left: 16px
+}
+
+.fc-day {
+    border: 1px solid var(--bg-light) !important;
 }
 
 *:focus,
@@ -46,4 +54,23 @@
 .ui-messages-error {
     color: var(--danger-fg);
     background: var(--danger-bg);
+}
+
+/* remove styles dropdown menu */
+.ui-menu.ui-menu-dynamic {
+    padding: 0;
+    border-radius: 0;
+    border: 0;
+}
+
+.ui-menu.ui-menu-dynamic li {
+    margin: 0;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+
+/* radiobuttons */
+.ui-widget.ui-radiobutton-box {
+    border-radius: 50% !important;
 }

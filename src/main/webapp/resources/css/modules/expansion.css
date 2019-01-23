@@ -1,0 +1,4 @@
+.ui-expanded-row-content td {
+    vertical-align: top;
+    background: var(--bg-light);
+}

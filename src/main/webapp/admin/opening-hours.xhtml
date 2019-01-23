@@ -29,7 +29,7 @@
                     <p:column headerText="Schließt um">
                         <h:outputText value="#{day.endTime}"/>
                     </p:column>
-                    <p:column style="width:100px;text-align: center">
+                    <p:column styleClass="noindent right">
                         <p:commandButton update=":eO" oncomplete="PF('openingHoursEditDialog').show()" icon="ui-icon-note" title="Bearbeiten" styleClass="btn-secondary">
                             <f:setPropertyActionListener value="#{day}" target="#{openingHoursDetailController.openingHours}" />
                         </p:commandButton>
@@ -59,7 +59,7 @@
                     <p:column headerText="Abgeschlossen" style="width: 120px; text-align: center">
                         <h:selectBooleanCheckbox value="#{holiday.completed}" disabled="true"/>
                     </p:column>
-                    <p:column style="width:100px;text-align: center">
+                    <p:column styleClass="noindent right">
                         <p:commandButton update="eH" oncomplete="PF('holidaysEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary" rendered="#{holiday.editable}">
                             <f:setPropertyActionListener value="#{holiday}" target="#{holidaysDetailController.holidays}" />
                         </p:commandButton>
@@ -71,7 +71,7 @@
                 </p:dataTable>
             </p:panel>
 
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300" closable="false">
                 <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger"/>
                 <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" />
             </p:confirmDialog>

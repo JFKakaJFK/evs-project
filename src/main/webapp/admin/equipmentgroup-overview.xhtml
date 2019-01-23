@@ -14,8 +14,8 @@
             </p:messages>
 
             <p:panel header="Alle Gruppen">
-                <p:dataTable id="equipmentGroupTable" 
-                var="group" 
+                <p:dataTable id="equipmentGroupTable"
+                var="group"
                 value="#{equipmentGroupListController.allEquipmentGroups}"
                 emptyMessage="Noch keine Equipment-Gruppen im System"
                 rows="15" paginator="true"
@@ -31,7 +31,7 @@
                     <p:column headerText="Benutzer">
                         <h:outputText value="#{group.user.username}"/>
                     </p:column>
-                    <p:column style="width:100px;text-align: center">
+                    <p:column styleClass="noindent right">
                         <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
                             <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
                         </p:commandButton>

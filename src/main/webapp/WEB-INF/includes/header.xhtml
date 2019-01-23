@@ -18,25 +18,24 @@
 
             <h:form id="menu">
 
-                <p>Menu</p>
+                <div>
+                    <p>Menu</p>
 
-                <p:commandLink value="Meine Reservierungen" action="#{facesContext.externalContext.redirect('/secured/welcome.xhtml')}" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
+                    <p:commandLink value="Meine Reservierungen" action="#{facesContext.externalContext.redirect('/secured/welcome.xhtml')}" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
+                    <p:commandLink value="Meine Gerätegruppen" action="#{facesContext.externalContext.redirect('/secured/my-equipmentgroups.xhtml')}" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:commandLink  value="Laborgeräte" action="#{facesContext.externalContext.redirect('/secured/equipment-overview.xhtml')}" rendered="#{!sessionInfoBean.hasRole('ADMIN')}"/>
+                </div>
 
-                <p:commandLink value="Meine Gerätegruppen" action="#{facesContext.externalContext.redirect('/secured/my-equipmentgroups.xhtml')}" rendered="#{sessionInfoBean.hasRole('EMPLOYEE') or sessionInfoBean.hasRole('ADMIN')}"/>
 
-                <p:commandLink  value="Laborgeräte" action="#{facesContext.externalContext.redirect('/secured/equipment-overview.xhtml')}" rendered="#{!sessionInfoBean.hasRole('ADMIN')}"/>
+                <div class="#{sessionInfoBean.hasRole('ADMIN') ? '' : 'hidden'}">
+                    <p>Admin</p>
 
-                <p class="#{sessionInfoBean.hasRole('ADMIN') ? '' : 'hidden'}">Admin</p>
-
-                <p:commandLink  value="Reservierungen" action="#{facesContext.externalContext.redirect('/admin/reservation-overview.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
-
-                <p:commandLink  value="Laborgeräte" action="#{facesContext.externalContext.redirect('/secured/equipment-overview.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
-
-                <p:commandLink  value="Laborgerätegruppen" action="#{facesContext.externalContext.redirect('/admin/equipmentgroup-overview.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
-
-                <p:commandLink  value="Benutzer" action="#{facesContext.externalContext.redirect('/admin/users.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
-
-                <p:commandLink  value="Öffnungszeiten" action="#{facesContext.externalContext.redirect('/admin/opening-hours.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:commandLink  value="Reservierungen" action="#{facesContext.externalContext.redirect('/admin/reservation-overview.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:commandLink  value="Laborgeräte" action="#{facesContext.externalContext.redirect('/secured/equipment-overview.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:commandLink  value="Laborgerätegruppen" action="#{facesContext.externalContext.redirect('/admin/equipmentgroup-overview.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:commandLink  value="Benutzer" action="#{facesContext.externalContext.redirect('/admin/users.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:commandLink  value="Öffnungszeiten" action="#{facesContext.externalContext.redirect('/admin/opening-hours.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                </div>
 
             </h:form>
 

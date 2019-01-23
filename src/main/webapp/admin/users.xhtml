@@ -47,10 +47,10 @@
                     <p:column headerText="Rechte" sortBy="#{user.rights}" sortable="true" filterBy="#{user.rights}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{user.rights}" />
                     </p:column>
-                    <p:column headerText="Aktiviert" style="width: 80px; text-align: center">
+                    <p:column headerText="Aktiviert" style="text-align: center" styleClass="noindent">
                         <h:selectBooleanCheckbox value="#{user.enabled}" disabled="true"/>
                     </p:column>
-                    <p:column style="width:100px;text-align: center">
+                    <p:column styleClass="noindent right">
                         <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
                             <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
                         </p:commandButton>

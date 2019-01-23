@@ -3,9 +3,9 @@ html {
 }
 
 #page {
-    width: calc(100% - 225px);
+    width: calc(100% - var(--menu-bar-width));
     height: 100vh;
-    margin-left: 225px;
+    margin-left: var(--menu-bar-width);
     overflow: scroll;
     display: flex;
     justify-content: center;
@@ -14,7 +14,7 @@ html {
 
 #header {
     position: fixed;
-    width: 225px;
+    width: var(--menu-bar-width);
     top: 0;
     bottom: 0;
     left: 0;
@@ -22,6 +22,6 @@ html {
 
 #content {
     width: 90%;
-    height: 90%;
+    max-height: 90%;
     overflow: scroll;
 }

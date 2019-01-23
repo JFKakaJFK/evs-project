@@ -1,7 +1,7 @@
 #header {
     background: var(--bg-dark);
     color: var(--primary-fg);
-    padding: 50px 25px 75px;
+    padding: 50px 40px 75px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -9,6 +9,7 @@
 }
 
 .user-detail {
+    width: 100%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -16,6 +17,8 @@
 }
 
 .user-detail p {
+    width: 100%;
+    text-align: center;
     font-size: 1.3rem;
     margin: 2px;
 }

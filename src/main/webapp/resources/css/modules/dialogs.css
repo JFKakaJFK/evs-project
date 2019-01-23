@@ -1,0 +1,38 @@
+/* confirm dialogs */
+
+.ui-confirm-dialog.ui-dialog.ui-widget-content,
+.ui-confirm-dialog.ui-dialog.ui-widget-content .ui-dialog-titlebar,
+.ui-confirm-dialog.ui-widget-content {
+    border-radius: 0;
+    border: 0;
+}
+
+.ui-confirm-dialog .ui-icon.ui-confirm-dialog-severity {
+    display: none;
+}
+
+.ui-confirm-dialog.ui-widget-content .ui-dialog-titlebar {
+    background: var(--bg-dark);
+    color: var(--primary-fg);
+}
+
+.ui-confirm-dialog.ui-widget-content .ui-dialog-titlebar .ui-icon {
+    filter: brightness(100);
+}
+
+.ui-confirm-dialog.ui-widget-content .ui-dialog-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* growl */
+.ui-growl.ui-widget .ui-growl-item-container {
+    background: var(--primary-bg);
+    border-radius: 0;
+}
+
+.ui-growl.ui-widget .ui-growl-image {
+    display: none;
+}
+

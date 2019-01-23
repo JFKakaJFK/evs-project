@@ -31,7 +31,7 @@
                         rowsPerPageTemplate="10,15,20,25"
                     ><!-- style completed rows differently -->
                         <f:facet name="header">
-                            <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary">
+                            <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary" icon="fa fa-caret-down">
                                 <p:menuitem value="Laborgerät" url="create-reservation.xhtml" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
                                 <p:menuitem value="Laborgerätgruppe" url="create-reservationGroup.xhtml" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
                             </p:menuButton>
@@ -49,11 +49,11 @@
                         <p:column headerText="Status">
                             <h:outputText value="#{reservation.state}"/>
                         </p:column>
-                        <p:column style="width:100px;text-align: center">
+                        <p:column styleClass="right noindent">
                             <p:commandButton icon="fa fa-files-o" title="Bedienungsanleitung" styleClass="btn-secondary" oncomplete="PF('equipmentManualsDialog').show()" update=":reservationForm:equipmentManualsDialog" disabled="#{reservation.equipment.manuals.size() == 0}">
                                 <f:setPropertyActionListener value="#{reservation.equipment}" target="#{reservationListController.equipmentManual}"/>
                             </p:commandButton>
-                            <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="fa fa-trash" title="Löschen" rendered="#{reservation.deletable}" update="reservationTable" styleClass="btn-danger">
+                            <p:commandButton action="#{reservationDetailController.doDeleteReservation}" icon="fa fa-trash" title="Löschen" disabled="#{!reservation.deletable}" update="reservationTable" styleClass="btn-danger">
                                 <f:setPropertyActionListener value="#{reservation}" target="#{reservationDetailController.equipmentReservation}" />
                                 <p:confirm header="Bestätigung" message="Sie sind sicher, dass Sie diese Reservierung löschen wollen? Dieser Vorgang kann ncht rückgängig gemacht werden." icon="ui-icon-alert" />
                             </p:commandButton>
@@ -72,7 +72,7 @@
                         </p:repeat>
                     </p:dialog>
 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300" closable="false">
                         <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check" />
                         <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
                     </p:confirmDialog>
@@ -106,28 +106,27 @@
                     ><!-- style overdue rows differently -->
                         <f:facet name="header">
                             <div>
-                                <p:outputPanel>
-                                    <p:inputText
-                                        id="globalFilter"
-                                        onkeyup="PF('reservationSelect').filter()"
-                                        style="width:250px" placeholder="Suche nach Reservierung"/>
-                                </p:outputPanel>
 
-                                <p:outputPanel>
-                                    <p:commandButton
-                                        value="Rückgabe bestätigen"
-                                        action="#{reservationListController.doEquipmentReturn}"
-                                        update="@form reservationForm"
-                                        styleClass="btn-primary"
-                                    >
-                                        <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie die Rückgabe der ausgewählen Laborgeräte bestätigen wollen? Sie können diesen Vorgang nicht rückgängig machen." icon="ui-icon-alert" />
-                                    </p:commandButton>
-                                </p:outputPanel>
-                                <div style="clear: both"></div>
+                                <p:inputText
+                                    id="globalFilter"
+                                    onkeyup="PF('reservationSelect').filter()"
+                                    style="width:250px" placeholder="Suche nach Reservierung"/>
+
+
+
+                                <p:commandButton
+                                    value="Rückgabe bestätigen"
+                                    action="#{reservationListController.doEquipmentReturn}"
+                                    update="@form reservationForm"
+                                    styleClass="btn-primary"
+                                >
+                                    <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie die Rückgabe der ausgewählen Laborgeräte bestätigen wollen? Sie können diesen Vorgang nicht rückgängig machen." icon="ui-icon-alert" />
+                                </p:commandButton>
+
                             </div>
                         </f:facet>
 
-                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column selectionMode="multiple" styleClass="noindent"/>
 
                         <p:column
                             headerText="Laborgerät"
@@ -160,8 +159,7 @@
                             <h:outputText value="#{reservation.endDate}"/>
                         </p:column>
 
-                        <p:column
-                            headerText="Status"
+                        <p:column headerText="Status"
                             filterBy="#{reservation.user.cNumber} #{reservation.user.username}"
                             filterStyle="display: none"
                             filterMatchMode="contains"

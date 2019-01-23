@@ -1,0 +1,49 @@
+/* buttons */
+.btn-primary.ui-widget,
+.dropdown-primary .ui-button {
+    background: var(--primary-bg);
+    color: var(--primary-fg);
+    transition: all .25s ease-in-out;
+}
+
+.btn-danger.ui-widget {
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+    transition: all .25s ease-in-out;
+}
+
+.btn-secondary.ui-widget,
+.fileupload .ui-button.ui-widget {;
+    background: var(--secondary-bg);
+    transition: all .25s ease-in-out;
+}
+
+.btn-danger.ui-widget:hover,
+.btn-danger.ui-widget:focus,
+.btn-primary.ui-widget:hover,
+.btn-primary.ui-widget:focus,
+.btn-secondary.ui-widget:hover,
+.btn-secondary.ui-widget:focus,
+.fileupload .ui-button.ui-widget:hover,
+.fileupload .ui-button.ui-widget:focus{
+    opacity: .7;
+    transition: all .25s ease-in-out;
+}
+
+/* file upload */
+/*
+.fileupload {
+    max-width: 180px !important;
+}
+
+.fileupload .ui-fileupload-buttonbar {
+    padding: 0 !important;
+}
+
+.fileupload .ui-button {
+    margin: 0 !important;
+}
+
+.fileupload .ui-button-text {
+    padding: .3em .7em .3em 2em !important;
+}

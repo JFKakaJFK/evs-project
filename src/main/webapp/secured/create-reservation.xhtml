@@ -36,8 +36,6 @@
                     </div>
                 </div>
 
-
-
                 <p:dataTable
                     widgetVar="equipmentSelect"
                     id="freeEquipmentTable"
@@ -51,32 +49,26 @@
 
                     <f:facet name="header">
                         <div>
-                            <p:outputPanel style="text-align: left;float: left">
-                                <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:250px" placeholder="Suche nach Reservierung"/>
-                            </p:outputPanel>
+                            <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:250px" placeholder="Suche nach Reservierung"/>
 
-                            <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
-                                <p:commandButton
-                                    value="Reservierung hinzufügen"
-                                    action="#{newReservationController.addEquipmentReservation}"
-                                    update="@form"
-                                    styleClass="btn-primary"
-                                />
-                            </p:outputPanel>
+                            <p:commandButton
+                                value="Reservierung hinzufügen"
+                                action="#{newReservationController.addEquipmentReservation}"
+                                update="@form"
+                                styleClass="btn-primary"
+                            />
 
-                            <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
-                                <p:commandButton
-                                    value="Eingabe zurücksetzen"
-                                    update=":newReservation:newReservationPanel"
-                                    process="@this"
-                                    action="#{newReservationController.resetInputs}"
-                                    styleClass="btn-secondary"/>
-                            </p:outputPanel>
-                            <div style="clear: both"></div>
+                            <p:commandButton
+                                value="Eingabe zurücksetzen"
+                                update=":newReservation:newReservationPanel"
+                                process="@this"
+                                action="#{newReservationController.resetInputs}"
+                                styleClass="btn-secondary"/>
+
                         </div>
                     </f:facet>
 
-                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                    <p:column selectionMode="multiple" styleClass="noindent"/>
 
                     <p:column headerText="Laborgerät" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{equipment.name}" />
@@ -94,7 +86,7 @@
                         <h:outputText value="#{equipment.maxDurationFormatted}" />
                     </p:column>
 
-                    <p:column style="width:40px;text-align: center">
+                    <p:column styleClass="noindent right">
                         <p:commandButton
                             icon="pi pi-search"
                             title="View"
@@ -119,7 +111,7 @@
                         }
                     </style>
 
-                    <p:schedule id="reservationCalendar" value="#{newReservationController.scheduleModel}" timeZone="GMT+1" />
+                    <p:schedule id="reservationCalendar" value="#{newReservationController.scheduleModel}" timeZone="GMT+1"/>
                 </p:outputPanel>
             </p:dialog>
 

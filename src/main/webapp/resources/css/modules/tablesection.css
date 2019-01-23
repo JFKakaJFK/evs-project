@@ -1,0 +1,146 @@
+/* outermoast panel layout */
+
+.ui-panel {
+    padding: 0;
+    background: transparent;
+    margin-bottom: 50px;
+}
+
+.ui-panel .ui-panel-titlebar {
+    padding: 0;
+    background: transparent;
+    margin-bottom: 30px;
+}
+
+.ui-panel-title {
+    color: var(--bg-dark);
+    font-size: 2.5rem;
+}
+
+.ui-panel .ui-panel-content {
+    background: white;
+    box-sizing: border-box;
+    padding: var(--default-padding);
+}
+
+/* datatable layout */
+
+.ui-widget.ui-datatable table {
+    width: 100%;
+    table-layout: auto;
+}
+
+.ui-widget.ui-datatable thead th {
+    background: var(--bg-light);
+    box-sizing: border-box;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.ui-widget.ui-datatable tbody td {
+    box-sizing: border-box;
+    height: 30px;
+}
+
+.ui-widget.ui-datatable tbody td:not(.noindent){
+    padding-left: 16px;
+}
+
+.ui-widget.ui-datatable tbody td.right {
+    text-align: right;
+}
+
+.ui-widget.ui-datatable tbody td button {
+
+}
+
+.ui-button-icon-only {
+    height: 100%;
+    margin: 0;
+}
+.ui-button-icon-only .ui-button-text {
+    padding: 0;
+}
+
+.ui-widget.ui-datatable .noindent {
+    text-align: center;
+}
+
+.ui-widget.ui-datatable .ui-widget-header.ui-datatable-header {
+    background: transparent;
+    padding: 0;
+    text-align: left;
+    margin: 0 0 10px 0;
+}
+
+.ui-widget.ui-datatable .ui-widget-header.ui-datatable-header:after {
+    content: "";
+    clear: both;
+}
+
+.ui-widget-header.ui-datatable-header .ui-button,
+.ui-widget-header.ui-datatable-header input {
+    display: inline-block;
+    height: 40px;
+}
+
+.ui-widget .ui-widget-header.ui-datatable-header input {
+    padding: 8px 16px;
+    background: var(--bg-light);
+    float: right;
+}
+
+/* style pagination */
+
+.ui-paginator.ui-paginator-top {
+    display: none;
+}
+
+.ui-datatable .ui-paginator {
+    background: transparent;
+    padding: 10px 0;
+}
+
+.ui-paginator .ui-paginator-rpp-options,
+.ui-paginator .ui-paginator-first,
+.ui-paginator .ui-paginator-last,
+.ui-paginator .ui-paginator-prev,
+.ui-paginator .ui-paginator-next,
+.ui-paginator .ui-paginator-page
+{
+    background: var(--secondary-bg);
+}
+
+.ui-paginator .ui-paginator-page.ui-state-active {
+    color: var(--primary-fg);
+    background: var(--bg-med);
+}
+
+.ui-widget-content .ui-state-highlight {
+    background: var(--primary-bg);
+}
+
+/* style dropdown */
+
+#reservationForm .ui-widget-header.ui-datatable-header .ui-button,
+.ui-menu.ui-menu-dynamic {
+    width: 240px;
+}
+
+.ui-menu.ui-menu-dynamic .ui-menuitem.ui-state-hover,
+.ui-menu.ui-menu-dynamic .ui-menuitem.ui-state-hover .ui-menuitem-text,
+.ui-menu.ui-menu-dynamic .ui-menuitem.ui-state-hover .ui-menuitem-icon {
+    color: var(--primary-fg);
+    background: var(--bg-med);
+}
+
+/* style completed and overdue rows */
+.completed {
+    background: var(--completed);
+    opacity: .7;
+}
+
+.overdue {
+    background: var(--danger-bg);
+}
+

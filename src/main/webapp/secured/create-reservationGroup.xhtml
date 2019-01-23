@@ -51,33 +51,27 @@
 
                     <f:facet name="header">
                         <div>
-                            <p:outputPanel style="text-align: left;float: left">
-                                <p:inputText id="globalFilter" onkeyup="PF('groupSelect').filter()" style="width:250px" placeholder="Suche nach Gruppen"/>
-                            </p:outputPanel>
 
-                            <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
-                                <p:commandButton
-                                    value="neue Reservierung erstellen"
-                                    action="#{newGroupReservationController.addGroupReservation}"
-                                    update="@form"
-                                    styleClass="btn-primary"
-                                />
-                            </p:outputPanel>
+                            <p:inputText id="globalFilter" onkeyup="PF('groupSelect').filter()" style="width:250px" placeholder="Suche nach Gruppen"/>
 
-                            <p:outputPanel style="text-align: left;float: left; margin-left: 10px">
-                                <p:commandButton
-                                    value="Eingabe zurücksetzen"
-                                    update=":newReservation:newReservationPanel"
-                                    process="@this"
-                                    action="#{newGroupReservationController.resetInputs}"
-                                    styleClass="btn-secondary"
-                                />
-                            </p:outputPanel>
-                            <div style="clear: both"></div>
+                            <p:commandButton
+                                value="Neue Reservierung erstellen"
+                                action="#{newGroupReservationController.addGroupReservation}"
+                                update="@form"
+                                styleClass="btn-primary"
+                            />
+
+                            <p:commandButton
+                                value="Eingabe zurücksetzen"
+                                update=":newReservation:newReservationPanel"
+                                process="@this"
+                                action="#{newGroupReservationController.resetInputs}"
+                                styleClass="btn-secondary"
+                            />
                         </div>
                     </f:facet>
 
-                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                    <p:column selectionMode="multiple" styleClass="noindent"/>
 
                     <p:column headerText="Laborgerätgruppe" filterBy="#{group.name}" filterStyle="display: none" filterMatchMode="contains">
                         <h:outputText value="#{group.name}" />
@@ -87,7 +81,7 @@
                         <h:outputText value="#{group.equipmentAsString}" />
                     </p:column>
 
-                    <p:column style="width:40px;text-align: center">
+                    <p:column styleClass="noindent right">
                         <p:commandButton
                             icon="pi pi-search"
                             title="Ansicht"

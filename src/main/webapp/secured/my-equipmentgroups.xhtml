@@ -22,7 +22,7 @@
                 rowsPerPageTemplate="10,15,20,25"
                 >
                     <f:facet name="header">
-                        <p:commandButton update=":addEquipmentGroupDialog" oncomplete="PF('addEquipmentGroupDialog').show()" icon="ui-icon-plusthick" title="Add" value="Neue Gruppe erstellen" styleClass="btn-primary" />
+                        <p:commandButton update=":addEquipmentGroupDialog" oncomplete="PF('addEquipmentGroupDialog').show()" icon="fa fa-plus" title="Add" value="Neue Gruppe erstellen" styleClass="btn-primary" />
                     </f:facet>
 
                     <p:column headerText="Name">
@@ -31,11 +31,11 @@
                     <p:column headerText="Geräte">
                         <h:outputText value="#{group.equipmentAsString}"/>
                     </p:column>
-                    <p:column style="width:100px;text-align: center">
-                        <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary">
+                    <p:column styleClass="noindent right">
+                        <p:commandButton update=":equipmentGroupEditDialog" oncomplete="PF('equipmentGroupEditDialog').show()" icon="fa fa-edit" title="Edit" styleClass="btn-secondary">
                             <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
                         </p:commandButton>
-                        <p:commandButton action="#{equipmentGroupDetailController.doDeleteGroup}" icon="ui-icon-trash" title="Delete" update=":equipmentGroupForm:equipmentGroupTable" styleClass="btn-danger">
+                        <p:commandButton action="#{equipmentGroupDetailController.doDeleteGroup}" icon="fa fa-trash" title="Delete" update=":equipmentGroupForm:equipmentGroupTable" styleClass="btn-danger">
                             <f:setPropertyActionListener value="#{group}" target="#{equipmentGroupDetailController.group}" />
                             <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie diese Gruppe löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
                         </p:commandButton>

@@ -7,6 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <h:outputStylesheet library="css" name="/modules/expansion.css"/>
 
         <h:form id="equipmentForm">
             <p:messages id="messages" showDetail="true" closable="true">
@@ -42,7 +43,7 @@
                     <p:column headerText="Status">
                         <h:outputText value="#{equipment.stateAsString}"/>
                     </p:column>
-                    <p:column style="width:100px;text-align: center" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                    <p:column styleClass="noindent right" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:commandButton update=":equipmentForm:equipmentEditDialog" oncomplete="PF('equipmentEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                             <f:setPropertyActionListener value="#{equipment}" target="#{equipmentDetailController.equipment}" />
                         </p:commandButton>
