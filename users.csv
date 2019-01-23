@@ -1,0 +1,3 @@
+csv1,passwd,Test,User,mail@mail.com,csav0000,true,ADMIN
+csv2,passwd,Test,User,mail@mail.com,csav0001,true,EMPLOYEE
+csv3,passwd,Test,User,mail@mail.com,csav0002,true,STUDENT

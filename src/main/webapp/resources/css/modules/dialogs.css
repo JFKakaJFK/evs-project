@@ -36,3 +36,59 @@
     display: none;
 }
 
+/* general dialog styling */
+.ui-widget.ui-dialog .ui-dialog-titlebar {
+    background: var(--bg-dark);
+    color: var(--primary-fg);
+}
+
+.ui-widget.ui-dialog .ui-dialog-titlebar .ui-icon {
+    filter: brightness(100);
+}
+
+.ui-widget.ui-dialog .ui-dialog-titlebar-icon.ui-state-hover .ui-icon {
+    filter: brightness(0);
+}
+
+.ui-widget.ui-dialog .dialog-footer {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    margin-top: var(--default-padding);
+}
+
+/* group creation/edit */
+.group {
+    min-width: 60%;
+}
+
+.group .ui-widget .ui-widget-header.ui-datatable-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.group .ui-datatable-header p {
+    flex: 1;
+}
+
+.group .ui-widget .ui-widget-header.ui-datatable-header input {
+    float: none;
+}
+
+.group .inputs input{
+    margin-left: 8px;
+    box-sizing: border-box;
+    height: 40px;
+}
+
+/* add user dialogs */
+.user-dialog {
+    width: 100%;
+}
+
+.user-dialog tr td:last-of-type {
+    text-align: right;
+}

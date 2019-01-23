@@ -23,7 +23,7 @@
                              rowsPerPageTemplate="10,15,20,25"
                 >
                     <f:facet name="header">
-                        <p:commandButton value="Neues Gerät hinzufügen" update=":addEquipmentDialog" oncomplete="PF('addEquipmentDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary"/>
+                        <p:commandButton value="Neues Gerät hinzufügen" update=":addEquipmentDialog" oncomplete="PF('addEquipmentDialog').show()" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary"/>
                     </f:facet>
                     <p:column style="width:16px">
                         <p:rowToggler />
@@ -44,10 +44,10 @@
                         <h:outputText value="#{equipment.stateAsString}"/>
                     </p:column>
                     <p:column styleClass="noindent right" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
-                        <p:commandButton update=":equipmentForm:equipmentEditDialog" oncomplete="PF('equipmentEditDialog').show()" icon="ui-icon-note" title="Edit" styleClass="btn-secondary" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                        <p:commandButton update=":equipmentForm:equipmentEditDialog" oncomplete="PF('equipmentEditDialog').show()" icon="fa fa-edit" title="Edit" styleClass="btn-secondary" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                             <f:setPropertyActionListener value="#{equipment}" target="#{equipmentDetailController.equipment}" />
                         </p:commandButton>
-                        <p:commandButton action="#{equipmentDetailController.doDeleteEquipment}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable" styleClass="btn-danger" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                        <p:commandButton action="#{equipmentDetailController.doDeleteEquipment}" icon="fa fa-trash" title="Delete" update=":equipmentForm:equipmentTable" styleClass="btn-danger" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                             <f:setPropertyActionListener value="#{equipment}" target="#{equipmentDetailController.equipment}" />
                             <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie dieses Gerät entfernen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
                         </p:commandButton>
@@ -57,22 +57,22 @@
 
                         <p:outputPanel id="expansion">
                             <h:panelGrid columns="2">
-                                <p:panel>
+                                <p:panel styleClass="comment-panel">
                                     <f:facet name="header">
-                                        Kommentare
-                                        <p:commandButton value="Neue Bemerkung" update=":addCommentDialog" oncomplete="PF('addCommentDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary align-right">
+                                        <p>Kommentare</p>
+                                        <p:commandButton value="Neue Bemerkung" update=":addCommentDialog" oncomplete="PF('addCommentDialog').show()" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary align-right">
                                             <f:setPropertyActionListener value="#{equipment}" target="#{addEquipmentCommentBean.equipment}" />
                                         </p:commandButton>
                                     </f:facet>
 
                                     <p:repeat id="commentTable" value="#{equipment.comments}" var="comment">
-                                        <p:panel header="#{comment.title}" style="margin-bottom:10px">
+                                        <p:panel header="#{comment.title}" styleClass="comment">
                                             <h:outputText value="#{comment.message}"/>
                                             <f:facet name="actions">
-                                                <p:commandButton update=":equipmentForm:commentEditDialog" oncomplete="PF('commentEditDialog').show()" icon="ui-icon-note" title="Edit"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-secondary">
+                                                <p:commandButton update=":equipmentForm:commentEditDialog" oncomplete="PF('commentEditDialog').show()" icon="fa fa-edit" title="Edit"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-secondary">
                                                     <f:setPropertyActionListener value="#{comment}" target="#{equipmentDetailController.comment}" />
                                                 </p:commandButton>
-                                                <p:commandButton action="#{equipmentDetailController.doDeleteComment}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
+                                                <p:commandButton action="#{equipmentDetailController.doDeleteComment}" icon="fa fa-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
                                                     <f:setPropertyActionListener value="#{comment}" target="#{equipmentDetailController.comment}" />
                                                     <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie dieses Kommentar entfernen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
                                                 </p:commandButton>
@@ -81,21 +81,21 @@
                                     </p:repeat>
                                 </p:panel>
 
-                                <p:panel>
+                                <p:panel styleClass="comment-panel">
                                     <f:facet name="header">
-                                        Bedienungsanleitungen
-                                        <p:commandButton value="Bedienungsanleitung hinzufügen" update=":addManualDialog" oncomplete="PF('addManualDialog').show()" icon="ui-icon-plusthick" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary align-right">
+                                        <p>Bedienungsanleitungen</p>
+                                        <p:commandButton value="Bedienungsanleitung hinzufügen" update=":addManualDialog" oncomplete="PF('addManualDialog').show()" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary align-right">
                                             <f:setPropertyActionListener value="#{equipment}" target="#{addManualBean.equipment}" />
                                         </p:commandButton>
                                     </f:facet>
 
                                     <p:repeat value="#{equipment.manuals}" var="manual">
-                                        <p:panel header="#{manual.name}" style="margin-bottom: 10px">
+                                        <p:panel header="#{manual.name}" styleClass="comment">
                                             <h:outputText value="#{manual.desc}"/>
 
                                             <f:facet name="actions">
-                                                <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" actionListener="#{equipmentManualDownloadBean.download(manual)}" styleClass="btn-secondary"/>
-                                                <p:commandButton action="#{equipmentDetailController.doDeleteManual}" icon="ui-icon-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
+                                                <p:commandButton value="Download" ajax="false" icon="fa fa-download" actionListener="#{equipmentManualDownloadBean.download(manual)}" styleClass="btn-secondary"/>
+                                                <p:commandButton action="#{equipmentDetailController.doDeleteManual}" icon="fa fa-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
                                                     <f:setPropertyActionListener value="#{manual}" target="#{equipmentDetailController.manual}" />
                                                     <p:confirm header="Confirmation" message="Sind Sie sicher, dass Sie die Bedienungsanleitung entfernen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
                                                 </p:commandButton>
@@ -123,12 +123,12 @@
                         <p:outputLabel for="locked" value="Sperren: " />
                         <p:selectBooleanCheckbox id="locked" value="#{equipmentDetailController.equipment.locked}"/>
                     </h:panelGrid>
-                    <p:separator/>
-                    <h:panelGrid columns="3">
+
+                    <div class="dialog-footer">
                         <p:commandButton value="Speichern" action="#{equipmentDetailController.doSaveEquipment()}" oncomplete="PF('equipmentEditDialog').hide()" update=":equipmentForm:equipmentTable" styleClass="btn-primary"/>
                         <p:commandButton value="Neu Laden" action="#{equipmentDetailController.doReloadEquipment()}" update=":equipmentForm:equipmentData" styleClass="btn-secondary"/>
                         <p:commandButton value="Abbrechen" oncomplete="PF('equipmentEditDialog').hide()" styleClass="btn-secondary"/>
-                    </h:panelGrid>
+                    </div>
                 </p:outputPanel>
             </p:dialog>
 
@@ -140,18 +140,18 @@
                         <p:outputLabel for="msg" value="Nachricht: " />
                         <p:inputText id="msg" value="#{equipmentDetailController.comment.message}"/>
                     </h:panelGrid>
-                    <p:separator/>
-                    <h:panelGrid columns="3">
+
+                    <div class="dialog-footer">
                         <p:commandButton value="Speichern" action="#{equipmentDetailController.doSaveComment()}" oncomplete="PF('commentEditDialog').hide()" update=":equipmentForm:equipmentTable:expansion" styleClass="btn-primary"/>
                         <p:commandButton value="Neu Laden" action="#{equipmentDetailController.doReloadComment()}" update=":equipmentForm:commentData" styleClass="btn-secondary"/>
                         <p:commandButton value="Abbrechen" oncomplete="PF('commentEditDialog').hide()" styleClass="btn-secondary"/>
-                    </h:panelGrid>
+                    </div>
                 </p:outputPanel>
             </p:dialog>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
-                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger"/>
-                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" />
+                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="fa fa-check" />
+                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="fa fa-close" />
             </p:confirmDialog>
 
         </h:form>
@@ -165,11 +165,11 @@
                         <p:outputLabel for="nmsg" value="Bemerkung: " />
                         <p:inputText id="nmsg" value="#{addEquipmentCommentBean.message}" required="true"/>
                     </h:panelGrid>
-                    <p:separator />
-                    <h:panelGrid columns="2">
+
+                    <div class="dialog-footer">
                         <p:commandButton value="Speichern" action="#{addEquipmentCommentBean.addComment()}" oncomplete="PF('addCommentDialog').hide()" update=":equipmentForm:equipmentTable" styleClass="btn-primary"/>
                         <p:commandButton value="Abbrechen"  immediate="true" oncomplete="PF('addCommentDialog').hide()" styleClass="btn-secondary"/>
-                    </h:panelGrid>
+                    </div>
                 </p:outputPanel>
             </h:form>
         </p:dialog>
@@ -189,11 +189,11 @@
                         <p:outputLabel for="islocked" value="Sperren: " />
                         <p:selectBooleanCheckbox id="islocked" value="#{addEquipmentBean.locked}"/>
                     </h:panelGrid>
-                    <p:separator />
-                    <h:panelGrid columns="2">
+
+                    <div class="dialog-footer">
                         <p:commandButton value="Speichern" action="#{addEquipmentBean.addEquipment()}" oncomplete="PF('addEquipmentDialog').hide()" update=":equipmentForm:equipmentTable" styleClass="btn-primary"/>
                         <p:commandButton value="Abbrechen"  immediate="true" oncomplete="PF('addEquipmentDialog').hide()" styleClass="btn-secondary"/>
-                    </h:panelGrid>
+                    </div>
                 </p:outputPanel>
             </h:form>
         </p:dialog>
@@ -218,13 +218,13 @@
                                       invalidFileMessage="Dieses Dateiformat ist nicht erlaubt"
                         />
                     </h:panelGrid>
-                    <p:separator />
-                    <h:panelGrid columns="2">
+
+                    <div class="dialog-footer">
                         <p:commandButton value="Speichern" action="#{addManualBean.addManual}"
                                          oncomplete="PF('addManualDialog').hide()"
                                          update=":equipmentForm:equipmentTable" styleClass="btn-primary"/>
                         <p:commandButton value="Abbrechen"  immediate="true" action="#{addManualBean.abort}" oncomplete="PF('addManualDialog').hide()" styleClass="btn-secondary"/>
-                    </h:panelGrid>
+                    </div>
                 </p:outputPanel>
             </h:form>
         </p:dialog>

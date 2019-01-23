@@ -85,15 +85,17 @@
 }
 
 .ui-widget .ui-widget-header.ui-datatable-header input {
-    padding: 8px 16px;
-    background: var(--bg-light);
     float: right;
 }
 
 /* style pagination */
+.ui-paginator.ui-paginator-bottom {
+    padding: 8px 16px 0;
+}
 
 .ui-paginator.ui-paginator-top {
     display: none;
+    padding: 0 8px 16px;
 }
 
 .ui-datatable .ui-paginator {
@@ -140,7 +142,19 @@
     opacity: .7;
 }
 
+.completed .ui-chkbox-box {
+    display: none;
+}
+
 .overdue {
     background: var(--danger-bg);
+}
+
+.input-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 

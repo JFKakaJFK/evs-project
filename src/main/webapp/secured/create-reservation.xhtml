@@ -12,22 +12,22 @@
             <p:growl id="growl" showDetail="true" sticky="true" />
 
             <p:panel id="newReservationPanel" header="Reservierung hinzufügen">
-                <div class="ui-g">
-                    <div class="ui-g-4">
+                <div class="input-row">
+                    <div>
                         <p:outputLabel for="lendingDatetime" value="Ausleihdatum: " />
                         <p:calendar id="lendingDatetime" value="#{newReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" >
                             <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update="@form" immediate = "true" />
                         </p:calendar>
                     </div>
 
-                    <div class="ui-g-4">
+                    <div>
                         <p:outputLabel for="returnDatetime" value="Rückgabedatum: " />
                         <p:calendar id="returnDatetime" value="#{newReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss" >
                             <p:ajax event="dateSelect" listener="#{newReservationController.dateChanged}" update="@form" immediate = "true" />
                         </p:calendar>
                     </div>
 
-                    <div class="ui-g-4">
+                    <div>
                         <p:commandButton
                             value="Öffnungszeiten anzeigen"
                             onclick="PF('openingDialog').show();"
@@ -88,8 +88,8 @@
 
                     <p:column styleClass="noindent right">
                         <p:commandButton
-                            icon="pi pi-search"
-                            title="View"
+                            icon="fa fa-calendar"
+                            title="Verfügbarkeit ansehen"
                             update=":newReservation:equipmentDialog"
                             oncomplete="PF('equipmentDialog').show()"
                             action="#{newReservationController.calendarAction}"

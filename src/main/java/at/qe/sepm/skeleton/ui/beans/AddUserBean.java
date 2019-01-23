@@ -1,8 +1,10 @@
 package at.qe.sepm.skeleton.ui.beans;
 
 import at.qe.sepm.skeleton.model.User;
-import at.qe.sepm.skeleton.model.UserRole;
+import at.qe.sepm.skeleton.services.StorageService;
 import at.qe.sepm.skeleton.services.UserService;
+
+import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,8 +12,11 @@ import org.springframework.stereotype.Component;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +33,9 @@ public class AddUserBean {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private StorageService storageService;
+
     private String username;
     private String password;
     private String firstName;
@@ -36,6 +44,8 @@ public class AddUserBean {
     private String cNumber;
     private boolean enabled;
     private String role;
+
+    private String csv;
 
     /**
      * Creates and persists a new {@link User}
@@ -103,6 +113,72 @@ public class AddUserBean {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public void addUsersCSV(){
+        if (csv == null){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", "Sie müssen zuerst eine Datei auswählen!")
+            );
+            return;
+        }
+
+        try(BufferedReader buf = new BufferedReader(new InputStreamReader(Files.newInputStream(storageService.load(csv))))) {
+
+            String line;
+            while((line = buf.readLine()) != null) {
+                String[] userData = line.split(",");
+
+                username = userData[0];
+                password = userData[1];
+                firstName = userData[2];
+                lastName = userData[3];
+                email = userData[4];
+                cNumber = userData[5];
+                enabled = Boolean.valueOf(userData[6]);
+                role = userData[7];
+
+                addUser();
+            }
+
+        } catch (IOException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", "Fehler beim Benutzer hinzufügen")
+            );
+        } finally {
+            try {
+                storageService.deleteFile(csv);
+            } catch (IOException e){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "Error", "Fehler beim Benutzer hinzufügen")
+                );
+            }
+            csv = null;
+        }
+    }
+
+    /**
+     * If the creation of a new {@link User} is aborted after uploading a file, delete the file
+     *
+     * @throws IOException
+     */
+    public void abort() throws IOException {
+        if(csv != null){
+            storageService.deleteFile(csv);
+        }
+    }
+
+    /**
+     * Handles the upload of users per csv file
+     *
+     * @param event
+     */
+    public void handleFileUpload(FileUploadEvent event) {
+        try {
+            csv = storageService.store(event.getFile());
+        } catch (IOException e){
+            csv = null;
+        }
     }
 
     /* Getters & Setters */

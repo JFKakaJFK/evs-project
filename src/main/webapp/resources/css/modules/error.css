@@ -1,0 +1,10 @@
+#content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+p {
+    margin-top: 0;
+}

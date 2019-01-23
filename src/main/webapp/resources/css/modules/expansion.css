@@ -1,4 +1,37 @@
-.ui-expanded-row-content td {
+.ui-expanded-row-content.ui-widget-content table {
+    table-layout: fixed;
+}
+
+.ui-widget.ui-datatable .ui-expanded-row-content.ui-widget-content td {
+    padding: 0;
     vertical-align: top;
+}
+
+/* style the comment/manual overview */
+.comment-panel.ui-widget.ui-panel {
+    padding: 0;
+}
+
+.comment-panel.ui-widget.ui-panel .ui-panel-titlebar {
     background: var(--bg-light);
 }
+
+.comment-panel.ui-widget.ui-panel .comment .ui-panel-titlebar {
+    background: transparent;
+}
+
+.comment-panel.ui-widget.ui-panel .ui-panel-titlebar .ui-panel-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+}
+
+.comment-panel.ui-widget.ui-panel .ui-panel-titlebar .ui-panel-title p {
+    font-size: 1.25rem;
+    flex: 1;
+    margin: 0 0 0 10px;
+}
+
+

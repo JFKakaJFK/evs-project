@@ -62,19 +62,19 @@
 
                     <p:dialog header="Bedienungsanleitungen von #{reservationListController.equipmentManual.name}" id="equipmentManualsDialog" widgetVar="equipmentManualsDialog" modal="true" height="300" width="650" showEffect="fade" hideEffect="fade" resizable="false">
                         <p:repeat value="#{reservationListController.equipmentManual.manuals}" var="manual">
-                            <p:panel header="#{manual.name}" style="margin-bottom: 10px">
-                                <h:outputText value="#{manual.desc}" style="line-height: 2;padding-left: 10px"/>
+                            <p:panel header="#{manual.name}" styleClass="comment">
+                                <h:outputText value="#{manual.desc}"/>
 
                                 <f:facet name="actions">
-                                    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" actionListener="#{equipmentManualDownloadBean.download(manual)}" styleClass="btn-secondary"/>
+                                    <p:commandButton value="Download" ajax="false" icon="fa fa-download" actionListener="#{equipmentManualDownloadBean.download(manual)}" styleClass="btn-secondary"/>
                                 </f:facet>
                             </p:panel>
                         </p:repeat>
                     </p:dialog>
 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300" closable="false">
-                        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check" />
-                        <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="fa fa-check" />
+                        <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="fa fa-close" />
                     </p:confirmDialog>
                 </h:form>
             </p:panel>

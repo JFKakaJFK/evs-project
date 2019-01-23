@@ -75,9 +75,11 @@
                     sortBy="#{reservation.state}">
                     <h:outputText value="#{reservation.state}" />
                 </p:column>
+
                 <p:column styleClass="noindent right">
-                    <p:commandButton action="#{reservationDetailController.doDeleteReservation}"
-                    icon="ui-icon-trash" title="Löschen"
+                    <p:commandButton action="#{reservationDetailController.doDeleteReservationWithEmail}"
+                    icon="fa fa-trash" title="Löschen"
+
                     update="@form :form"
                     styleClass="btn-danger"
                     rendered="#{reservation.deletable}">
@@ -88,9 +90,9 @@
               </p:dataTable>
           </p:panel>
 
-          <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300" closable="false">
-              <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-primary" icon="ui-icon-check" />
-              <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
+          <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+              <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="fa fa-check" />
+              <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="fa fa-close" />
           </p:confirmDialog>
       </h:form>
   </ui:define>

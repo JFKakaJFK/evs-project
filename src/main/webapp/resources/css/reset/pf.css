@@ -74,3 +74,61 @@
 .ui-widget.ui-radiobutton-box {
     border-radius: 50% !important;
 }
+
+/* inputs in general */
+#page .ui-widget input {
+    background: var(--bg-light);
+    padding: 0 16px;
+    height: 40px;
+}
+
+#page .ui-widget .ui-button {
+    height: 40px;
+}
+
+.ui-button {
+    margin-right: 10px;
+}
+
+.ui-button:last-of-type {
+    margin: 0;
+}
+
+
+.ui-dialog {
+    max-height: 90%;
+    overflow: scroll;
+}
+
+/* upload styles */
+.fileupload {
+    width: 100%;
+}
+
+.fileupload .ui-fileupload-buttonbar {
+    padding: 0;
+}
+
+.fileupload .ui-fileupload-content {
+    display: none;
+}
+
+.fileupload .ui-button {
+    margin: 0;
+    width: 100%;
+}
+
+.fileupload-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.fileupload-wrapper p {
+    flex: 1;
+}
+
+.fileupload-wrapper .fileupload {
+    max-width: 50%;
+}

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -45,20 +45,20 @@
             </p:panel>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
-                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="ui-icon-check" />
-                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="ui-icon-close" />
+                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes btn-danger" icon="fa fa-check" />
+                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no btn-secondary" icon="fa fa-close" />
             </p:confirmDialog>
 
         </h:form>
 
-        <p:dialog header="Gruppe bearbeiten" id="equipmentGroupEditDialog" widgetVar="equipmentGroupEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
+        <p:dialog header="Gruppe bearbeiten" id="equipmentGroupEditDialog" widgetVar="equipmentGroupEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true" styleClass="group">
             <h:form id="editForm">
                 <p:outputPanel id="groupData" rendered="#{not empty equipmentGroupDetailController.group}">
-                    <h:panelGrid columns="2">
+                    <div class="inputs">
                         <p:outputLabel for="name" value="Gruppenname: " />
                         <p:inputText id="name" value="#{equipmentGroupDetailController.group.name}"/>
-                    </h:panelGrid>
-                    <p:separator/>
+                    </div>
+
                     <p:dataTable id="checkboxDT"
                                  widgetVar="equipmentSelect"
                                  var="equipment"
@@ -66,16 +66,18 @@
                                  selection="#{equipmentGroupDetailController.selectedEquipments}"
                                  rowKey="#{equipment.id}"
                                  style="margin-bottom:0"
-                                 filteredValue="#{equipmentGroupDetailController.filteredEquipments}">
+                                 filteredValue="#{equipmentGroupDetailController.filteredEquipments}"
+                                 emptyMessage="Kein Gerät gefunden"
+                                 rows="10" paginator="true"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25">
                         <f:facet name="header">
-                            <h:outputText value="Bitte Geräte für Gruppe auswählen" />
-                            <p:outputPanel>
-                                <h:outputText value="Suche: " />
-                                <!-- a filter needs to have its id set to globalFilter, its bad to have the same id twice but it seems to work fine -->
-                                <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:150px"/>
-                            </p:outputPanel>
+                            <p>Bitte Geräte für Gruppe auswählen</p>
+
+                            <!-- a filter needs to have its id set to globalFilter, its bad to have the same id twice but it seems to work fine -->
+                            <p:inputText placeholder="Suche" id="globalFilter" onkeyup="PF('equipmentSelect').filter()"/>
                         </f:facet>
-                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column selectionMode="multiple" styleClass="noindent"/>
                         <p:column headerText="Name" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
                             <h:outputText value="#{equipment.name}" />
                         </p:column>
@@ -84,26 +86,22 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:separator/>
-
-                    <h:panelGrid columns="3">
+                    <div class="dialog-footer">
                         <p:commandButton value="Speichern" action="#{equipmentGroupDetailController.doSaveGroup}" oncomplete="PF('equipmentGroupEditDialog').hide()" update=":equipmentGroupForm" styleClass="btn-primary"/>
                         <p:commandButton value="Neu Laden" action="#{equipmentGroupDetailController.doReloadGroup}" update=":editForm" styleClass="btn-secondary"/>
                         <p:commandButton value="Abbrechen" oncomplete="PF('equipmentGroupEditDialog').hide()" styleClass="btn-secondary"/>
-                    </h:panelGrid>
+                    </div>
                 </p:outputPanel>
             </h:form>
         </p:dialog>
 
-        <p:dialog header="Neue Gruppe erstellen" id="addEquipmentGroupDialog" widgetVar="addEquipmentGroupDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true">
+        <p:dialog header="Neue Gruppe erstellen" id="addEquipmentGroupDialog" widgetVar="addEquipmentGroupDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendToBody="true" styleClass="group">
             <h:form id="addForm">
                 <p:outputPanel id="newgroupData">
-                    <h:panelGrid columns="2">
+                    <div class="inputs">
                         <p:outputLabel for="groupname" value="Gruppenname: " />
                         <p:inputText id="groupname" value="#{addEquipmentGroupBean.name}" required="true"/>
-                    </h:panelGrid>
-
-                    <p:separator/>
+                    </div>
 
                     <p:dataTable id="addCheckboxDT"
                                  widgetVar="equipmentSelect"
@@ -112,16 +110,19 @@
                                  selection="#{addEquipmentGroupBean.equipments}"
                                  rowKey="#{equipment.id}"
                                  style="margin-bottom:0"
-                                 filteredValue="#{addEquipmentGroupBean.filteredEquipments}">
+                                 filteredValue="#{addEquipmentGroupBean.filteredEquipments}"
+                                 emptyMessage="Kein Gerät gefunden"
+                                 rows="10" paginator="true"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25">
                         <f:facet name="header">
-                            <h:outputText value="Bitte Geräte für Gruppe auswählen" />
-                            <p:outputPanel>
-                                <h:outputText value="Suche: " />
-                                <!-- a filter needs to have its id set to globalFilter, its bad to have the same id twice but it seems to work fine -->
-                                <p:inputText id="globalFilter" onkeyup="PF('equipmentSelect').filter()" style="width:150px"/>
-                            </p:outputPanel>
+                            <p>Bitte Geräte für Gruppe auswählen</p>
+
+                            <!-- a filter needs to have its id set to globalFilter, its bad to have the same id twice but it seems to work fine -->
+                            <p:inputText placeholder="Suche" id="globalFilter" onkeyup="PF('equipmentSelect').filter()"/>
+
                         </f:facet>
-                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column selectionMode="multiple" styleClass="noindent"/>
                         <p:column headerText="Name" filterBy="#{equipment.name}" filterStyle="display: none" filterMatchMode="contains">
                             <h:outputText value="#{equipment.name}" />
                         </p:column>
@@ -130,12 +131,10 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:separator/>
-
-                    <h:panelGrid columns="3">
+                    <div class="dialog-footer">
                         <p:commandButton value="Speichern" action="#{addEquipmentGroupBean.addEquipmentGroup}" oncomplete="PF('addEquipmentGroupDialog').hide()" update=":equipmentGroupForm" styleClass="btn-primary"/>
                         <p:commandButton value="Zurück" oncomplete="PF('addEquipmentGroupDialog').hide()" immediate="true" styleClass="btn-secondary"/>
-                    </h:panelGrid>
+                    </div>
                 </p:outputPanel>
             </h:form>
         </p:dialog>
