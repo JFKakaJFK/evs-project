@@ -77,8 +77,6 @@ public class ReservationDetailController {
              mailService.sendMail(mail);
           	 }
     
-     	 else {
-     		 doDeleteReservation();
-           	 }
+ 		 doDeleteReservation();
     }
 }
