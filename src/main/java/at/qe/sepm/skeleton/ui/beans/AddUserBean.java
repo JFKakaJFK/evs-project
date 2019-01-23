@@ -1,11 +1,10 @@
 package at.qe.sepm.skeleton.ui.beans;
 
 import at.qe.sepm.skeleton.model.User;
-import at.qe.sepm.skeleton.model.UserRole;
+import at.qe.sepm.skeleton.services.StorageService;
 import at.qe.sepm.skeleton.services.UserService;
 
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +15,8 @@ import javax.faces.context.FacesContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
+import java.nio.file.Files;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +33,9 @@ public class AddUserBean {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private StorageService storageService;
+
     private String username;
     private String password;
     private String firstName;
@@ -44,6 +44,8 @@ public class AddUserBean {
     private String cNumber;
     private boolean enabled;
     private String role;
+
+    private String csv;
 
     /**
      * Creates and persists a new {@link User}
@@ -112,66 +114,62 @@ public class AddUserBean {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-    
+
+    public void addUsersCSV(){
+        if (csv == null){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", "Sie müssen zuerst eine Datei auswählen!")
+            );
+            return;
+        }
+
+        try(BufferedReader buf = new BufferedReader(new InputStreamReader(Files.newInputStream(storageService.load(csv))))) {
+
+            String line;
+            while((line = buf.readLine()) != null) {
+                String[] userData = line.split(",");
+
+                username = userData[0];
+                password = userData[1];
+                firstName = userData[2];
+                lastName = userData[3];
+                email = userData[4];
+                cNumber = userData[5];
+                enabled = Boolean.valueOf(userData[6]);
+                role = userData[7];
+
+                addUser();
+            }
+
+        } catch (IOException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "Error", "Fehler beim Benutzer hinzufügen")
+            );
+        }
+    }
+
+    /**
+     * If the creation of a new {@link EquipmentManual} is aborted after uploading a file, delete the file
+     *
+     * @throws IOException
+     */
+    public void abort() throws IOException {
+        if(csv != null){
+            storageService.deleteFile(csv);
+        }
+    }
+
+    /**
+     * Handles the upload of users per csv file
+     *
+     * @param event
+     */
     public void handleFileUpload(FileUploadEvent event) {
-    	String nameRegex = "^[A-Z]\\w*";
-    	UploadedFile uploadedFile = event.getFile();
-    	
-    	try {
-      
-
-			InputStream contents = uploadedFile.getInputstream();
-			
-			BufferedReader buf = new BufferedReader(new InputStreamReader(contents));
-			String line;
-			while((line = buf.readLine()) != null) {
-				System.out.println("This is a line: " + line);
-				User user = new User();
-				String username = line.split(",")[0];
-				System.out.println(username);
-				String password = line.split(",")[1];
-			    String firstName = line.split(",")[2];
-			    String lastName = line.split(",")[3];
-			    String email = line.split(",")[4];
-			    String cNumber = line.split(",")[5];
-			    String roles = line.split(",")[6];
-			    
-			    Pattern patternN = Pattern.compile(nameRegex);
-		        Matcher matcherA = patternN.matcher(firstName);
-		        Matcher matcherB = patternN.matcher(lastName);
-		        Pattern patternE = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
-		        Matcher matcherE = patternE.matcher(email);
-		        String regexC = "^(c)...\\d\\d\\d\\d$";
-		        Pattern patternC = Pattern.compile(regexC);
-		        Matcher matcherC = patternC.matcher(cNumber);
-		        if(matcherE.matches() && matcherB.matches() && matcherC.matches() && matcherA.matches()) {
-		        
-
-		        	user.setUsername(username);
-		        	user.setPassword(passwordEncoder.encode(password));
-		        	user.setFirstName(firstName);
-		        	user.setLastName(lastName);
-		        	user.setEmail(email);
-		        	user.setcNumber(cNumber);
-		        	user.setEnabled(true);
-		        	user.setRoles(user.determineRoles(roles));
-
-		        	userService.saveUser(user);
-		        }
-		        
-		        else {
-		        	//TODO
-		        }
-			}
-			
-			
-		
-		} catch (IOException e) {
-			System.out.println("Error loading CSV");
-			e.printStackTrace();
-			
-		}
-    	
+        try {
+            csv = storageService.store(event.getFile());
+        } catch (IOException e){
+            csv = null;
+        }
     }
 
     /* Getters & Setters */

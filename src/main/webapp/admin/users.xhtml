@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -137,16 +137,24 @@
                 </p:outputPanel>
             </h:form>
         </p:dialog>
+
         <p:dialog header="CSV file hochladen" id="addCSV" widgetVar="addCSV" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-			<h:form id="fileUpload">
-				<p:fileUpload id="fileUpload" fileUploadListener="#{addUserBean.handleFileUpload}" multiple="false"
-                          mode="advanced" required="true"
-                          update=":userForm:messages" auto="true" sizeLimit="10000000"
-                          allowTypes="/(csv)$/"
-                          styleClass="fileupload" requiredMessage="Es muss eine Datei hochgeladen werden."
-                          validatorMessage="Dieses Dateiformat ist nicht erlaubt" invalidSizeMessage="Diese Datei ist zu groß"
-                          invalidFileMessage="Dieses Dateiformat ist nicht erlaubt"
-            />
+			<h:form id="csvUpload">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="rights" value="CSV-Datei auswählen: "/>
+                    <p:fileUpload id="fileUpload" fileUploadListener="#{addUserBean.handleFileUpload}" multiple="false"
+                                  mode="advanced" required="true"
+                                  update=":userForm:messages" auto="true" sizeLimit="10000000"
+                                  allowTypes="/(csv)$/"
+                                  styleClass="fileupload" requiredMessage="Es muss eine Datei hochgeladen werden."
+                                  validatorMessage="Dieses Dateiformat ist nicht erlaubt" invalidSizeMessage="Diese Datei ist zu groß"
+                                  invalidFileMessage="Dieses Dateiformat ist nicht erlaubt"
+                    />
+                </h:panelGrid>
+                <p>
+                    Die Datei muss das Format "<code>Benutzername, Passwort, Vorname, Nachname, Email, C-Kennung, Aktiviert(true|false), Rolle(ADMIN|EMPLOYEE|STUDENT)</code>" haben,
+                    wobei die Felder "Aktiviert" und "Rolle" einen der geklammerten Werte annehmen muss.
+                </p>
 			</h:form>
 		</p:dialog>
     </ui:define>
