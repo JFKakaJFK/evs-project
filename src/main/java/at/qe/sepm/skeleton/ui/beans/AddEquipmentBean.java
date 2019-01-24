@@ -9,6 +9,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -30,6 +34,8 @@ public class AddEquipmentBean {
     private String labLocation;
     private boolean locked;
     private String maxDuration;
+    
+    private String csv;
 
     /**
      * Creates and persists a new reservation
