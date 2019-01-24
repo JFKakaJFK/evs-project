@@ -103,6 +103,7 @@
                         rows="15" paginator="true"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="10,15,20,25"
+                        emptyMessage="Keine ausgeliehenen Geräte gefunden"
                     ><!-- style overdue rows differently -->
                         <f:facet name="header">
                             <div>
@@ -111,8 +112,6 @@
                                     id="globalFilter"
                                     onkeyup="PF('reservationSelect').filter()"
                                     style="width:250px" placeholder="Suche nach Reservierung"/>
-
-
 
                                 <p:commandButton
                                     value="Rückgabe bestätigen"

@@ -14,6 +14,9 @@
 
 .comment-panel.ui-widget.ui-panel .ui-panel-titlebar {
     background: var(--bg-light);
+    height: 40px;
+    display: flex;
+    align-items: center;
 }
 
 .comment-panel.ui-widget.ui-panel .comment .ui-panel-titlebar {

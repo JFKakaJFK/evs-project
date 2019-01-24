@@ -17,7 +17,7 @@
                 <p:dataTable id="usersTable" widgetVar="usersTable"
                              var="user" value="#{userListController.users}"
                              emptyMessage="Noch keine Benutzer im System"
-                             rows="15" paginator="true"
+                             rows="10" paginator="true"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="10,15,20,25"
                              rowKey="#{user.username}"
@@ -25,7 +25,7 @@
                 >
                     <f:facet name="header">
                         <p:outputPanel>
-                            <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Suche"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:250px" placeholder="Suche"/>
                         </p:outputPanel>
                         <p:commandButton value="Neuer User hinzufügen" oncomplete="PF('addDialog').show()" icon="fa fa-plus" styleClass="btn-primary"/>
                         <p:commandButton value="Benutzer per CSV-Datei importieren" oncomplete="PF('addCSV').show()" icon="fa fa-plus" styleClass="btn-primary"/>
@@ -138,7 +138,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="Benutzer per CSV Datei hinzufügen" id="addCSV" widgetVar="addCSV" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:dialog header="Benutzer per CSV Datei hinzufügen" id="addCSV" widgetVar="addCSV" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="false">
 			<h:form id="csvUpload" style="width: 450px">
                 <p:growl id="growls" showDetail="true" />
                 <p:outputPanel>
@@ -148,7 +148,7 @@
                         Die Felder "Aktiviert" und "Rolle" müssen einen der geklammerten Werte annehmen.
                     </p>
                     <div class="fileupload-wrapper">
-                        <h:outputLabel for="rights" value="CSV-Datei auswählen: "/>
+                        <h:outputLabel for="fileUpload" value="CSV-Datei auswählen: "/>
                         <p:fileUpload id="fileUpload" fileUploadListener="#{addUserBean.handleFileUpload}" multiple="false"
                                       mode="advanced" required="true"
                                       update=":userForm:messages" auto="true" sizeLimit="10000000"
