@@ -50,8 +50,8 @@
     text-align: right;
 }
 
-.ui-widget.ui-datatable tbody td button {
-
+.ui-widget.ui-datatable tbody tr {
+    height: 40px;
 }
 
 .ui-button-icon-only {

@@ -97,7 +97,7 @@
                                                 <p:commandButton value="Download" ajax="false" icon="fa fa-download" actionListener="#{equipmentManualDownloadBean.download(manual)}" styleClass="btn-secondary"/>
                                                 <p:commandButton action="#{equipmentDetailController.doDeleteManual}" icon="fa fa-trash" title="Delete" update=":equipmentForm:equipmentTable:expansion"  rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-danger">
                                                     <f:setPropertyActionListener value="#{manual}" target="#{equipmentDetailController.manual}" />
-                                                    <p:confirm header="Confirmation" message="Sind Sie sicher, dass Sie die Bedienungsanleitung entfernen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
+                                                    <p:confirm header="Bestätigung" message="Sind Sie sicher, dass Sie die Bedienungsanleitung entfernen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden." icon="ui-icon-alert" />
                                                 </p:commandButton>
                                             </f:facet>
                                         </p:panel>
