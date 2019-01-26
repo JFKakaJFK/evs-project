@@ -29,6 +29,8 @@ public class OpeningHoursService {
     @Autowired
     private OpeningHoursRepository openingHoursRepository;
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(OpeningHoursService.class);
+
     /**
      * Returns a collection of all days of openinghours.
      *
@@ -166,7 +168,7 @@ public class OpeningHoursService {
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteOpeningHour(OpeningHours openingHour) {
         openingHoursRepository.delete(openingHour);
-        // :TODO: write some audit log stating who and when this day was permanently deleted.
+        logger.warn("DELETED OpeningHour: " + openingHour + " (by " + getAuthenticatedUser() + ")");
     }
 
     private User getAuthenticatedUser() {
