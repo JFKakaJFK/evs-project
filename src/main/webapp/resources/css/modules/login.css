@@ -17,35 +17,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /*
-    background: url('/resources/images/login-bg.jpg');
-    background-size: cover;
-    */
-}
-
-#content::before {
-    content: "";
-    background: #606c88;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #3f4c6b, #606c88);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #3f4c6b, #606c88); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    opacity: 1;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1;
 }
 
 #content::after {
     content: "";
-    background: url('/resources/images/login-bg.jpg');
+    background: url('/resources/images/login-bg-new.jpg');
     background-size: cover;
-    opacity: 0.7;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    filter: blur(1px) brightness(0.9) grayscale(.1);
+    opacity: 1;
+    top: -5%;
+    left: -5%;
+    bottom: -5%;
+    right: -5%;
     position: absolute;
     z-index: -1;
 }
@@ -55,7 +38,7 @@
     display: inline-block;
     background: #fff;
     padding: 40px;
-    box-shadow: 4px 4px 16px hsla(0, 0%, 0%, .25), 4px 4px 32px hsla(0, 0%, 0%, .15);
+    box-shadow: 4px 4px 16px hsla(0, 0%, 0%, .15);
     position: relative;
     left: 50%;
     transition: left .25s ease-in-out;
