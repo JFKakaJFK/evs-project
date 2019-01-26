@@ -51,10 +51,10 @@
                         <h:outputText value="#{holiday.name}"/>
                     </p:column>
                     <p:column headerText="Anfangsdatum">
-                        <h:outputText value="#{holiday.startDateFormatted}"/>
+                        <h:outputText value="#{holiday.startDate}"/>
                     </p:column>
                     <p:column headerText="Enddatum">
-                        <h:outputText value="#{holiday.endDateFormatted}"/>
+                        <h:outputText value="#{holiday.endDate}"/>
                     </p:column>
                     <p:column headerText="Abgeschlossen" style="width: 120px; text-align: center">
                         <h:selectBooleanCheckbox value="#{holiday.completed}" disabled="true"/>

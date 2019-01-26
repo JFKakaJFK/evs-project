@@ -126,7 +126,7 @@
 
 #reservationForm .ui-widget-header.ui-datatable-header .ui-button,
 .ui-menu.ui-menu-dynamic {
-    width: 240px;
+    min-width: 240px;
 }
 
 .ui-menu.ui-menu-dynamic .ui-menuitem.ui-state-hover,

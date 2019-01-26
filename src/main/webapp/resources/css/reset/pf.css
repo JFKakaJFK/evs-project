@@ -61,6 +61,7 @@
     padding: 0;
     border-radius: 0;
     border: 0;
+    position: absolute;
 }
 
 .ui-menu.ui-menu-dynamic li {
@@ -131,4 +132,9 @@
 
 .fileupload-wrapper .fileupload {
     max-width: 50%;
+}
+
+.ui-clock {
+    padding: 0;
+    background: transparent;
 }

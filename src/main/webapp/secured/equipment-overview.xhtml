@@ -24,7 +24,7 @@
                 >
                     <f:facet name="header">
                         <p:commandButton value="Neues Gerät hinzufügen" update=":addEquipmentDialog" oncomplete="PF('addEquipmentDialog').show()" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('ADMIN')}" styleClass="btn-primary"/>
-                        <p:commandButton value="Geräte per CSV-Datei importieren" oncomplete="PF('addEquipmentCSV').show()" icon="fa fa-plus" styleClass="btn-primary" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                        <p:commandButton value="Geräte per CSV-Datei importieren" oncomplete="PF('addEquipmentCSV').show()" icon="fa fa-plus" styleClass="btn-primary"/>
                     </f:facet>
                     <p:column style="width:16px">
                         <p:rowToggler />

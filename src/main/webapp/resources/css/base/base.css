@@ -17,6 +17,7 @@ html,
 }
 
 #content {
+    scrollbar-width: none;
     overflow-y: auto !important;
     overflow-y: overlay;
     overflow: -moz-scrollbars-none;

@@ -31,10 +31,8 @@
                         rowsPerPageTemplate="10,15,20,25"
                     ><!-- style completed rows differently -->
                         <f:facet name="header">
-                            <p:menuButton value="Reservierung hinzufügen" style="margin-bottom: 10px" styleClass="dropdown-primary" icon="fa fa-caret-down">
-                                <p:menuitem value="Laborgerät" url="create-reservation.xhtml" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('STUDENT')}"/>
-                                <p:menuitem value="Laborgerätgruppe" url="create-reservationGroup.xhtml" icon="fa fa-plus" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
-                            </p:menuButton>
+                            <p:commandButton styleClass="btn-primary" value="Neue Gerätereservierung" icon="fa fa-plus" action="#{facesContext.externalContext.redirect('/secured/create-reservation.xhtml')}"/>
+                            <p:commandButton styleClass="btn-primary" value="Neue Gruppenreservierung" icon="fa fa-plus" action="#{facesContext.externalContext.redirect('/secured/create-reservationGroup.xhtml')}" rendered="#{sessionInfoBean.hasRole('EMPLOYEE')}"/>
                         </f:facet>
 
                         <p:column headerText="Laborgerät">

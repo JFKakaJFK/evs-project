@@ -69,6 +69,13 @@ p.user-rights {
     text-decoration: underline;
 }
 
+.ui-commandlink.ui-widget.ui-state-disabled {
+    background: transparent;
+    color: inherit;
+    text-decoration: underline;
+}
+
+
 #logout i {
     margin-right: 8px;
 }
