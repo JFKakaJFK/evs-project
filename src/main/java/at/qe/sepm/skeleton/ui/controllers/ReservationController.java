@@ -88,10 +88,17 @@ public class ReservationController {
     }
 
     /**
-     * Check if selected time is in opening Hours
+     * Check if selected time is in opening Hours and not in Holidays
      * @return true if valid
      */
     public boolean withinOpeningHours() {
+        //check within Holidays
+        if(holidaysService.isWithinHolidays(this.lendingDate) || holidaysService.isWithinHolidays(this.returnDate))
+        {
+            return false;   //lending or returnDate is within Holidays
+        }
+
+        //ceheck within openinghours
         if(openingHoursService.isWithinOpeningHours(this.lendingDate) && openingHoursService.isWithinOpeningHours(this.returnDate)) {
             return true;
         }

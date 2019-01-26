@@ -4,12 +4,14 @@ import at.qe.sepm.skeleton.model.Equipment;
 import at.qe.sepm.skeleton.services.EquipmentService;
 import at.qe.sepm.skeleton.services.StorageService;
 
+import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 

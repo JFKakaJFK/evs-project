@@ -11,8 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service for accessing and manipulating holiday data.
@@ -65,6 +65,41 @@ public class HolidaysService {
             day.setUpdateUser(getAuthenticatedUser());
         }
         return holidaysRepository.save(day);
+    }
+
+    /**
+     * Return true if checkDate is within a Holiday
+     * @param checkDate
+     * @return
+     */
+    public boolean isWithinHolidays(Date checkDate)
+    {
+
+        List<Holidays> holidays = new ArrayList<>(getAllHolidays());
+
+        for(Holidays holiday : holidays)
+        {
+            //checkDate is within Holiday
+            if(isWithinDateRange(checkDate, holiday.getStartDate(), holiday.getEndDate()))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if checkDate is within the range between startDate and endDate
+     * @param checkDate
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static boolean isWithinDateRange(Date checkDate, Date startDate, Date endDate)
+    {
+        if(checkDate.equals(startDate) || checkDate.equals(endDate))
+            return true;
+
+        return checkDate.after(startDate) && checkDate.before(endDate);
     }
 
     /**
