@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.stream.Collectors;
+import at.qe.sepm.skeleton.repositories.UserRepository;
 
 /**
  * Service for accessing and manipulating equipment related data.
@@ -31,6 +32,11 @@ public class EquipmentReservationService {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EquipmentReservationService.class);
 
     /**
      * Retuns all Reservations where the equipment state is BOOKED
@@ -124,6 +130,11 @@ public class EquipmentReservationService {
         return equipmentReservationRepository.save(reservation);
     }
 
+    private User getAuthenticatedUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findFirstByUsername(auth.getName());
+    }
+
     /**
      * Deletes a reservation without checking whether the start Date is in the Future
      *
@@ -132,12 +143,12 @@ public class EquipmentReservationService {
     @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #reservation.getUser().username")
     public void deleteReservation(EquipmentReservation reservation) throws ReservationInProgressException {
         if(reservation.isDeletable()){
+            logger.warn("DELETED Reservation: " + reservation.getEquipment().getName() + " (by " + getAuthenticatedUser() + ")");
             Equipment e = reservation.getEquipment();
             e.removeReservation(reservation);
             equipmentRepository.save(e);
         } else {
             throw new ReservationInProgressException("Der Benutzer hat derzeit noch Geräte ausgeliehen und kann erst gelöscht werden nachdem er diese zurückgebracht hat.");
         }
-        // TODO log reservation deleted by whom
     }
 }
