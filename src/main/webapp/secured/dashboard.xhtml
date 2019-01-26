@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:define name ="content">
+        <h:outputStylesheet library="css" name="/modules/dashboard.css"/>
+
+        <h:form>
+            <p:panel styleClass="dashboard" header="Übersicht" >
+
+                <p:panel styleClass="feature-overview" header="Meine Reservierungen">
+                    <div class="columns">
+                        <div class="left">
+                            <p>Aktiv/Überfällig</p>
+                            <p>Zukünftig/Abgeschlossen</p>
+                        </div>
+                        <div class="right">
+                            <p>#{dashboardController.reservationsByUserAndState('AKTIV')}/#{dashboardController.reservationsByUserAndState('ÜBERFÄLLIG')}</p>
+                            <p>#{dashboardController.reservationsByUserAndState('ZUKÜNFTIG')}/#{dashboardController.reservationsByUserAndState('ABGESCHLOSSEN')}</p>
+                        </div>
+                    </div>
+
+                    <div class="dialog-footer">
+                        <p:commandButton styleClass="btn-primary" value="Details" action="#{facesContext.externalContext.redirect('/secured/welcome.xhtml')}"/>
+                    </div>
+                </p:panel>
+
+                <p:panel styleClass="feature-overview twice" header="Meine Statistiken">
+                    <div class="columns reverse">
+                        <div class="left">
+                            <p>Überfällig</p>
+                            <p>Aktiv</p>
+                            <p>Abgeschlossen</p>
+                        </div>
+                        <div class="right">
+                            <p><p:progressBar value="#{dashboardController.totalOverduePercentUser}" labelTemplate="{value}%" displayOnly="true" styleClass="overdue"/></p>
+
+                            <p><p:progressBar value="#{dashboardController.totalActivePercentUser}" labelTemplate="{value}%" displayOnly="true" styleClass="not-overdue"/></p>
+
+                            <p><p:progressBar value="#{dashboardController.totalDonePercentUser}" labelTemplate="{value}%" displayOnly="true" styleClass="done"/></p>
+                        </div>
+                    </div>
+                </p:panel>
+
+                <p:panel styleClass="feature-overview" header="Öffnungszeiten">
+                    <div class="columns">
+                        <div class="left">
+                            <p>Heute</p>
+                            <p>Derzeit</p>
+                        </div>
+                        <div class="right">
+                            <p>#{dashboardController.weekday}, <p:clock pattern="dd.MM.yyyy"/></p>
+                            <p><p:clock pattern="HH:mm"/> #{dashboardController.open ? 'OFFEN' : 'GESCHLOSSEN'}</p>
+                        </div>
+                    </div>
+                    <div class="dialog-footer #{sessionInfoBean.hasRole('ADMIN') ? '' : 'hidden'}">
+                        <p:commandButton styleClass="btn-secondary" value="Ändern" action="#{facesContext.externalContext.redirect('/admin/opening-hours.xhtml')}" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                    </div>
+                </p:panel>
+
+                <p:panel styleClass="feature-overview" header="Alle Reservierungen" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                    <div class="columns">
+                        <div class="left">
+                            <p>Aktiv/Überfällig</p>
+                            <p>Zukünftig/Abgeschlossen</p>
+                        </div>
+                        <div class="right">
+                            <p>#{dashboardController.reservationsByState('AKTIV')}/#{dashboardController.reservationsByState('ÜBERFÄLLIG')}</p>
+                            <p>#{dashboardController.reservationsByState('ZUKÜNFTIG')}/#{dashboardController.reservationsByState('ABGESCHLOSSEN')}</p>
+                        </div>
+                    </div>
+
+                    <div class="dialog-footer">
+                        <p:commandButton styleClass="btn-secondary" value="Verwalten" action="#{facesContext.externalContext.redirect('/admin/reservation-overview.xhtml')}"/>
+                    </div>
+                </p:panel>
+
+                <p:panel styleClass="feature-overview" header="Benutzer"  rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                    <div class="columns">
+                        <div class="left">
+                            <p>Derzeit aktiv</p>
+                            <p>Insgesamt</p>
+                        </div>
+                        <div class="right">
+                            <p>#{dashboardController.numLoggedInUsers}</p>
+                            <p>#{dashboardController.numUsers}</p>
+                        </div>
+                    </div>
+                    <div class="dialog-footer">
+                        <p:commandButton styleClass="btn-secondary" value="Verwalten" action="#{facesContext.externalContext.redirect('/admin/users.xhtml')}"/>
+                    </div>
+                </p:panel>
+
+                <p:panel styleClass="feature-overview twice" header="Statistiken" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                    <div class="columns reverse">
+                        <div class="left">
+                            <p>Überfällig</p>
+                            <p>Aktiv</p>
+                            <p>Abgeschlossen</p>
+                        </div>
+                        <div class="right">
+                            <p><p:progressBar value="#{dashboardController.totalOverduePercent}" labelTemplate="{value}%" displayOnly="true" styleClass="overdue"/></p>
+
+                            <p><p:progressBar value="#{dashboardController.totalActivePercent}" labelTemplate="{value}%" displayOnly="true" styleClass="not-overdue"/></p>
+
+                            <p><p:progressBar value="#{dashboardController.totalDonePercent}" labelTemplate="{value}%" displayOnly="true" styleClass="done"/></p>
+                        </div>
+                    </div>
+                </p:panel>
+
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
