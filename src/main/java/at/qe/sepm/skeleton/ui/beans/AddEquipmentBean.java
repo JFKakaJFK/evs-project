@@ -22,12 +22,12 @@ import javax.faces.context.FacesContext;
  * Bean for adding a new {@link Equipment}
  */
 @Component
-@Scope("request")
+@Scope("view")
 public class AddEquipmentBean {
 
     @Autowired
     private EquipmentService equipmentService;
-    
+
     @Autowired
     private StorageService storageService;
 
@@ -36,7 +36,7 @@ public class AddEquipmentBean {
     private String labLocation;
     private boolean locked;
     private String maxDuration;
-    
+
     private String csv;
 
     /**
@@ -58,7 +58,10 @@ public class AddEquipmentBean {
             FacesMessage.SEVERITY_INFO, "Success", "Gerät erfolgreich erstellt")
         );
     }
-    
+
+    /**
+     * Creates new {@link Equipment} enities using a csv file
+     */
     public void addEquipmentsCSV(){
         if (csv == null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
@@ -77,17 +80,20 @@ public class AddEquipmentBean {
             		name = equipmentData[0];
             		labName = equipmentData[1];
             		labLocation = equipmentData[2];
-            		locked = Boolean.valueOf(equipmentData[3]);
-            		maxDuration = equipmentData[4];
-            		
+                    maxDuration = equipmentData[3];
+            		locked = Boolean.valueOf(equipmentData[4]);
+
+
 
             		addEquipment();
             	}
-            } catch (ArrayIndexOutOfBoundsException a) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, "Success", "Die Geräte wurder erfolgreich hinzugefügt")
+                );
+            } catch (Exception e) {
             	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                        FacesMessage.SEVERITY_ERROR, "Error", "Bitte vergewissern Sie sich, "
-                        		+ "dass alle Werte gesetzt wurden")
-                    );
+                    FacesMessage.SEVERITY_ERROR, "Error", "Die CSV Datei entspricht nicht dem verlangtem Format.")
+                );
             }
 
         } catch (IOException e) {
@@ -118,7 +124,7 @@ public class AddEquipmentBean {
     }
 
     /**
-     * Handles the upload of users per csv file
+     * Handles the upload of {@link Equipment} per csv file
      *
      * @param event
      */

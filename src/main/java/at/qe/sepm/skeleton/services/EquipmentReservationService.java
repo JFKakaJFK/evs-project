@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -139,7 +140,4 @@ public class EquipmentReservationService {
         }
         // TODO log reservation deleted by whom
     }
-    
-    
-    
 }

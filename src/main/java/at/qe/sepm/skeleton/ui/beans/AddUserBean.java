@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * Bean to add a new {@link User}
  */
 @Component
-@Scope("session")
+@Scope("view")
 public class AddUserBean {
 
     @Autowired
@@ -141,11 +141,13 @@ public class AddUserBean {
 
             		addUser();
             	}
-            } catch (ArrayIndexOutOfBoundsException a) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, "Success", "Die Benutzer wurder erfolgreich hinzugefügt")
+                );
+            } catch (Exception e) {
             	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                        FacesMessage.SEVERITY_ERROR, "Error", "Bitte vergewissern Sie sich, "
-                        		+ "dass alle Werte gesetzt wurden")
-                    );
+                    FacesMessage.SEVERITY_ERROR, "Error", "Die CSV Datei entspricht nicht dem verlangtem Format.")
+                );
             }
 
         } catch (IOException e) {
