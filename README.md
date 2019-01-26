@@ -12,6 +12,8 @@ This projetc provides a reservation application for laboratory equipment.
 
 <!-- /TOC -->
 
+![Screenshot of the admin dashboard](screenshot.PNG)
+
 ## Usage
 
 To access the application, execute `mvn spring-boot:run` directly in the project folder and then connect to [http://localhost:8080/](http://localhost:8080/).
