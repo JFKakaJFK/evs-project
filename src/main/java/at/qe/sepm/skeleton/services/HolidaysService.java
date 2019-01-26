@@ -26,6 +26,8 @@ public class HolidaysService {
     @Autowired
     private UserRepository userRepository;
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(HolidaysService.class);
+
     /**
      * Returns a collection of all holidays.
      *
@@ -110,7 +112,7 @@ public class HolidaysService {
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteHoliday(Holidays day) {
         holidaysRepository.delete(day);
-        // :TODO: write some audit log stating who and when this user was permanently deleted.
+        logger.warn("DELETED Holiday: " + day.getName() + " (by " + getAuthenticatedUser() + ")");
     }
 
     private User getAuthenticatedUser() {
