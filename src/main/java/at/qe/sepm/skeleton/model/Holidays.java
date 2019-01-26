@@ -3,6 +3,7 @@ package at.qe.sepm.skeleton.model;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -48,12 +49,20 @@ public class Holidays implements Persistable<Long> {
         return startDate;
     }
 
+    public String getStartDateFormatted(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(startDate);
+    }
+
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public String getEndDateFormatted(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(endDate);
     }
 
     public void setEndDate(Date endeDate) {
