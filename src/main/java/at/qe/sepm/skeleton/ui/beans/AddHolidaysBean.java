@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Component
 @Scope("request")
@@ -23,12 +25,25 @@ public class AddHolidaysBean {
     private Date endDate;
 
     public void addHolidays(){
-        if(startDate.before(endDate) && startDate.after(new Date())){
+        if(startDate.compareTo(endDate) <= 0 && startDate.after(new Date())){
             Holidays holidays = new Holidays();
 
             holidays.setName(name);
-            holidays.setEndDate(endDate);
-            holidays.setStartDate(startDate);
+            // set start & end times to 00:00:01 and 23:59:59 respectively
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(startDate);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 1);
+            cal.set(Calendar.MILLISECOND, 0);
+            holidays.setStartDate(cal.getTime());
+
+            cal.setTime(endDate);
+            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            cal.set(Calendar.MILLISECOND, 0);
+            holidays.setEndDate(cal.getTime());
 
             holidaysService.saveHoliday(holidays);
 

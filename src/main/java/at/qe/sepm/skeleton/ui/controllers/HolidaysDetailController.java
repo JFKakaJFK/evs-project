@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Controller
 @Scope("view")
@@ -55,7 +57,23 @@ public class HolidaysDetailController {
      * Action to save the currently displayed holiday.
      */
     public void doSaveDate() {
-        if(holidays.getStartDate().before(holidays.getEndDate()) && holidays.getStartDate().after(new Date())){
+        if(holidays.getStartDate().compareTo(holidays.getEndDate()) <= 0 && holidays.getStartDate().after(new Date())){
+            // set start & end times to 00:00:01 and 23:59:59 respectively
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(holidays.getStartDate());
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 1);
+            cal.set(Calendar.MILLISECOND, 0);
+            holidays.setStartDate(cal.getTime());
+
+            cal.setTime(holidays.getEndDate());
+            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            cal.set(Calendar.MILLISECOND, 0);
+            holidays.setEndDate(cal.getTime());
+
             holidays = this.holidaysService.saveHoliday(holidays);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_INFO, "Success", "Feiertag erfolgreich angepasst.")
