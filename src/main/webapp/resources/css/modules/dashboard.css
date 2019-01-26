@@ -1,0 +1,96 @@
+.dashboard {
+    margin-right: calc(0px - var(--default-padding));
+}
+
+.dashboard .ui-panel-content {
+    padding: 0;
+    background: transparent;
+    display: flex;
+    flex-wrap: wrap;
+
+    align-items: stretch;
+    align-content: flex-start;
+}
+
+.feature-overview {
+    min-width: calc(25% - var(--default-padding));
+    display: flex;
+    flex-direction: column;
+    margin-right: var(--default-padding);
+}
+
+.feature-overview.twice {
+    min-width: calc(50% - var(--default-padding));
+}
+
+.feature-overview .ui-panel-title {
+    font-size: 1.5rem;
+}
+
+.dashboard .feature-overview .ui-panel-content {
+    flex: 1;
+    background: white;
+    padding: var(--default-padding);
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-overview .columns {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feature-overview .columns .left {
+    flex: 1;
+    margin-right: var(--default-padding);
+}
+
+.feature-overview .columns.reverse .left {
+    flex: .3;
+}
+
+.feature-overview .columns .right {
+    text-align: right;
+}
+
+.feature-overview .columns.reverse .right {
+    flex: .7;
+}
+
+.feature-overview .columns .ui-progressbar.ui-widget {
+    min-width: 80px;
+}
+
+.feature-overview .columns .ui-progressbar.ui-widget .ui-progressbar-label {
+    font-weight: 100;
+}
+
+.overdue.ui-progressbar .ui-progressbar-value.ui-widget-header {
+    background: var(--danger-bg);
+}
+
+.not-overdue.ui-progressbar .ui-progressbar-value.ui-widget-header {
+    background: var(--primary-bg);
+    opacity: .5;
+}
+
+.done.ui-progressbar .ui-progressbar-value.ui-widget-header {
+    background: var(--secondary-bg);
+}
+
+.feature-overview .dialog-footer {
+    display: block;
+    width: 100%;
+    min-height: 40px;
+}
+
+.feature-overview .dialog-footer .ui-button {
+    height: 40px;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
