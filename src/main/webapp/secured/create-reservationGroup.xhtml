@@ -17,20 +17,20 @@
                     <div>
                         <p:outputLabel for="lendingDatetime" value="Ausleidatum: " />
                         <p:calendar id="lendingDatetime" value="#{newGroupReservationController.lendingDate}" pattern="MM/dd/yyyy HH:mm:ss" >
-                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" immediate = "true" />
+                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" />
                         </p:calendar>
                     </div>
 
                     <div>
                         <p:outputLabel for="returnDatetime" value="Rückgabedatum: " />
                         <p:calendar id="returnDatetime" value="#{newGroupReservationController.returnDate}" pattern="MM/dd/yyyy HH:mm:ss">
-                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" immediate = "true" />
+                            <p:ajax event="dateSelect" listener="#{newGroupReservationController.dateChanged}" update="@form" />
                         </p:calendar>
                     </div>
 
                     <div>
                         <p:commandButton
-                            value="Öffnungszeiten anzeigen"
+                            value="Öffnungszeiten"
                             onclick="PF('openingDialog').show();"
                             styleClass="btn-secondary"
                         />
