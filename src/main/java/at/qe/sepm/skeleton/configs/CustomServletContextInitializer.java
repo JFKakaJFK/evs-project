@@ -7,6 +7,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
  * Spring configuration for servlet context.
@@ -26,6 +27,7 @@ public class CustomServletContextInitializer implements ServletContextInitialize
         sc.setInitParameter("primefaces.THEME", "bootstrap");
         sc.setInitParameter("javax.faces.FACELETS_SKIP_COMMENTS", "true");
         sc.setInitParameter("primefaces.FONT_AWESOME", "true");
+        sc.addListener(HttpSessionEventPublisher.class);
     }
 
     @Bean
