@@ -1,38 +1,28 @@
 # EVS_GROUP2 Project
 
+This projetc provides a reservation application for laboratory equipment.
+
 <!-- TOC -->
 
 - [EVS_GROUP2 Project](#evs_group2-project)
-    - [TODO](#todo)
-    - [Requirements](#requirements)
-        - [Application](#application)
-        - [Organization](#organization)
+-   - [Usage](#usage)
     - [Notes](#notes)
         - [Code Conventions](#code-conventions)
         - [How to use the Git Cli](#how-to-use-the-git-cli)
 
 <!-- /TOC -->
 
-## TODO
+## Usage
 
-[Tasks](./TODO.md)
+To access the application, execute `mvn spring-boot:run` directly in the project folder and then connect to [http://localhost:8080/](http://localhost:8080/).
 
-## Requirements
+The following accounts are available:
 
-### Application
-
-See [this](./specifications.pdf).
-
-### Organization
-
-- [ ] Adhere to code conventions
-- [ ] Prepare a technical Presentation
-- [ ] Prepare a demo
-- [ ] Application needs to be executable and should implement all features
-- [x] Use GIT(https://git.uibk.ac.at/)
-- [x] Add PS Leader
-- [x] Use Spring with JSF and Java Persistence API
-
+| username | password | role |
+|   ---   |    ---   |    ---     |
+| `admin` | `passwd` | `ADMIN`    |
+| `user1` | `passwd` | `EMPLOYEE` |
+| `user2` | `passwd` | `STUDENT`  |
 
 ## Notes
 
