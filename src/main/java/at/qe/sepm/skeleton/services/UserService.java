@@ -41,6 +41,8 @@ public class UserService {
     @Autowired
     private EquipmentReservationService equipmentReservationService;
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
+
     /**
      * Returns a collection of all users.
      *
@@ -118,8 +120,7 @@ public class UserService {
         }
 
         userRepository.delete(user);
-
-        // :TODO: write some audit log stating who and when this user was permanently deleted.
+        logger.warn("DELETED User: " + user + " (by " + getAuthenticatedUser() + ")");
     }
 
     public User getAuthenticatedUser() {
