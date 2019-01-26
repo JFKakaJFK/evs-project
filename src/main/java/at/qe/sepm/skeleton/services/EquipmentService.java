@@ -229,7 +229,7 @@ public class EquipmentService {
         try{
             storageService.deleteFile(manual.getFilename());
         } catch (IOException e){
-            // TODO log file wasn't found/couldn't be deleted
+            logger.error("Couldn't Delete: " + manual.getFilename());
         }
         Equipment e = manual.getEquipment();
         e.removeManual(manual);
