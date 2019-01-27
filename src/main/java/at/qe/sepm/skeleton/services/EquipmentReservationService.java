@@ -121,7 +121,7 @@ public class EquipmentReservationService {
      * @param reservation
      * @return
      */
-    //TODO: @PreAuthorize("hasAuthority('STUDENT')") for mail sending
+    // @PreAuthorize("hasAuthority('STUDENT')") for mail sending
     public EquipmentReservation saveReservation(EquipmentReservation reservation){
         if(reservation.isNew()){
             reservation.setCreateDate(new Date());

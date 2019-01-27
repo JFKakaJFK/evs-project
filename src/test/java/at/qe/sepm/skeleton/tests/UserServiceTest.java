@@ -71,7 +71,7 @@ public class UserServiceTest {
         try{
             userService.deleteUser(toBeDeletedUser);
         } catch (UserDeletionException e){
-            // TODO handle
+            //
         }
 
         Assert.assertEquals("No user has been deleted after calling UserService.deleteUser", 2, userService.getAllUsers().size());
@@ -190,7 +190,7 @@ public class UserServiceTest {
         try{
             userService.deleteUser(user);
         } catch (UserDeletionException e){
-            // TODO handle
+            //
         }
     }
 
